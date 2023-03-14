@@ -17,5 +17,5 @@ class Driver extends Model
         'license_expiry',
         'phone_num',
         'affiliate_num'
-    ]
+    ];
 }

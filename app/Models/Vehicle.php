@@ -17,5 +17,5 @@ class Vehicle extends Model
         'license_plate',
         'year',
         'engine_capacity'
-    ]
+    ];
 }
