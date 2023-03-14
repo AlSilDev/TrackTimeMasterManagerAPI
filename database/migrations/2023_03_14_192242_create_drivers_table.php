@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->integer('license_num')->unique()->nullable();
             $table->date('license_expiry');
-            $table->integer('phone_num')->unique();
+            $table->string('phone_num')->unique();
             $table->integer('affiliate_num')->nullable();
         });
     }
