@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
 
 
         $this->call(DriversSeeder::class);
-        //$this->call(VehiclesSeeder::class);
+        $this->call(VehiclesSeeder::class);
 
         $this->command->info("-----------------------------------------------");
         $this->command->info("END of database seeder");

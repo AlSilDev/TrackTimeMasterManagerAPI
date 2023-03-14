@@ -36,6 +36,9 @@ class DriversSeeder extends Seeder
 
             $driver['phone_num'] = str_replace(' ', '', $faker->phoneNumber);
 
+            $driver['created_at'] = $faker->dateTimeBetween('-3 years', 'now');
+            $driver['updated_at'] = $driver['created_at'];
+
             array_push($drivers, $driver);
             $this->command->info('Created driver ' . $i);
         }
