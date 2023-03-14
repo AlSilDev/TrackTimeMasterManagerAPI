@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('email')->unique()->nullable();
-            $table->integer('license_num')->unique();
+            $table->integer('license_num')->unique()->nullable();
             $table->date('license_expiry');
             $table->integer('phone_num')->unique();
             $table->integer('affiliate_num')->nullable();
