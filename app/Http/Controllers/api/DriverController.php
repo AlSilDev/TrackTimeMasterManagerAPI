@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Driver;
+use App\Http\Resources\DriverResource;
+use App\Http\Requests\StoreUpdateDriverRequest;
 use Illuminate\Http\Request;
 
 class DriverController extends Controller
@@ -13,7 +15,8 @@ class DriverController extends Controller
      */
     public function index()
     {
-        return response()->json(Driver::all());
+        //return response()->json(Driver::all());
+        return DriverResource::collection(Driver::all());
     }
 
     /**
@@ -27,9 +30,10 @@ class DriverController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUpdateDriverRequest $request)
     {
-        //
+        $newDriver = Driver::create($request->validated());
+        return new DriverResource($newDriver);
     }
 
     /**
@@ -37,7 +41,7 @@ class DriverController extends Controller
      */
     public function show(Driver $driver)
     {
-        //
+        return new DriverResource($driver);
     }
 
     /**
@@ -53,7 +57,8 @@ class DriverController extends Controller
      */
     public function update(Request $request, Driver $driver)
     {
-        //
+        $driver->update($request->validated());
+        return new DriverResource($driver);
     }
 
     /**
@@ -61,6 +66,7 @@ class DriverController extends Controller
      */
     public function destroy(Driver $driver)
     {
-        //
+        $driver->delete();
+        return new DriverResource($driver);
     }
 }
