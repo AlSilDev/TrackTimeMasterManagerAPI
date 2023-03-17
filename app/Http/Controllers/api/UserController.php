@@ -39,4 +39,10 @@ class UserController extends Controller
         $user->save();
         return new UserResource($user);
     }
+
+    public function store(UpdateUserRequest $request)
+    {
+        $newUser = User::create($request->validated());
+        return new UserResource($newUser);
+    }
 }

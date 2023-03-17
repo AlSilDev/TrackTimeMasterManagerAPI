@@ -55,7 +55,7 @@ class DriverController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Driver $driver)
+    public function update(StoreUpdateDriverRequest $request, Driver $driver)
     {
         $driver->update($request->validated());
         return new DriverResource($driver);
