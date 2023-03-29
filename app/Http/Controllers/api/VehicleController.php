@@ -11,9 +11,9 @@ class VehicleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Vehicle::all());
+        return response()->json(Vehicle::orderBy($request->column, $request->order)->paginate(15));
     }
 
     /**
