@@ -35,6 +35,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('users', [UserController::class, 'index']);
     Route::get('drivers', [DriverController::class, 'index']);
     Route::get('vehicles', [VehicleController::class, 'index']);
+    Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
 
     Route::post('users', [UserController::class, 'store']);
     Route::post('drivers', [DriverController::class, 'store']);

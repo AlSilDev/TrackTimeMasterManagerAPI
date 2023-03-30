@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
 use App\Http\Resources\VehicleResource;
 use App\Http\Requests\StoreUpdateVehicleRequest;
+use App\Http\Requests\CreateVehicleRequest;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
@@ -29,9 +30,20 @@ class VehicleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateVehicleRequest $request)
+    public function store(CreateVehicleRequest $request)
     {
-        $newVehicle = Vehicle::create($request->validated());
+        //$newVehicle = Vehicle::create($request->validated());
+        $validated_data = $request->validated();
+
+        $newVehicle = new Vehicle;
+        $newVehicle->model = $validated_data['model'];
+        $newVehicle->category = $validated_data['category'];
+        $newVehicle->class = $validated_data['class'];
+        $newVehicle->license_plate = $validated_data['license_plate'];
+        $newVehicle->year = $validated_data['year'];
+        $newVehicle->engine_capacity = $validated_data['engine_capacity'];
+
+        $newVehicle->save();
         return new VehicleResource($newVehicle);
     }
 
