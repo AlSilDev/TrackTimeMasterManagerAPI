@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Vehicle;
+use App\Http\Resources\VehicleResource;
+use App\Http\Requests\StoreUpdateVehicleRequest;
 use Illuminate\Http\Request;
 
 class VehicleController extends Controller
@@ -27,9 +29,10 @@ class VehicleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUpdateVehicleRequest $request)
     {
-        //
+        $newVehicle = Vehicle::create($request->validated());
+        return new VehicleResource($newVehicle);
     }
 
     /**
@@ -37,7 +40,7 @@ class VehicleController extends Controller
      */
     public function show(Vehicle $vehicle)
     {
-        //
+        return new VehicleResource($vehicle);
     }
 
     /**
@@ -51,9 +54,10 @@ class VehicleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Vehicle $vehicle)
+    public function update(StoreUpdateVehicleRequest $request, Vehicle $vehicle)
     {
-        //
+        $vehicle->update($request->validated());
+        return new VehicleResource($vehicle);
     }
 
     /**
@@ -61,6 +65,7 @@ class VehicleController extends Controller
      */
     public function destroy(Vehicle $vehicle)
     {
-        //
+        $vehicle->delete();
+        return new VehicleResource($vehicle);
     }
 }
