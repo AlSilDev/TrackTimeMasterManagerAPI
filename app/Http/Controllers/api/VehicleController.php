@@ -16,6 +16,9 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->attribute && $request->search){
+            return response()->json(Vehicle::whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->orderBy($request->column, $request->order)->paginate(15));
+        }
         return response()->json(Vehicle::orderBy($request->column, $request->order)->paginate(15));
     }
 
