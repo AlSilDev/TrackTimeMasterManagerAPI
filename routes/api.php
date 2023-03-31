@@ -33,7 +33,11 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('users/{user}/password', [UserController::class, 'update_password']);
     
     Route::get('users', [UserController::class, 'index']);
+    Route::get('users/{user}', [UserController::class, 'show']);
+
     Route::get('drivers', [DriverController::class, 'index']);
+    Route::get('drivers/{driver}', [DriverController::class, 'show']);
+    
     Route::get('vehicles', [VehicleController::class, 'index']);
     Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
 

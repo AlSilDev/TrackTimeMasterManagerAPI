@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\StoreUpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
 
 
@@ -27,7 +27,7 @@ class UserController extends Controller
         return new UserResource($request->user());
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(StoreUpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
         return new UserResource($user);
@@ -40,7 +40,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function store(UpdateUserRequest $request)
+    public function store(StoreUpdateUserRequest $request)
     {
         $newUser = User::create($request->validated());
         return new UserResource($newUser);
