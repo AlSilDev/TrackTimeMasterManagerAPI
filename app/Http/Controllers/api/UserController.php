@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\StoreUpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use Illuminate\Support\Facades\Storage;
 
 
 class UserController extends Controller
@@ -29,7 +30,17 @@ class UserController extends Controller
 
     public function update(StoreUpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $validated_data = $request->validated();
+
+        $user->name = $validated_data['name'];
+        $user->type = $validated_data['type'];
+        $user->email = $validated_data['email'];
+        if ($request->hasFile('photo_file')) {
+            $path = Storage::putFile('public/fotos', $request->file('photo_file'));
+            $user->photo_url = basename($path);
+        }
+
+        $user->save();
         return new UserResource($user);
     }
 
