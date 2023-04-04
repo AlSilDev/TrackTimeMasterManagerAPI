@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\StoreUpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 
 class UserController extends Controller
@@ -51,9 +53,25 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function store(StoreUpdateUserRequest $request)
+    public function store(RegisterRequest $request)
     {
-        $newUser = User::create($request->validated());
+        $validated_data = $request->validated();
+
+        //return $validated_data;
+
+        $newUser = new User;
+        $newUser->name = $validated_data['name'];
+        $newUser->type = $validated_data['type'];
+        $newUser->email = $validated_data['email'];
+        //$newUser->password = Hash::make($validated_data['password']);
+        $newUser->password = bcrypt($validated_data['password']);
+
+        if ($request->hasFile('photo_file')) {
+            $path = Storage::putFile('public/fotos', $request->file('photo_file'));
+            $newUser->photo_url = basename($path);
+        }
+        
+        $newUser->save();
         return new UserResource($newUser);
     }
 }

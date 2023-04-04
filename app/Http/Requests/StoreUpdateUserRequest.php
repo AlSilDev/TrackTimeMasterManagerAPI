@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class StoreUpdateUserRequest extends FormRequest
 {
@@ -27,6 +28,8 @@ class StoreUpdateUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'type' => 'required|in:A,S',
+            //'password' => ['required', 'confirmed', Password::min(4)],
+            'password' => ['required', Password::min(3)],
             'photo_file' => 'nullable|file|image'
         ];
     }

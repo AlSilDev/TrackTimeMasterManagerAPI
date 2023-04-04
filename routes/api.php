@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::get('vehicles', [VehicleController::class, 'index']);
 
 Route::post('login', [AuthController::class, 'login']);
+
+
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('users/me', [UserController::class, 'show_me']);
@@ -41,9 +43,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('vehicles', [VehicleController::class, 'index']);
     Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
 
-    Route::post('users', [UserController::class, 'store']);
+    
     Route::post('drivers', [DriverController::class, 'store']);
     Route::post('vehicles', [VehicleController::class, 'store']);
+    Route::post('users', [UserController::class, 'store']);
 
     Route::post('users/{user}', [UserController::class, 'update']);
     //Route::put('drivers/{driver}', [DriverController::class, 'update']);
