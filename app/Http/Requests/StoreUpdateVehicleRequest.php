@@ -11,7 +11,7 @@ class StoreUpdateVehicleRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class StoreUpdateVehicleRequest extends FormRequest
             'model' => 'required|string|max:50',
             'category' => 'required|string|max:10',
             'class' => 'required|string|max:10',
-            'license_plate' => 'required|string|dutch_license_number',
+            'license_plate' => 'required|string',
             'year' => 'required|integer|digits:4',
             'engine_capacity' => 'required|integer|min:0',
         ];
