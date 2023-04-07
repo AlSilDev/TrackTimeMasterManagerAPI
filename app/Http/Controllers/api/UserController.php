@@ -6,9 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
-use App\Http\Requests\StoreUpdateUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
-use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 
@@ -30,12 +30,11 @@ class UserController extends Controller
         return new UserResource($request->user());
     }
 
-    public function update(StoreUpdateUserRequest $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $validated_data = $request->validated();
 
         $user->name = $validated_data['name'];
-        $user->type = $validated_data['type'];
         $user->email = $validated_data['email'];
         if ($request->hasFile('photo_file')) {
             $path = Storage::putFile('public/fotos', $request->file('photo_file'));
@@ -53,7 +52,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function store(RegisterRequest $request)
+    public function store(StoreUserRequest $request)
     {
         $validated_data = $request->validated();
 

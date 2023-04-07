@@ -48,7 +48,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('vehicles', [VehicleController::class, 'store']);
     Route::post('users', [UserController::class, 'store']);
 
-    Route::post('users/{user}', [UserController::class, 'update']);
+    Route::put('users/{user}', [UserController::class, 'update']);
     //Route::put('drivers/{driver}', [DriverController::class, 'update']);
     //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
 
