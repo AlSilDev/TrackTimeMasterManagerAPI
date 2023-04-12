@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateUserPasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 
 class UserController extends Controller
@@ -32,10 +33,23 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $validated_data = $request->validated();
+        //dd($request->validated()['email']);
+        //return $request;
 
+        //return $request;
+        $validated_data = $request->validated();
+        $emailToVerified = $validated_data['email'];
         $user->name = $validated_data['name'];
-        $user->email = $validated_data['email'];
+        if(strcmp($user->email, $emailToVerified) != 0){
+            $email = DB::table('users')->where('email', $emailToVerified)->value('email');
+            if($email == null){
+                $user->email = $validated_data['email'];
+            }else{
+                return response()->json([
+                    'errors' => "Email invalido",
+                ], 422);
+            }
+        }
         if ($request->hasFile('photo_file')) {
             $path = Storage::putFile('public/fotos', $request->file('photo_file'));
             $user->photo_url = basename($path);
