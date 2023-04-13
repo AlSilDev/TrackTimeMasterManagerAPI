@@ -12,9 +12,12 @@ use App\Http\Requests\UpdateUserPasswordRequest;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::all());
+        if ($request->attribute && $request->search){
+            return response()->json(User::whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->orderBy($request->column, $request->order)->paginate(15));
+        }
+        return response()->json(User::orderBy($request->column, $request->order)->paginate(15));
     }
 
     public function show(User $user)
