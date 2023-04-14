@@ -52,6 +52,8 @@ Route::middleware('auth:api')->group(function () {
     //Route::put('drivers/{driver}', [DriverController::class, 'update']);
     //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
 
+    Route::patch('users/{user}/password', [UserController::class, 'update_password']);
+
     Route::delete('users/{user}', [UserController::class, 'destroy']);
     Route::delete('drivers/{driver}', [DriverController::class, 'destroy']);
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
