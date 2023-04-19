@@ -27,6 +27,7 @@ class UpdateUserRequest extends FormRequest
             //'email' => 'email:rfc,dns|unique:users,email',
             'email' => 'email:rfc,dns',
             'name' => 'string',
+            'type' => 'required|in:A,S',
             'photo_file' => 'nullable|file|image'
         ];
     }

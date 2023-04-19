@@ -44,6 +44,7 @@ class UserController extends Controller
         $validated_data = $request->validated();
         $emailToVerified = $validated_data['email'];
         $user->name = $validated_data['name'];
+        $user->type = $validated_data['type'];
         if(strcmp($user->email, $emailToVerified) != 0){
             $email = DB::table('users')->where('email', $emailToVerified)->value('email');
             if($email == null){
