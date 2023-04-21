@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Route;
 const PASSPORT_SERVER_URL = "http://127.0.0.1";
 
 const CLIENT_ID = 2;
-const CLIENT_SECRET = 'SAzf0DzcUcgQofWP3qZyXcJIDZknuZ6AzCrqfi5q';
+const CLIENT_SECRET = 'qkcuT7NeI1bam47bHWvBXpclMGaygDCpGX2Z2rRy';
 
 class AuthController extends Controller
 {

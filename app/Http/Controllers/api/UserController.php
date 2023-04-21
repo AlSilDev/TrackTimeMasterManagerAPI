@@ -99,4 +99,10 @@ class UserController extends Controller
         $newUser->save();
         return new UserResource($newUser);
     }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return new UserResource($user);
+    }
 }
