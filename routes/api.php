@@ -33,24 +33,24 @@ Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('users/me', [UserController::class, 'show_me']);
     Route::patch('users/{user}/password', [UserController::class, 'update_password']);
-    
+
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/{user}', [UserController::class, 'show']);
 
     Route::get('drivers', [DriverController::class, 'index']);
     Route::get('drivers/{driver}', [DriverController::class, 'show']);
-    
+
+    //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
     Route::get('vehicles', [VehicleController::class, 'index']);
     Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
-
-    
-    Route::post('drivers', [DriverController::class, 'store']);
     Route::post('vehicles', [VehicleController::class, 'store']);
+
+    Route::post('drivers', [DriverController::class, 'store']);
     Route::post('users', [UserController::class, 'store']);
 
     Route::put('users/{user}', [UserController::class, 'update']);
     //Route::put('drivers/{driver}', [DriverController::class, 'update']);
-    //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
+    Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
 
     Route::patch('users/{user}/password', [UserController::class, 'update_password']);
     Route::patch('users/{user}/blocked', [UserController::class, 'update_blocked']);

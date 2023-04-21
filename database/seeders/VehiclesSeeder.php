@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Provider\Fakecar;
 use Illuminate\Support\Facades\DB;
+use App\Models\Vehicle;
 
 class VehiclesSeeder extends Seeder
 {
@@ -55,6 +56,7 @@ class VehiclesSeeder extends Seeder
         }
 
         DB::table('vehicles')->insert($vehicles);
+
         $this->command->info('Inserted vehicles in DB');
         $this->command->info("Vehicles seeder - End");
     }

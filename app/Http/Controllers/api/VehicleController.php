@@ -70,7 +70,17 @@ class VehicleController extends Controller
      */
     public function update(StoreUpdateVehicleRequest $request, Vehicle $vehicle)
     {
+        //$validated_data = $request->validated();
         $vehicle->update($request->validated());
+        /*
+        $vehicle->model = $validated_data['model'];
+        $vehicle->category = $validated_data['category'];
+        $vehicle->class = $validated_data['class'];
+        $vehicle->license_plate = $validated_data['license_plate'];
+        $vehicle->year = $validated_data['year'];
+        $vehicle->engine_capacity = $validated_data['engine_capacity'];*/
+
+        //$vehicle->save();
         return new VehicleResource($vehicle);
     }
 
