@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Event extends Model
 {
@@ -22,4 +23,9 @@ class Event extends Model
         'category',
         'base_penalty'
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(EventCategory::class);
+    }
 }
