@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
@@ -27,5 +28,20 @@ class Event extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(EventCategory::class);
+    }
+
+    public function videos(): HasMany
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    public function press(): HasMany
+    {
+        return $this->hasMany(Press::class);
+    }
+
+    public function regulations(): HasMany
+    {
+        return $this->hasMany(Regulation::class);
     }
 }
