@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class EventCategory extends Model
 {
@@ -17,7 +18,7 @@ class EventCategory extends Model
 
     protected $table="event_categories";
 
-    public function event(): hasMany
+    public function event(): HasMany
     {
         return $this->hasMany(Event::class);
     }
