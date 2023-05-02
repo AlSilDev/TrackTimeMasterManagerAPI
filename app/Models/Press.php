@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Press extends Model
 {
@@ -17,4 +18,9 @@ class Press extends Model
     ];
 
     protected $table="press";
+
+    public function Event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
 }
