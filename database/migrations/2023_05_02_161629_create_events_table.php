@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\EventCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->date('date_end_event');
             $table->year('year');
             $table->string('course_url');
-            //$table->foreignIdFor(EventCategories::class);
+            $table->foreignIdFor(EventCategory::class);
             $table->integer('base_penalty');
             $table->timestamps();
         });
