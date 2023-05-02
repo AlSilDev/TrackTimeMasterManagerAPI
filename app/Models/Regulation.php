@@ -15,6 +15,4 @@ class Regulation extends Model
         'name',
         'file_url'
     ];
-
-    protected $table="regulations";
 }
