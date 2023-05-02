@@ -27,24 +27,35 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Route::get('vehicles', [VehicleController::class, 'index']);
 
 Route::post('login', [AuthController::class, 'login']);
+
+
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('users/me', [UserController::class, 'show_me']);
     Route::patch('users/{user}/password', [UserController::class, 'update_password']);
-    
-    Route::get('users', [UserController::class, 'index']);
-    Route::get('drivers', [DriverController::class, 'index']);
-    Route::get('vehicles', [VehicleController::class, 'index']);
 
-    Route::post('users', [UserController::class, 'store']);
-    Route::post('drivers', [DriverController::class, 'store']);
+    Route::get('users', [UserController::class, 'index']);
+    Route::get('users/{user}', [UserController::class, 'show']);
+
+    Route::get('drivers', [DriverController::class, 'index']);
+    Route::get('drivers/{driver}', [DriverController::class, 'show']);
+
+    //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
+    Route::get('vehicles', [VehicleController::class, 'index']);
+    Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
     Route::post('vehicles', [VehicleController::class, 'store']);
 
+    Route::post('drivers', [DriverController::class, 'store']);
+    Route::post('users', [UserController::class, 'store']);
+
     Route::put('users/{user}', [UserController::class, 'update']);
-    Route::put('drivers/{driver}', [DriverController::class, 'update']);
+    //Route::put('drivers/{driver}', [DriverController::class, 'update']);
     Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
 
-    Route::delete('users/{user}', [UserController::class, 'destroy']);
+    Route::patch('users/{user}/password', [UserController::class, 'update_password']);
+    Route::patch('users/{user}/blocked', [UserController::class, 'update_blocked']);
+
+    Route::delete('users/{user}/delete', [UserController::class, 'destroy']);
     Route::delete('drivers/{driver}', [DriverController::class, 'destroy']);
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
 

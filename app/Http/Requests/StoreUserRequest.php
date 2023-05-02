@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateDriverRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,11 @@ class StoreUpdateDriverRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50',
-            'email' => 'required|email',
-            'license_num' => 'required|integer|min:0',
-            'license_expiry' => 'required|date',
-            'phone_num' => 'required||regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:9',
-            'affiliate_num' => 'required|integer|min:0',
+            'email' => 'required|email:rfc,dns|unique:users,email',
+            'name' => 'required|string',
+            'type' => 'required|in:A,S',
+            'password' => 'required|min:3',
+            'photo_file' => 'nullable|file|image'
         ];
     }
 }

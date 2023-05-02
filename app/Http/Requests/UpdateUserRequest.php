@@ -11,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,13 +21,13 @@ class UpdateUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'type' => 'required|in:A,M',
-            'gender' => 'required|in:M,F',
+            //'email' => 'email:rfc,dns|unique:users,email',
+            'email' => 'email:rfc,dns',
+            'name' => 'string',
+            'type' => 'required|in:A,S',
             'photo_file' => 'nullable|file|image'
         ];
     }

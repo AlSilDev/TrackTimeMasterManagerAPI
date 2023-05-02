@@ -13,10 +13,14 @@ class DriverController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //return response()->json(Driver::all());
-        return DriverResource::collection(Driver::all());
+        //return DriverResource::collection(Driver::all());
+        if ($request->attribute && $request->search){
+            return response()->json(Driver::whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->orderBy($request->column, $request->order)->paginate(15));
+        }
+        return response()->json(Driver::orderBy($request->column, $request->order)->paginate(15));
     }
 
     /**
