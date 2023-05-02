@@ -15,4 +15,9 @@ class Stage extends Model
         'name',
         'date_start',
     ];
+
+    public function event(): BelongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
 }
