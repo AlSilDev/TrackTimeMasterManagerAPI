@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->integer('time_secs');
             $table->boolean('first_run_flag');
-            $table->integer('time_mils')
+            $table->integer('time_mils');
         });
     }
 
