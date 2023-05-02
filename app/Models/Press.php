@@ -16,5 +16,5 @@ class Press extends Model
         'file_url',
     ];
 
-    protected $table="presses";
+    protected $table="press";
 }
