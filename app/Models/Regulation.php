@@ -15,4 +15,9 @@ class Regulation extends Model
         'name',
         'file_url'
     ];
+
+    public function event(): belongsTo
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

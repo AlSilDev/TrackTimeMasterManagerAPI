@@ -17,7 +17,7 @@ class EventCategory extends Model
 
     protected $table="event_categories";
 
-    public function enrolled_by(): hasMany
+    public function event(): hasMany
     {
         return $this->hasMany(Event::class);
     }
