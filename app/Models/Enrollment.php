@@ -44,4 +44,9 @@ class Enrollment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function technical_verification(): HasOne
+    {
+        return $this->hasOne(TechnicalVerfication::class);
+    }
 }
