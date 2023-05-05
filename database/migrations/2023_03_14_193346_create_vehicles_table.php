@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->string('model');
-            $table->foreignIdFor(VehicleCategory::class);
+            $table->foreignIdFor(VehicleCategory::class, "category_id");
             $table->string('license_plate')->unique();
             $table->year('year');
             $table->integer('engine_capacity');
