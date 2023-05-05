@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('email')->unique()->nullable();
+            $table->string('country');
             $table->integer('license_num')->unique()->nullable();
             $table->date('license_expiry');
             $table->string('phone_num')->unique();
