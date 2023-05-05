@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('course_url');
             $table->foreignIdFor(EventCategory::class);
             $table->integer('base_penalty');
+            $table->decimal('point_calc_reason');
             $table->timestamps();
         });
     }
