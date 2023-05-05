@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('times_stage', function (Blueprint $table) {
+        Schema::create('times_run', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->foreignIdFor(Stage::class);
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('times_stage');
+        Schema::dropIfExists('times_run');
     }
 };

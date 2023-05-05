@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TimeStage extends Model
+class TimeRun extends Model
 {
     use HasFactory, HasTimestamps;
 
@@ -16,7 +16,7 @@ class TimeStage extends Model
         'description'
     ];
 
-    protected $table="times_stage";
+    protected $table="times_run";
 
     public function stage(): BelongsTo
     {
