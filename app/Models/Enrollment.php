@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Enrollment extends Model
@@ -48,5 +49,15 @@ class Enrollment extends Model
     public function technical_verification(): HasOne
     {
         return $this->hasOne(TechnicalVerfication::class);
+    }
+
+    public function classification_stage(): HasMany
+    {
+        return $this->hasMany(ClassificationStage::class);
+    }
+
+    public function times_run(): HasMany
+    {
+        return $this->hasMany(TimeRun::class);
     }
 }

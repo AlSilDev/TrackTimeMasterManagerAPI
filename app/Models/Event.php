@@ -27,7 +27,7 @@ class Event extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(EventCategory::class);
+        return $this->belongsTo(EventCategory::class, 'category_id');
     }
 
     public function videos(): HasMany

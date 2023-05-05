@@ -5,7 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Vehicle extends Model
@@ -14,8 +17,7 @@ class Vehicle extends Model
 
     protected $fillable = [
         'model',
-        'category',
-        'class',
+        'category_id',
         'license_plate',
         'year',
         'engine_capacity'
@@ -24,5 +26,15 @@ class Vehicle extends Model
     public function enrollments(): BelongsToMany
     {
         return $this->belongsToMany(Enrollment::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(VehicleCategory::class, 'category_id');
+    }
+
+    public function history(): HasMany
+    {
+        return $this->hasMany(VehicleHistory::class, 'id');
     }
 }
