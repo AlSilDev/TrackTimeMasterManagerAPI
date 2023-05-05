@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('type', ['A', 'S']);
+            $table->enum('type', ['A', 'S', 'VT', 'CH', 'P', 'TT']);
             $table->boolean('blocked')->default(false);
             $table->string('photo_url')->nullable();
             $table->json('custom')->nullable();
