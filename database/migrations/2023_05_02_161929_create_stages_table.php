@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignIdFor(Event::class);
             $table->string('name');
             $table->date('date_start');
+            $table->integer('num_runs');
+            $table->integer('time_until_next_run_mins');
         });
     }
 
