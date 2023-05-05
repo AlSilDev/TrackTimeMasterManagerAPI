@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Vehicle;
+use App\Models\VehicleCategory;
 
 return new class extends Migration
 {
@@ -16,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('model');
-            $table->string('category');
-            $table->string('class');
+            $table->foreignIdFor(VehicleCategory::class);
             $table->string('license_plate');
             $table->year('year');
             $table->integer('engine_capacity');
