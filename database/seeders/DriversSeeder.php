@@ -17,6 +17,7 @@ class DriversSeeder extends Seeder
         $this->command->info("Drivers seeder - Start");
 
         $faker = \Faker\Factory::create('pt_PT');
+        $faker_en = \Faker\Factory::create('en_US');
 
         $num_drivers = 50;
         $drivers = [];
@@ -35,6 +36,8 @@ class DriversSeeder extends Seeder
             $driver['affiliate_num'] = $faker->numberBetween(100, 999);
 
             $driver['phone_num'] = str_replace(' ', '', $faker->phoneNumber);
+
+            $driver['country'] = ($r_val = rand(0,2)) == 0 ? 'portugal' : strtolower($faker_en->country());
 
             $driver['created_at'] = $faker->dateTimeBetween('-3 years', 'now');
             $driver['updated_at'] = $driver['created_at'];
