@@ -14,17 +14,11 @@ class VehicleCategory extends Model
     use HasFactory, HasTimestamps, SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'class_id'
+        'name'
     ];
 
-    public function class(): BelongsTo
+    public function class(): HasMany
     {
-        return $this->belongsTo(VehicleClass::class, 'class_id');
-    }
-
-    public function vehicles(): HasMany
-    {
-        return $this->hasMany(Vehicle::class);
+        return $this->hasMany(VehicleClass::class);
     }
 }

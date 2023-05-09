@@ -17,7 +17,7 @@ class Vehicle extends Model
 
     protected $fillable = [
         'model',
-        'category_id',
+        'class_id',
         'license_plate',
         'year',
         'engine_capacity'
@@ -28,9 +28,9 @@ class Vehicle extends Model
         return $this->belongsToMany(Enrollment::class);
     }
 
-    public function category(): BelongsTo
+    public function class(): BelongsTo
     {
-        return $this->belongsTo(VehicleCategory::class, 'category_id');
+        return $this->belongsTo(VehicleClass::class, 'class_id');
     }
 
     public function history(): HasMany

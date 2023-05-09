@@ -15,17 +15,16 @@ class VehicleHistory extends Model
 
     protected $fillable = [
         'model',
-        'category',
-        'class',
+        'class_id',
         'license_plate',
         'year',
         'engine_capacity',
         'vehicle_id'
     ];
 
-    public function category(): BelongsTo
+    public function class(): BelongsTo
     {
-        return $this->belongsTo(VehicleCategory::class, 'category_id');
+        return $this->belongsTo(VehicleClass::class, 'class_id');
     }
 
     public function vehicle(): BelongsTo
