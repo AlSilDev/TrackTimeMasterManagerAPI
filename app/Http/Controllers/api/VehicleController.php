@@ -39,8 +39,9 @@ class VehicleController extends Controller
 
         $newVehicle = new Vehicle;
         $newVehicle->model = $validated_data['model'];
-        $newVehicle->category = $validated_data['category'];
-        $newVehicle->class = $validated_data['class'];
+        $newVehicle->class_id = $validated_data['class_id'];
+        //$newVehicle->category = $validated_data['category'];
+        //$newVehicle->class = $validated_data['class'];
         $newVehicle->license_plate = $validated_data['license_plate'];
         $newVehicle->year = $validated_data['year'];
         $newVehicle->engine_capacity = $validated_data['engine_capacity'];
