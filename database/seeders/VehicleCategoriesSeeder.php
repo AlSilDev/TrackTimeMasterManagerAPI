@@ -18,7 +18,7 @@ class VehicleCategoriesSeeder extends Seeder
 
         $categories = [['name' => 'CL', 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()],
                         ['name' => 'DP', 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()],
-                        ['name' => 'P', 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]];
+                        ['name' => 'PR', 'created_at' => Carbon::now()->toDateTimeString(), 'updated_at' => Carbon::now()->toDateTimeString()]];
 
         DB::table('vehicle_categories')->insert($categories);
 

@@ -41,6 +41,11 @@ class VehicleClassesSeeder extends Seeder
             array_push($classes, $class);
         }
 
+        array_push($classes, ['name' => 'PR',
+                                'category_id' => VehicleCategory::where('name', 'PR')->first()['id'],
+                                'created_at' => Carbon::now()->toDateTimeString(),
+                                'updated_at' => Carbon::now()->toDateTimeString()]);
+
         DB::table('vehicle_classes')->insert($classes);
 
         $this->command->info("Vehicles classes seeder - End");
