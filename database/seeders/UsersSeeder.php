@@ -105,7 +105,6 @@ class UsersSeeder extends Seeder
         return [
             'name' => $fullname,
             'email' =>  $email,
-            'email_verified_at' => $email_verified_at,
             'password' => bcrypt('123'),
             'remember_token' => $faker->asciify('**********'), //str_random(10),
             'created_at' => $createdAt,
