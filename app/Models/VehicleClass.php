@@ -18,7 +18,7 @@ class VehicleClass extends Model
         'category_id'
     ];
 
-    public function categories(): BelongsTo
+    public function category(): BelongsTo
     {
         return $this->belongsTo(VehicleCategory::class, 'category_id');
     }

@@ -17,7 +17,7 @@ class VehicleCategory extends Model
         'name'
     ];
 
-    public function class(): HasMany
+    public function classes(): HasMany
     {
         return $this->hasMany(VehicleClass::class);
     }
