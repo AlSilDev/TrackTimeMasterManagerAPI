@@ -7,6 +7,7 @@ use App\Models\Vehicle;
 use App\Http\Resources\VehicleResource;
 use App\Http\Requests\StoreUpdateVehicleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VehicleController extends Controller
 {
@@ -15,10 +16,34 @@ class VehicleController extends Controller
      */
     public function index(Request $request)
     {
+
         if ($request->attribute && $request->search){
-            return response()->json(Vehicle::whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->orderBy($request->column, $request->order)->paginate(15));
-        }
-        return response()->json(Vehicle::orderBy($request->column, $request->order)->paginate(15));
+            //dd('pqp');
+            //$request->attribute = 'vehicle_classes.name';
+            return response()->json(DB::table('vehicles')
+                                    ->select('vehicles.id', 'vehicles.model', 'vehicles.engine_capacity', 'vehicles.year', 'vehicles.license_plate', 'vehicle_classes.name AS class', 'vehicle_categories.name AS category')
+                                    ->join('vehicle_classes', 'vehicles.class_id', '=', 'vehicle_classes.id')
+                                    ->join('vehicle_categories', 'vehicle_classes.category_id', '=', 'vehicle_categories.id')
+                                    ->whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")
+                                    ->orderBy($request->column, $request->order)
+                                    ->paginate(15));
+        };
+
+        return response()->json(DB::table('vehicles')
+                                ->select('vehicles.id', 'vehicles.model', 'vehicles.engine_capacity', 'vehicles.year', 'vehicles.license_plate', 'vehicle_classes.name AS class', 'vehicle_categories.name AS category')
+                                ->join('vehicle_classes', 'vehicles.class_id', '=', 'vehicle_classes.id')
+                                ->join('vehicle_categories', 'vehicle_classes.category_id', '=', 'vehicle_categories.id')
+                                ->orderBy($request->column, $request->order)
+                                ->paginate(15));
+/*
+        if ($request->attribute && $request->search){
+            return response()->json(Vehicle::with('class.category')->whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->paginate(15));
+        }*/
+
+        //return response()->json(Vehicle::with('class.category')->orderBy($request->column, $request->order)->paginate(15));
+        //dd(Vehicle::find(1)->join('vehicle_classes', 'vehicles.id', '=', 'vehicle_classes.id')->join('vehicle_categories', 'vehicle_categories.id', '=', 'vehicle_classes.category_id')->get());
+
+        //dd(Vehicle::with('class.category')->find(2));
     }
 
     /**
