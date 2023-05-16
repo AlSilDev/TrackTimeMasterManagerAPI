@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\DriverController;
+use App\Http\Controllers\api\VehicleCategoryController;
+use App\Http\Controllers\api\VehicleClassController;
 use App\Http\Controllers\api\VehicleController;
 
 /*
@@ -28,7 +30,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('login', [AuthController::class, 'login']);
 
-
 Route::middleware('auth:api')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('users/me', [UserController::class, 'show_me']);
@@ -36,6 +37,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/{user}', [UserController::class, 'show']);
+
+    //all classes and all categories
+    Route::get('categories', [VehicleCategoryController::class, 'index']);
+    Route::get('classes', [VehicleClassController::class, 'index']);
+    Route::get('classes/{categoryId}', [VehicleClassController::class, 'show_classes_categoryId']);
 
     Route::get('drivers', [DriverController::class, 'index']);
     Route::get('drivers/{driver}', [DriverController::class, 'show']);
