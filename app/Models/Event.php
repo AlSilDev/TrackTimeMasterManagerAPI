@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Event extends Model
 {
-    use HasFactory, HasTimestamps, SoftDeletes;
+    use HasFactory, HasTimestamps;
 
     protected $fillable = [
         'name',
@@ -20,8 +20,9 @@ class Event extends Model
         'date_start_event',
         'date_end_event',
         'year',
+        'image_url',
         'course_url',
-        'category',
+        'category_id',
         'base_penalty'
     ];
 

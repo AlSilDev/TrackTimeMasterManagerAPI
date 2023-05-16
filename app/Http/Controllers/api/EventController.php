@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\StoreUpdateEventRequest;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -15,12 +16,21 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        return response()->json(Event::all());
-        //return DriverResource::collection(Driver::all());
-        //if ($request->attribute && $request->search){
-        //    return response()->json(Driver::whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->orderBy($request->column, $request->order)->paginate(15));
-        //}
-        //return response()->json(Driver::orderBy($request->column, $request->order)->paginate(15));
+        //return response()->json(Event::paginate(15));
+
+        if ($request->attribute && $request->search){
+            return response()->json(DB::table('events')
+                                    ->select('events.id', 'events.name', 'events.date_start_enrollments', 'events.date_end_enrollments', 'events.date_start_event', 'events.date_end_event','events.year', 'events.course_url', 'events.image_url', 'event_categories.name AS category_name', 'event_categories.description AS category_description', 'events.base_penalty', 'events.point_calc_reason')
+                                    ->join('event_categories', 'events.category_id', '=', 'event_categories.id')
+                                    ->whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")
+                                    ->orderBy($request->column, $request->order)
+                                    ->paginate(15));
+        }
+        return response()->json(DB::table('events')
+                                    ->select('events.id', 'events.name', 'events.date_start_enrollments', 'events.date_end_enrollments', 'events.date_start_event', 'events.date_end_event','events.year', 'events.course_url', 'events.image_url', 'event_categories.name AS category_name', 'event_categories.description AS category_description', 'events.base_penalty', 'events.point_calc_reason')
+                                    ->join('event_categories', 'events.category_id', '=', 'event_categories.id')
+                                    ->orderBy($request->column, $request->order)
+                                    ->paginate(15));
     }
 
     /**
