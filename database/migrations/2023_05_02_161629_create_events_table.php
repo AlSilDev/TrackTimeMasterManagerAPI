@@ -20,8 +20,9 @@ return new class extends Migration
             $table->date('date_start_event');
             $table->date('date_end_event');
             $table->year('year');
-            $table->string('course_url');
-            $table->foreignIdFor(EventCategory::class);
+            $table->string('course_url')->nullable();
+            $table->string('image_url')->nullable();
+            $table->foreignIdFor(EventCategory::class, 'category_id');
             $table->integer('base_penalty');
             $table->decimal('point_calc_reason');
             $table->timestamps();
