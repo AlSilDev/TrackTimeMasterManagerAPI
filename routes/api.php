@@ -67,6 +67,9 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
 
     Route::get('events', [EventController::class, 'index']);
+    Route::post('events', [EventController::class, 'store']);
+    Route::get('events/{event}', [EventController::class, 'show']);
+    Route::put('events/{event}', [EventController::class, 'update']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
