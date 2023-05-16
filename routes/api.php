@@ -6,6 +6,7 @@ use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\DriverController;
 use App\Http\Controllers\api\VehicleController;
+use App\Http\Controllers\api\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,8 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('users/{user}/delete', [UserController::class, 'destroy']);
     Route::delete('drivers/{driver}', [DriverController::class, 'destroy']);
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
+
+    Route::get('events', [EventController::class, 'index']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
