@@ -28,9 +28,11 @@ class StoreUpdateEventRequest extends FormRequest
             'date_start_event' => 'date',
             'date_end_event' => 'date',
             'year' => 'required|integer',
-            'course_url' => 'nullable|file|image',
-            'category' => 'required',
+            'image_file' => 'nullable|file|image',
+            'course_file' => 'nullable|file',
+            'category_id' => 'required',
             'base_penalty' => 'required|integer',
+            'point_calc_reason' => 'required',
         ];
     }
 }

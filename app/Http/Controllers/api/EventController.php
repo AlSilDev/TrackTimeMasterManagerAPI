@@ -7,7 +7,9 @@ use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\StoreUpdateEventRequest;
+use App\Models\EventCategory;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
@@ -46,6 +48,7 @@ class EventController extends Controller
      */
     public function store(StoreUpdateEventRequest $request)
     {
+        //dd($request->validated());
         $newEvent = Event::create($request->validated());
         return new EventResource($newEvent);
     }
@@ -71,7 +74,32 @@ class EventController extends Controller
      */
     public function update(StoreUpdateEventRequest $request, Event $event)
     {
-        $event->update($request->validated());
+
+        $validated_data = $request->validated();
+        //dd($request->validated());
+        if ($request->hasFile('image_file')) {
+            $path = Storage::putFile('public/fotos/eventos', $request->file('image_file'));
+            $event->image_url = basename($path);
+        }
+
+        if ($request->hasFile('course_file')) {
+            $path = Storage::putFile('public/circuitos', $request->file('course_file'));
+            $event->course_url = basename($path);
+        }
+
+        $event->name = $validated_data['name'];
+        $event->date_start_enrollments = $validated_data['date_start_enrollments'];
+        $event->date_end_enrollments = $validated_data['date_end_enrollments'];
+        $event->date_start_event = $validated_data['date_start_event'];
+        $event->date_end_event = $validated_data['date_end_event'];
+        $event->year = $validated_data['year'];
+
+        $event->category_id = $validated_data['category_id'];
+        $event->base_penalty = $validated_data['base_penalty'];
+        $event->point_calc_reason = $validated_data['point_calc_reason'];
+
+        $event->save();
+
         return new EventResource($event);
     }
 

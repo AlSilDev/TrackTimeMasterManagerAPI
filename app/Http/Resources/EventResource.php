@@ -22,9 +22,11 @@ class EventResource extends JsonResource
             'date_start_event' => $this->date_start_event,
             'date_end_event' => $this->date_end_event,
             'year' => $this->year,
+            'image_url' => $this->image_url,
             'course_url' => $this->course_url,
-            'category' => $this->category,
+            'category_id' => $this->category_id,
             'base_penalty' => $this->base_penalty,
+            'point_calc_reason' => $this->point_calc_reason
         ];
     }
 }

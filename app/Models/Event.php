@@ -23,7 +23,8 @@ class Event extends Model
         'image_url',
         'course_url',
         'category_id',
-        'base_penalty'
+        'base_penalty',
+        'point_calc_reason'
     ];
 
     public function category(): BelongsTo
