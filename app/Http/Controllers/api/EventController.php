@@ -49,7 +49,20 @@ class EventController extends Controller
     public function store(StoreUpdateEventRequest $request)
     {
         //dd($request->validated());
-        $newEvent = Event::create($request->validated());
+
+        $event = $request->validated();
+        //dd($request->hasFile('image_file'));
+        if ($request->hasFile('image_file')) {
+            $path = Storage::putFile('public/fotos/eventos', $request->file('image_file'));
+            $event['image_url'] = basename($path);
+        }
+        if ($request->hasFile('course_file')) {
+            $path = Storage::putFile('public/circuitos', $request->file('course_file'));
+            $event['course_url'] = basename($path);
+        }
+
+        $newEvent = Event::create($event);
+
         return new EventResource($newEvent);
     }
 
