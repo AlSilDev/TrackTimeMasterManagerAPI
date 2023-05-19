@@ -83,6 +83,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('events/{event}/press', [PressController::class, 'show']);
     Route::post('events/{event}/press', [PressController::class, 'store']);
+    Route::delete('press/{press}', [PressController::class, 'destroy']);
 
     /*Route::resources([
         'drivers' => DriverController::class,

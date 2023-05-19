@@ -39,4 +39,13 @@ class PressController extends Controller
 
         return $newPress;
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Press $press)
+    {
+        $press->delete();
+        return new PressResource($press);
+    }
 }
