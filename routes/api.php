@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\DriverController;
+use App\Http\Controllers\api\EventCategoryController;
 use App\Http\Controllers\api\VehicleCategoryController;
 use App\Http\Controllers\api\VehicleClassController;
 use App\Http\Controllers\api\VehicleController;
@@ -26,9 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::get('users', [UserController::class, 'index']);
-//Route::get('drivers', [DriverController::class, 'index']);
-//Route::get('vehicles', [VehicleController::class, 'index']);
+Route::get('users', [UserController::class, 'index']);
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -39,6 +38,15 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/{user}', [UserController::class, 'show']);
+
+    /********************** Event Categories **********************/
+    Route::get('eventCategories', [EventCategoryController::class, 'index']);
+    Route::get('eventCategories/{eventCategory}', [EventCategoryController::class, 'show']);
+    Route::post('eventCategories', [EventCategoryController::class, 'store']);
+    Route::put('eventCategories/{eventCategory}', [EventCategoryController::class, 'update']);
+    Route::delete('eventCategories/{eventCategory}', [EventCategoryController::class, 'destroy']);
+    /********************** Event Categories **********************/
+
 
     //all classes and all categories
     Route::get('categories', [VehicleCategoryController::class, 'index']);
