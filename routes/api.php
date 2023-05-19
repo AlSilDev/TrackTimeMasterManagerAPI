@@ -40,6 +40,7 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Event Categories **********************/
     Route::get('eventCategories', [EventCategoryController::class, 'index']);
+    Route::get('eventCategories', [EventCategoryController::class, 'index']);
     Route::get('eventCategories/{eventCategory}', [EventCategoryController::class, 'show']);
     Route::post('eventCategories', [EventCategoryController::class, 'store']);
     Route::put('eventCategories/{eventCategory}', [EventCategoryController::class, 'update']);
@@ -75,6 +76,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
 
     Route::get('events', [EventController::class, 'index']);
+    Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
     Route::post('events', [EventController::class, 'store']);
     Route::get('events/{event}', [EventController::class, 'show']);
     Route::put('events/{event}', [EventController::class, 'update']);

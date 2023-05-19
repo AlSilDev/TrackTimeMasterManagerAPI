@@ -124,4 +124,9 @@ class EventController extends Controller
         $event->delete();
         return new EventResource($event);
     }
+
+    public function getEventsWithCategory(int $categoryId)
+    {
+        return response()->json(DB::table('events')->where('category_id', $categoryId)->get());
+    }
 }
