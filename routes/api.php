@@ -10,6 +10,7 @@ use App\Http\Controllers\api\VehicleCategoryController;
 use App\Http\Controllers\api\VehicleClassController;
 use App\Http\Controllers\api\VehicleController;
 use App\Http\Controllers\api\EventController;
+use App\Http\Controllers\api\PressController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +82,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('events/{event}', [EventController::class, 'show']);
     Route::put('events/{event}', [EventController::class, 'update']);
     Route::delete('events/{event}', [EventController::class, 'destroy']);
+
+    Route::get('events/{event}/press', [PressController::class, 'show']);
+    Route::post('events/{event}/press', [PressController::class, 'store']);
+    Route::delete('press/{press}', [PressController::class, 'destroy']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
