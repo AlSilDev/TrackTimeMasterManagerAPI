@@ -37,4 +37,15 @@ class EventCategoryController extends Controller
         $eventCategory->delete();
         return new EventCategoryResource($eventCategory);
     }
+
+    public function indexOnlyTrashed(Request $request)
+    {
+        return response()->json(EventCategory::onlyTrashed()->get());
+    }
+
+    public function indexWithTrashed(Request $request)
+    {
+        return response()->json(EventCategory::withTrashed()->get());
+    }
+
 }

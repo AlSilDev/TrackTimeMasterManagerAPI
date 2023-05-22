@@ -23,6 +23,9 @@ use App\Http\Controllers\api\PressController;
 |
 */
 
+Route::get('eventCategories/onlyTrashed', [EventCategoryController::class, 'indexOnlyTrashed']);
+Route::get('eventCategories/withTrashed', [EventCategoryController::class, 'indexWithTrashed']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -41,7 +44,7 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Event Categories **********************/
     Route::get('eventCategories', [EventCategoryController::class, 'index']);
-    Route::get('eventCategories', [EventCategoryController::class, 'index']);
+    //to put trashed
     Route::get('eventCategories/{eventCategory}', [EventCategoryController::class, 'show']);
     Route::post('eventCategories', [EventCategoryController::class, 'store']);
     Route::put('eventCategories/{eventCategory}', [EventCategoryController::class, 'update']);
