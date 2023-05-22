@@ -48,4 +48,10 @@ class EventCategoryController extends Controller
         return response()->json(EventCategory::withTrashed()->get());
     }
 
+    public function restore(int $eventCategoryId)
+    {
+        return response()->json(EventCategory::withTrashed()->find($eventCategoryId)->restore());
+    }
+
+
 }
