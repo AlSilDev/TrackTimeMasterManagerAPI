@@ -11,6 +11,7 @@ use App\Http\Controllers\api\VehicleClassController;
 use App\Http\Controllers\api\VehicleController;
 use App\Http\Controllers\api\EventController;
 use App\Http\Controllers\api\PressController;
+use App\Http\Controllers\api\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('events/{event}/press', [PressController::class, 'show']);
     Route::post('events/{event}/press', [PressController::class, 'store']);
     Route::delete('press/{press}', [PressController::class, 'destroy']);
+
+    Route::get('events/{event}/videos', [VideoController::class, 'show']);
+    Route::post('events/{event}/videos', [VideoController::class, 'store']);
+    Route::delete('videos/{video}', [VideoController::class, 'destroy']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
