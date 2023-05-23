@@ -24,6 +24,8 @@ use App\Http\Controllers\api\VideoController;
 |
 */
 
+Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -80,7 +82,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
 
     Route::get('events', [EventController::class, 'index']);
-    Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
+    //to put
     Route::post('events', [EventController::class, 'store']);
     Route::get('events/{event}', [EventController::class, 'show']);
     Route::put('events/{event}', [EventController::class, 'update']);
