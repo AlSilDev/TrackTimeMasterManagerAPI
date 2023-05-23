@@ -24,10 +24,6 @@ use App\Http\Controllers\api\VideoController;
 |
 */
 
-Route::get('eventCategories/onlyTrashed', [EventCategoryController::class, 'indexOnlyTrashed']);
-Route::get('eventCategories/withTrashed', [EventCategoryController::class, 'indexWithTrashed']);
-Route::get('eventCategories/restore/{eventCategoryId}', [EventCategoryController::class, 'restore']);
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -46,7 +42,9 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Event Categories **********************/
     Route::get('eventCategories', [EventCategoryController::class, 'index']);
-    //to put trashed
+    Route::get('eventCategories/onlyTrashed', [EventCategoryController::class, 'indexOnlyTrashed']);
+    Route::get('eventCategories/withTrashed', [EventCategoryController::class, 'indexWithTrashed']);
+    Route::get('eventCategories/restore/{eventCategoryId}', [EventCategoryController::class, 'restore']);
     Route::get('eventCategories/{eventCategory}', [EventCategoryController::class, 'show']);
     Route::post('eventCategories', [EventCategoryController::class, 'store']);
     Route::put('eventCategories/{eventCategory}', [EventCategoryController::class, 'update']);
