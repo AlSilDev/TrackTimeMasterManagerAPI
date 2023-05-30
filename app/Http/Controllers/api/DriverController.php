@@ -23,6 +23,10 @@ class DriverController extends Controller
         return response()->json(Driver::orderBy($request->column, $request->order)->paginate(15));
     }
 
+    public function searchByName(Request $request){
+        return response()->json(Driver::whereRaw("LOWER(name) LIKE LOWER('" . $request->name . "%')")->get());
+    }
+
     /**
      * Show the form for creating a new resource.
      */
