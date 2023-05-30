@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(Driver::class, 'second_driver_id');
             $table->foreignIdFor(Vehicle::class);
             $table->foreignIdFor(User::class, 'enrolled_by_id');
-            $table->boolean('check_in');
+            $table->boolean('check_in')->default(false);
             $table->timestamps();
         });
     }
