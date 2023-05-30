@@ -75,6 +75,14 @@ class VehicleController extends Controller
         return new VehicleResource($newVehicle);
     }
 
+    public function searchByLicensePlate(Request $request){
+        return response()->json(DB::table('vehicles')->select('vehicles.id', 'vehicles.model', 'vehicles.engine_capacity', 'vehicles.year', 'vehicles.license_plate', 'vehicle_classes.name AS class', 'vehicle_categories.name AS category')
+                                                    ->join('vehicle_classes', 'vehicles.class_id', '=', 'vehicle_classes.id')
+                                                    ->join('vehicle_categories', 'vehicle_classes.category_id', '=', 'vehicle_categories.id')
+                                                    ->whereRaw("LOWER(license_plate) LIKE LOWER('%" . $request->licensePlate . "%')")
+                                                    ->get());
+    }
+
     /**
      * Display the specified resource.
      */
