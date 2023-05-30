@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\DriverController;
+use App\Http\Controllers\api\EnrollmentController;
 use App\Http\Controllers\api\EventCategoryController;
 use App\Http\Controllers\api\VehicleCategoryController;
 use App\Http\Controllers\api\VehicleClassController;
@@ -62,9 +63,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('drivers', [DriverController::class, 'index']);
     Route::get('drivers/{driver}', [DriverController::class, 'show']);
+    Route::get('drivers/byName/{name}', [DriverController::class, 'searchByName']);
 
     //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
     Route::get('vehicles', [VehicleController::class, 'index']);
+    Route::get('vehicles/byLicensePlate/{licensePlate}', [VehicleController::class, 'searchByLicensePlate']);
     Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
     Route::post('vehicles', [VehicleController::class, 'store']);
 
@@ -100,6 +103,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('events/{event}/regulations', [RegulationController::class, 'show']);
     Route::post('events/{event}/regulations', [RegulationController::class, 'store']);
     Route::delete('regulations/{regulation}', [RegulationController::class, 'destroy']);
+
+    Route::post('enrollments', [EnrollmentController::class, 'store']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
