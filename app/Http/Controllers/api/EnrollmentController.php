@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEnrollmentRequest;
+use App\Http\Resources\EnrollmentResource;
 use App\Models\Enrollment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,12 +23,22 @@ class EnrollmentController extends Controller
                                 ->join('vehicles AS v', 'e.vehicle_id', '=', 'v.id')
                                 ->get());
     }
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreEnrollmentRequest $request)
     {
         $newEnrollment = Enrollment::create($request->validated());
-        return $newEnrollment;
+        return new EnrollmentResource($newEnrollment);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Enrollment $enrollment)
+    {
+        $enrollment->delete();
+        return new EnrollmentResource($enrollment);
     }
 }
