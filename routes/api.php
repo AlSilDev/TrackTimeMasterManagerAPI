@@ -119,6 +119,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::post('enrollments', [EnrollmentController::class, 'store']);
+    Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
