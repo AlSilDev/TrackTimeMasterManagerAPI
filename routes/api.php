@@ -13,6 +13,7 @@ use App\Http\Controllers\api\VehicleController;
 use App\Http\Controllers\api\EventController;
 use App\Http\Controllers\api\PressController;
 use App\Http\Controllers\api\RegulationController;
+use App\Http\Controllers\api\UserCategoryController;
 use App\Http\Controllers\api\VideoController;
 
 /*
@@ -25,8 +26,6 @@ use App\Http\Controllers\api\VideoController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -43,6 +42,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('users', [UserController::class, 'index']);
     Route::get('users/{user}', [UserController::class, 'show']);
+    Route::get('users/withUserCategory/{userCategoryId}', [UserController::class, 'getUsersWithCategory']);
 
     /********************** Event Categories **********************/
     Route::get('eventCategories', [EventCategoryController::class, 'index']);
@@ -53,7 +53,20 @@ Route::middleware('auth:api')->group(function () {
     Route::post('eventCategories', [EventCategoryController::class, 'store']);
     Route::put('eventCategories/{eventCategory}', [EventCategoryController::class, 'update']);
     Route::delete('eventCategories/{eventCategory}', [EventCategoryController::class, 'destroy']);
+    Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
     /********************** Event Categories **********************/
+
+    /********************** User Categories **********************/
+    Route::get('userCategories/onlyTrashed', [UserCategoryController::class, 'indexOnlyTrashed']);
+    Route::get('userCategories/withTrashed', [UserCategoryController::class, 'indexWithTrashed']);
+    Route::get('userCategories/restore/{userCategoryId}', [UserCategoryController::class, 'restore']);
+    Route::get('userCategories/{userCategory}', [UserCategoryController::class, 'show']);
+    Route::post('userCategories', [UserCategoryController::class, 'store']);
+    Route::put('userCategories/{userCategory}', [UserCategoryController::class, 'update']);
+    Route::delete('userCategories/{userCategory}', [UserCategoryController::class, 'destroy']);
+    Route::get('userCategories/{userCategoryId}/name', [UserCategoryController::class, 'showNameById']);
+    Route::get('userCategories', [UserCategoryController::class, 'index']);
+    /********************** User Categories **********************/
 
 
     //all classes and all categories
