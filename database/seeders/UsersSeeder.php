@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\UserCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -11,17 +12,18 @@ use Illuminate\Support\Facades\Storage;
 class UsersSeeder extends Seeder
 {
     private $photoPath = 'public/fotos';
-    private $typesOfUsersDesc =  ['Administrador', 'Secretariado'];
-    private $typesOfUsers =             ['A', 'S'];
+    private $typesOfUsersDesc =  ['Administrador', 'Secretariado', 'Verificações Técnicas', 'Controlo Horário', 'Partida', 'Tomada de tempo'];
+    private $typesOfUsers = ['A', 'S', 'VT', 'CH', 'P', 'TT'];
+
 
 // TESTING SEEDER
 //    private $numberOfUsers =            [4,    10,    10,   20];
 //    private $numberOfFixedUsers =       [2,    3,     3,    5];
 //    private $numberOfSoftDeletedUsers = [1,    4,     4,    4];
 
-    private $numberOfUsers =            [4,    10];
-    private $numberOfFixedUsers =       [2,    3];
-    private $numberOfSoftDeletedUsers = [1,    4];
+    private $numberOfUsers =            [4,10,4,5,2,3];
+    private $numberOfFixedUsers =       [2,3,1,2,1,1];
+    private $numberOfSoftDeletedUsers = [1,4,1,2,1,1];
     private $files_M = [];
     private $files_F = [];
     static public $allUsers = [];
@@ -54,7 +56,8 @@ class UsersSeeder extends Seeder
                     $this->updateFoto($userInfo);
                 }
             }
-            $this->softdeletes($userType, $totalSoftDeletes);
+            $userTypeId = DB::table('user_categories')->where('sigla', $userType)->pluck('id')->toArray();
+            $this->softdeletes($userTypeId, $totalSoftDeletes);
             $this->command->info("Soft deleted $totalSoftDeletes users of type '$userType'");
         }
         $this->updateRandomFotos();
@@ -93,10 +96,28 @@ class UsersSeeder extends Seeder
                     $fullname = "Secretariado " . $userByNumber;
                     $email = 'sec_' . $userByNumber . '@mail.pt';
                     break;
+                case 'VT':
+                    $fullname = "Verificação Tecnica " . $userByNumber;
+                    $email = 'vt_' . $userByNumber . '@mail.pt';
+                    break;
+                case 'CH':
+                    $fullname = "Controlo Horário " . $userByNumber;
+                    $email = 'ch_' . $userByNumber . '@mail.pt';
+                    break;
+                case 'P':
+                    $fullname = "Partida " . $userByNumber;
+                    $email = 'p_' . $userByNumber . '@mail.pt';
+                    break;
+                case 'TT':
+                    $fullname = "Tomada Tempo " . $userByNumber;
+                    $email = 'tt_' . $userByNumber . '@mail.pt';
+                    break;
             }
         } else {
             static::randomName($faker, $gender, $fullname, $email);
         }
+
+        $type_id = UserCategory::where('sigla', $tipo)->first()['id'];
 
         $createdAt = $faker->dateTimeBetween('-10 years', '-3 months');
         $email_verified_at = $faker->dateTimeBetween($createdAt, '-2 months');
@@ -110,7 +131,7 @@ class UsersSeeder extends Seeder
             'created_at' => $createdAt,
             'updated_at' => $updatedAt,
             'deleted_at' => null,
-            'type' => $tipo,
+            'type_id' => $type_id,
             'blocked' => false,
             'photo_url' => null,
             'gender' => $gender,
@@ -168,9 +189,10 @@ class UsersSeeder extends Seeder
         }
     }
 
-    private function softdeletes($userType, $totalSoftDeletes)
+    private function softdeletes($userTypeId, $totalSoftDeletes)
     {
-        $ids = DB::table('users')->whereNot('email', 'like', '%\_%')->where('type', $userType)->pluck('id')->toArray();
+
+        $ids = DB::table('users')->whereNot('email', 'like', '%\_%')->where('type_id', $userTypeId)->pluck('id')->toArray();
         var_dump($ids);
         while ($totalSoftDeletes) {
             shuffle($ids);

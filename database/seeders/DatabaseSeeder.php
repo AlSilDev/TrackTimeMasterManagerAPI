@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
         DB::statement("SET foreign_key_checks=1");
 
 
+        $this->call(UserCategorySeeder::class);
         $this->call(UsersSeeder::class);
         $this->call(DriversSeeder::class);
         $this->call(VehicleCategoriesSeeder::class);
