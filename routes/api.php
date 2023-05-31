@@ -104,6 +104,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('events/{event}/regulations', [RegulationController::class, 'store']);
     Route::delete('regulations/{regulation}', [RegulationController::class, 'destroy']);
 
+    Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::post('enrollments', [EnrollmentController::class, 'store']);
 
     /*Route::resources([
