@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\UserCategory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,7 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->enum('type', ['A', 'S', 'VT', 'CH', 'P', 'TT']);
+            //$table->enum('type_id', ['A', 'S', 'VT', 'CH', 'P', 'TT']);
+            $table->foreignIdFor(UserCategory::class, "type_id");
             $table->boolean('blocked')->default(false);
             $table->string('photo_url')->nullable();
             $table->json('custom')->nullable();
