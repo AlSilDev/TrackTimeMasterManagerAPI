@@ -27,6 +27,11 @@ use App\Http\Controllers\api\VideoController;
 |
 */
 
+Route::get('event/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
+Route::get('event/{eventId}/participants', [EnrollmentController::class, 'getEventParticipants']);
+Route::get('enrollments', [EnrollmentController::class, 'getAllEnrollments']);
+Route::get('participants', [EnrollmentController::class, 'getAllParticipants']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -117,7 +122,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('events/{event}/regulations', [RegulationController::class, 'store']);
     Route::delete('regulations/{regulation}', [RegulationController::class, 'destroy']);
 
-    Route::get('enrollments', [EnrollmentController::class, 'index']);
+
+    Route::patch('enrollments/{enrollment}/checkIn', [EnrollmentController::class, 'checkInEnrollment']);
+    //to put enrollments and aprticipants events
     Route::post('enrollments', [EnrollmentController::class, 'store']);
 
     /*Route::resources([
