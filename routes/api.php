@@ -126,6 +126,7 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('enrollments/{enrollment}/checkIn', [EnrollmentController::class, 'checkInEnrollment']);
     //to put enrollments and aprticipants events
     Route::post('enrollments', [EnrollmentController::class, 'store']);
+    Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
 
     /*Route::resources([
         'drivers' => DriverController::class,
