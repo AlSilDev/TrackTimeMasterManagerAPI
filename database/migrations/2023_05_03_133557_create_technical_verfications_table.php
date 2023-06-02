@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('technical_verfications', function (Blueprint $table) {
+        Schema::create('technical_verifications', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Enrollment::class);
             $table->boolean('verified');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('technical_verfications');
+        Schema::dropIfExists('technical_verifications');
     }
 };
