@@ -82,6 +82,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('drivers', [DriverController::class, 'index']);
     Route::get('drivers/{driver}', [DriverController::class, 'show']);
     Route::get('drivers/byName/{name}', [DriverController::class, 'searchByName']);
+    Route::put('drivers/{driver}', [DriverController::class, 'update']);
 
     //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
     Route::get('vehicles', [VehicleController::class, 'index']);
