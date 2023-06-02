@@ -13,6 +13,7 @@ use App\Http\Controllers\api\VehicleController;
 use App\Http\Controllers\api\EventController;
 use App\Http\Controllers\api\PressController;
 use App\Http\Controllers\api\RegulationController;
+use App\Http\Controllers\api\TechnicalVerficationController;
 use App\Http\Controllers\api\UserCategoryController;
 use App\Http\Controllers\api\VideoController;
 
@@ -26,6 +27,7 @@ use App\Http\Controllers\api\VideoController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('technicalVerifications', [TechnicalVerficationController::class, 'index']);
 
 Route::get('event/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
 Route::get('event/{eventId}/participants', [EnrollmentController::class, 'getEventParticipants']);
@@ -72,6 +74,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('userCategories/{userCategoryId}/name', [UserCategoryController::class, 'showNameById']);
     Route::get('userCategories', [UserCategoryController::class, 'index']);
     /********************** User Categories **********************/
+
+    /********************** Technical Verifications **********************/
+
+    /********************** Technical Verifications **********************/
 
 
     //all classes and all categories

@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
         $this->call(VehicleClassesSeeder::class);
         $this->call(VehiclesSeeder::class);
         $this->call(EventCategoriesSeeder::class);
+        //$this->call(EventSeeder::class);
 
         $this->command->info("-----------------------------------------------");
         $this->command->info("END of database seeder");
