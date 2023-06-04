@@ -27,9 +27,9 @@ class Event extends Model
         'point_calc_reason'
     ];
 
-    public function category(): BelongsTo
+    public function enrollments(): HasMany
     {
-        return $this->belongsTo(EventCategory::class, 'category_id');
+        return $this->hasMany(Enrollment::class);
     }
 
     public function videos(): HasMany
@@ -45,5 +45,10 @@ class Event extends Model
     public function regulations(): HasMany
     {
         return $this->hasMany(Regulation::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(EventCategory::class, 'category_id');
     }
 }

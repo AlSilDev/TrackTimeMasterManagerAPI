@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index(Request $request)
     {
         //return response()->json(Event::paginate(15));
@@ -35,17 +33,6 @@ class EventController extends Controller
                                     ->paginate(15));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUpdateEventRequest $request)
     {
         //dd($request->validated());
@@ -66,25 +53,11 @@ class EventController extends Controller
         return new EventResource($newEvent);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Event $event)
     {
         return new EventResource($event);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StoreUpdateEventRequest $request, Event $event)
     {
 
@@ -116,9 +89,6 @@ class EventController extends Controller
         return new EventResource($event);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Event $event)
     {
         $event->delete();
