@@ -22,11 +22,13 @@ class StoreEnrollmentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'event_id' => 'required|integer|min:0',
+            'enroll_order' => 'required|integer|min:0',
+            'run_order' => 'integer|min:0',
             'first_driver_id' => 'required|integer|min:0',
             'second_driver_id' => 'required|integer|min:0',
             'vehicle_id' => 'required|integer|min:0',
-            'enrolled_by_id' => 'required|integer|min:0',
-            'event_id' => 'required|integer|min:0'
+            'enrolled_by_id' => 'required|integer|min:0'
         ];
     }
 }

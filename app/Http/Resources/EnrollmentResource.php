@@ -17,11 +17,12 @@ class EnrollmentResource extends JsonResource
         return [
             'id' => $this->id,
             'event_id' => $this->event_id,
+            'enroll_order' => $this->enroll_order,
+            'run_order' => $this->run_order,
             'first_driver_id' => $this->first_driver_id,
             'second_driver_id' => $this->second_driver_id,
             'vehicle_id' => $this->vehicle_id,
-            'enrolled_by_id' => $this->enrolled_by_id,
-            'check_in' => $this->check_in,
+            'enrolled_by_id' => $this->enrolled_by_id
         ];
     }
 }

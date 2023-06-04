@@ -18,11 +18,12 @@ return new class extends Migration
         Schema::create('enrollments', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Event::class);
+            $table->integer('enroll_order');
+            $table->integer('run_order');
             $table->foreignIdFor(Driver::class, 'first_driver_id');
             $table->foreignIdFor(Driver::class, 'second_driver_id');
             $table->foreignIdFor(Vehicle::class);
             $table->foreignIdFor(User::class, 'enrolled_by_id');
-            $table->boolean('check_in')->default(false);
             $table->timestamps();
         });
     }

@@ -15,11 +15,18 @@ class Enrollment extends Model
 
     protected $fillable = [
         'event_id',
+        'enroll_order',
+        'run_order',
         'first_driver_id',
         'second_driver_id',
         'vehicle_id',
         'enrolled_by_id'
     ];
+
+    public function participant(): BelongsTo
+    {
+        return $this->belongsTo(Participant::class);
+    }
 
     public function event(): BelongsTo
     {
@@ -28,17 +35,18 @@ class Enrollment extends Model
 
     public function first_driver(): BelongsTo
     {
-        return $this->belongsTo(Driver::class, 'first_driver_id');
+        return $this->belongsTo(DriverHistory::class, 'first_driver_id');
     }
 
     public function second_driver(): BelongsTo
     {
-        return $this->belongsTo(Driver::class, 'second_driver_id');
+        return $this->belongsTo(DriverHistory::class, 'second_driver_id');
     }
 
+    //Vehicle History model because last version is updated on history too
     public function vehicle(): HasOne
     {
-        return $this->hasOne(Vehicle::class);
+        return $this->hasOne(VehicleHistory::class);
     }
 
     public function enrolled_by(): BelongsTo
@@ -46,18 +54,4 @@ class Enrollment extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function technical_verification(): HasOne
-    {
-        return $this->hasOne(TechnicalVerfication::class);
-    }
-
-    public function classification_stage(): HasMany
-    {
-        return $this->hasMany(ClassificationStage::class);
-    }
-
-    public function times_run(): HasMany
-    {
-        return $this->hasMany(TimeRun::class);
-    }
 }
