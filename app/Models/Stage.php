@@ -16,6 +16,8 @@ class Stage extends Model
         'event_id',
         'name',
         'date_start',
+        'num_runs',
+        'time_until_next_stage_mins'
     ];
 
     public function event(): BelongsTo
