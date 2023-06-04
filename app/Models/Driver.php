@@ -14,14 +14,15 @@ class Driver extends Model
     protected $fillable = [
         'name',
         'email',
+        'country',
         'license_num',
         'license_expiry',
         'phone_num',
         'affiliate_num'
     ];
 
-    public function enrollments(): HasMany
+    public function driver_history(): HasMany
     {
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(DriverHistory::class, 'id');
     }
 }
