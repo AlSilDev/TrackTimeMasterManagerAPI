@@ -14,7 +14,7 @@ class UserCategory extends Model
 
     protected $fillable = [
         'name',
-        'sigla',
+        'abv',
         'description'
     ];
 
