@@ -24,8 +24,7 @@ class VehicleObserver
             $vehicle_history = new VehicleHistory;
             $vehicle_history->vehicle_id = $vehicle->id;
             $vehicle_history->model = $vehicle->getOriginal('model');
-            $vehicle_history->category = $vehicle->getOriginal('category');
-            $vehicle_history->class = $vehicle->getOriginal('class');
+            $vehicle_history->class_id = $vehicle->getOriginal('class_id');
             $vehicle_history->license_plate = $vehicle->getOriginal('license_plate');
             $vehicle_history->year = $vehicle->getOriginal('year');
             $vehicle_history->engine_capacity = $vehicle->getOriginal('engine_capacity');
