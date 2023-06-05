@@ -50,8 +50,8 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Users **********************/
     Route::get('users', [UserController::class, 'index']);
-    Route::get('users/{user}', [UserController::class, 'show']);
     Route::get('users/me', [UserController::class, 'show_me']);
+    Route::get('users/{user}', [UserController::class, 'show']);
     Route::put('users/{user}', [UserController::class, 'update']);
     Route::patch('users/{user}/password', [UserController::class, 'update_password']);
     Route::patch('users/{user}/blocked', [UserController::class, 'update_blocked']);
@@ -59,6 +59,21 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('users/{user}/delete', [UserController::class, 'destroy']);
     Route::get('users/withUserCategory/{userCategoryId}', [UserController::class, 'getUsersWithCategory']);
     /********************** Users **********************/
+
+    /********************** Vehicle Categories **********************/
+    Route::get('vehicles/categories', [VehicleCategoryController::class, 'index']);
+    Route::post('vehicles/categories', [VehicleCategoryController::class, 'store']);
+    Route::put('vehicles/categories/{category}', [VehicleCategoryController::class, 'update']);
+    Route::delete('vehicles/categories/{category}', [VehicleCategoryController::class, 'destroy']);
+    /********************** Vehicle Categories **********************/
+
+    /********************** Vehicle classes **********************/
+    Route::get('vehicles/classes', [VehicleClassController::class, 'index']);
+    Route::post('vehicles/classes', [VehicleClassController::class, 'store']);
+    Route::put('vehicles/classes/{class}', [VehicleClassController::class, 'update']);
+    Route::delete('vehicles/classes/{class}', [VehicleClassController::class, 'destroy']);
+    Route::get('vehicles/classes/withCategory/{categoryId}', [VehicleClassController::class, 'show_classes_categoryId']);
+    /********************** Vehicle classes **********************/
 
     /********************** Vehicles **********************/
     Route::get('vehicles', [VehicleController::class, 'index']);
@@ -77,21 +92,6 @@ Route::middleware('auth:api')->group(function () {
     Route::put('vehiclesHistory/{vehicleHistory}', [VehicleHistoryController::class, 'update']);
     Route::delete('vehiclesHistory/{vehicleHistory}', [VehicleHistoryController::class, 'destroy']);
     /********************** Vehicles History **********************/
-
-    /********************** Vehicle Categories **********************/
-    Route::get('vehicles/categories', [VehicleCategoryController::class, 'index']);
-    Route::post('vehicles/categories', [VehicleCategoryController::class, 'store']);
-    Route::put('vehicles/categories/{category}', [VehicleCategoryController::class, 'update']);
-    Route::delete('vehicles/categories/{category}', [VehicleCategoryController::class, 'destroy']);
-    /********************** Vehicle Categories **********************/
-
-    /********************** Vehicle classes **********************/
-    Route::get('vehicles/classes', [VehicleClassController::class, 'index']);
-    Route::post('vehicles/classes', [VehicleClassController::class, 'store']);
-    Route::put('vehicles/classes/{class}', [VehicleClassController::class, 'update']);
-    Route::delete('vehicles/classes/{class}', [VehicleClassController::class, 'destroy']);
-    Route::get('vehicles/classes/withCategory/{categoryId}', [VehicleClassController::class, 'show_classes_categoryId']);
-    /********************** Vehicle classes **********************/
 
     /********************** Events **********************/
     Route::get('events', [EventController::class, 'index']);
@@ -161,68 +161,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('userCategories', [UserCategoryController::class, 'index']);
     /********************** User Categories **********************/
 
-<<<<<<< Updated upstream
-    /********************** Technical Verifications **********************/
-
-    /********************** Technical Verifications **********************/
-
-
-    //all classes and all categories
-    Route::get('categories', [VehicleCategoryController::class, 'index']);
-    Route::get('classes', [VehicleClassController::class, 'index']);
-    Route::get('classes/{categoryId}', [VehicleClassController::class, 'show_classes_categoryId']);
-
-    Route::get('drivers', [DriverController::class, 'index']);
-    Route::get('drivers/{driver}', [DriverController::class, 'show']);
-    Route::get('drivers/byName/{name}', [DriverController::class, 'searchByName']);
-    Route::put('drivers/{driver}', [DriverController::class, 'update']);
-
-    //Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
-    Route::get('vehicles', [VehicleController::class, 'index']);
-    Route::get('vehicles/byLicensePlate/{licensePlate}', [VehicleController::class, 'searchByLicensePlate']);
-    Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
-    Route::post('vehicles', [VehicleController::class, 'store']);
-
-    Route::post('drivers', [DriverController::class, 'store']);
-    Route::post('users', [UserController::class, 'store']);
-
-    Route::put('users/{user}', [UserController::class, 'update']);
-    //Route::put('drivers/{driver}', [DriverController::class, 'update']);
-    Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
-
-    Route::patch('users/{user}/password', [UserController::class, 'update_password']);
-    Route::patch('users/{user}/blocked', [UserController::class, 'update_blocked']);
-
-    Route::delete('users/{user}/delete', [UserController::class, 'destroy']);
-    Route::delete('drivers/{driver}', [DriverController::class, 'destroy']);
-    Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
-
-    Route::get('events', [EventController::class, 'index']);
-    //to put
-    Route::post('events', [EventController::class, 'store']);
-    Route::get('events/{event}', [EventController::class, 'show']);
-    Route::put('events/{event}', [EventController::class, 'update']);
-    Route::delete('events/{event}', [EventController::class, 'destroy']);
-
-    Route::get('events/{event}/press', [PressController::class, 'show']);
-    Route::post('events/{event}/press', [PressController::class, 'store']);
-    Route::delete('press/{press}', [PressController::class, 'destroy']);
-
-    Route::get('events/{event}/videos', [VideoController::class, 'show']);
-    Route::post('events/{event}/videos', [VideoController::class, 'store']);
-    Route::delete('videos/{video}', [VideoController::class, 'destroy']);
-
-    Route::get('events/{event}/regulations', [RegulationController::class, 'show']);
-    Route::post('events/{event}/regulations', [RegulationController::class, 'store']);
-    Route::delete('regulations/{regulation}', [RegulationController::class, 'destroy']);
-
-
-    Route::patch('enrollments/{enrollment}/checkIn', [EnrollmentController::class, 'checkInEnrollment']);
-    //to put enrollments and aprticipants events
-=======
     /********************** Enrollments **********************/
     Route::get('enrollments', [EnrollmentController::class, 'index']);
->>>>>>> Stashed changes
     Route::post('enrollments', [EnrollmentController::class, 'store']);
     Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
     Route::get('event/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
