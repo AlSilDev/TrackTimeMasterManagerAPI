@@ -22,7 +22,7 @@ class StoreUpdateTechnicalVerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'enrollment_id' => 'required|integer|min:0',
+            'participant_id' => 'required|integer|min:0',
             'verified' => 'required|boolean',
             'notes' => 'string|max:255',
             'verified_by' => 'required|integer|min:0'

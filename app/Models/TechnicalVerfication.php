@@ -13,14 +13,19 @@ class TechnicalVerfication extends Model
     use HasFactory, HasTimestamps;
 
     protected $fillable = [
-        'enrollment_id',
+        'participant_id',
         'verified',
         'notes',
         'verified_by'
     ];
 
-    public function enrollment(): BelongsTo
+    public function participant(): BelongsTo
     {
-        return $this->belongsTo(Enrollment::class);
+        return $this->belongsTo(Participant::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
