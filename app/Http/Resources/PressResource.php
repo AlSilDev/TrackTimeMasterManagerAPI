@@ -16,6 +16,7 @@ class PressResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'event_id' => $this->event_id,
             'name' => $this->name,
             'press_url' => $this->press_url
         ];
