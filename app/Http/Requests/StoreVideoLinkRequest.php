@@ -22,6 +22,7 @@ class StoreVideoLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'event_id' => 'requied|integer|min:0',
             'video_url' => 'required|string|min:8'
         ];
     }
