@@ -14,6 +14,11 @@ class RegulationResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'event_id' => $this->event_id,
+            'name' => $this->name,
+            'regulation_file' => $this->regulation_file
+        ];
     }
 }

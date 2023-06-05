@@ -8,25 +8,24 @@ use App\Http\Requests\StoreRegulationFileRequest;
 use App\Http\Resources\RegulationResource;
 use App\Models\Event;
 use App\Models\Regulation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class RegulationController extends Controller
 {
-     /**
-     * Display the specified resource.
-     */
     public function show(Event $event)
     {
-        return Regulation::where('event_id', '=', $event->id)->get();
+        //return Regulation::where('event_id', '=', $event->id)->get();
+
+        return response()->json(DB::table('regulations AS r')
+                                ->select('r.id', 'e.name', 'r.name', 'r.file_url')
+                                ->join('events AS e', 'e.id', 'r.event_id')
+                                ->where('event_id', '=', $event->id)
+                                ->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreRegulationFileRequest $request, Event $event)
     {
-        //dd($request->validated());
-
         $regulation = $request->validated();
         $regulation['event_id'] = $event->id;
 
@@ -40,9 +39,6 @@ class RegulationController extends Controller
         return $newRegulation;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Regulation $regulation)
     {
         $regulation->delete();
