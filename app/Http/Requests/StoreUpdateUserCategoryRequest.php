@@ -23,7 +23,7 @@ class StoreUpdateUserCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'sigla' => 'required|string|max:5',
+            'abv' => 'required|string|max:5',
             'description' => 'required|string|max:255',
         ];
     }
