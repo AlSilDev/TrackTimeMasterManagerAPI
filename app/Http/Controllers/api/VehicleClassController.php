@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateVehicleClassRequest;
+use App\Http\Resources\VehicleClassResource;
 use App\Models\VehicleClass;
 use Faker\Core\Number;
 use Illuminate\Http\Request;
@@ -15,12 +17,30 @@ class VehicleClassController extends Controller
         return response()->json(VehicleClass::all());
     }
 
-    public function show_classes_categoryId(Request $request, int $id) {
-        $all = DB::table('vehicle_classes')
-        ->select()
-        ->where('vehicle_classes.category_id', '=', $id)
-        ->get();
+    public function store(StoreUpdateVehicleClassRequest $request)
+    {
+        $newVehicleClass = VehicleClass::create($request->validated());
+        return new VehicleClassResource($newVehicleClass);
+    }
 
-        return $all;
+    public function update(StoreUpdateVehicleClassRequest $request, VehicleClass $vehicleClass)
+    {
+        $vehicleClass->update($request->validated());
+        return new VehicleClassResource($vehicleClass);
+    }
+
+    public function destroy(VehicleClass $vehicleClass)
+    {
+        $vehicleClass->delete();
+        return new VehicleClassResource($vehicleClass);
+    }
+
+    public function show_classes_categoryId(int $vehicleCategoryId)
+    {
+        return response()->json(DB::table('vehicle_classes AS vcla')
+                                ->select('vcla.id', 'vcla.name')
+                                ->join('vehicle_categories AS vcat', 'vcat.id', 'vcla.category_id')
+                                ->where('vcla.category_id', $vehicleCategoryId)
+                                ->get());
     }
 }

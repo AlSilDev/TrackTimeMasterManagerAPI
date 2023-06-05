@@ -27,4 +27,9 @@ class VehicleClass extends Model
     {
         return $this->hasMany(Vehicle::class);
     }
+
+    public function vehicles_history(): HasMany
+    {
+        return $this->hasMany(VehicleHistory::class);
+    }
 }
