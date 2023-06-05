@@ -23,7 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'type_id'
+        'type_id',
+        'blocked',
+        'photo_url'
     ];
 
     /**
@@ -56,7 +58,7 @@ class User extends Authenticatable
         $this->attributes['password'] = bcrypt($value);
     }*/
 
-    public function enrollments(): HasMany
+    public function enrollments_by(): HasMany
     {
         return $this->hasMany(Enrollment::class);
     }
@@ -66,5 +68,14 @@ class User extends Authenticatable
         return $this->belongsTo(UserCategory::class, 'type_id');
     }
 
+    public function admin_verifications_verified_by(): HasMany
+    {
+        return $this->hasMany(AdminVerification::class);
+    }
+
+    public function technical_verifications_verified_by(): HasMany
+    {
+        return $this->hasMany(TechnicalVerfication::class);
+    }
 
 }
