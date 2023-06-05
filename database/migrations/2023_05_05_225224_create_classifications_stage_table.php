@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Enrollment;
+use App\Models\Participant;
 use App\Models\Stage;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('classifications_stage', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Stage::class);
-            $table->foreignIdFor(Enrollment::class);
+            $table->foreignIdFor(Participant::class);
             $table->decimal('stage_points');
             $table->timestamps();
         });

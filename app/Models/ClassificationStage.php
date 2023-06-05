@@ -13,7 +13,7 @@ class ClassificationStage extends Model
 
     protected $fillable = [
         'stage_id',
-        'enrollment_id',
+        'participant_id',
         'stage_points'
     ];
 
@@ -23,7 +23,7 @@ class ClassificationStage extends Model
         return $this->belongsTo(Stage::class);
     }
 
-    public function enrollment(): BelongsTo {
-        return $this->belongsTo(Enrollment::class);
+    public function participant(): BelongsTo {
+        return $this->belongsTo(Participant::class);
     }
 }
