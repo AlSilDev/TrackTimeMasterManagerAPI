@@ -24,22 +24,11 @@ class Vehicle extends Model
         'engine_capacity'
     ];
 
-    public function enrollments(): BelongsToMany
-    {
-        return $this->belongsToMany(Enrollment::class);
-    }
-
     public function class(): BelongsTo
     {
         return $this->belongsTo(VehicleClass::class, 'class_id');
     }
 
-    public function category()
-    {
-        //return $this->throughClass()->has('category');
-        //return $this->hasOneThrough(VehicleCategory::class, VehicleClass::class, 'category_id', 'id', 'class_id');
-        return $this->belongsTo(VehicleClass::class, 'class_id')->join('vehicle_categories', 'vehicle_categories.id', '=', 'vehicle_classes.category_id');
-    }
 
     public function history(): HasMany
     {
