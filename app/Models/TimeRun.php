@@ -13,13 +13,13 @@ class TimeRun extends Model
 
     protected $fillable = [
         'run_id',
-        'enrollment_id',
-        'start_date',
-        'end_date',
+        'participant_id',
         'arrival_date',
         'departure_date',
-        'time_secs',
+        'start_date',
+        'end_date',
         'time_mils',
+        'time_secs',
         'started',
         'arrived',
         'penalty',
@@ -31,13 +31,18 @@ class TimeRun extends Model
 
     protected $table="times_run";
 
-    public function enrollment(): BelongsTo
+    public function participant(): BelongsTo
     {
-        return $this->belongsTo(Enrollment::class);
+        return $this->belongsTo(Participant::class);
     }
 
     public function stage_run(): BelongsTo
     {
         return $this->belongsTo(StageRun::class);
+    }
+
+    public function penalty_updated_by(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
