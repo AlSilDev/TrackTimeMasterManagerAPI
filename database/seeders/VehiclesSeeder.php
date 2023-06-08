@@ -58,7 +58,12 @@ class VehiclesSeeder extends Seeder
             $this->command->info('Created vehicle ' . $i);
         }
 
-        DB::table('vehicles')->insert($vehicles);
+        //DB::table('vehicles')->insert($vehicles);
+
+        foreach($vehicles as $vehicle)
+        {
+            Vehicle::create($vehicle);
+        }
 
         $this->command->info('Inserted vehicles in DB');
         $this->command->info("Vehicles seeder - End");
