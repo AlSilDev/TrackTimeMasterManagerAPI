@@ -13,7 +13,7 @@ class ParticipantController extends Controller
 {
     public function index()
     {
-        return response()->json(DB::table('paticipants AS p')
+        return response()->json(DB::table('participants AS p')
                                 ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
                                 ->join('enrollments AS e', 'e.id', 'p.enrollment_id')
                                 ->join('drivers AS fd', 'e.first_driver_id', '=', 'fd.id')
@@ -36,7 +36,7 @@ class ParticipantController extends Controller
 
     public function getEventParticipants(int $eventId)
     {
-        return response()->json(DB::table('paticipants AS p')
+        return response()->json(DB::table('participants AS p')
                                 ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
                                 ->join('enrollments AS e', 'e.id', 'p.enrollment_id')
                                 ->join('drivers AS fd', 'e.first_driver_id', '=', 'fd.id')
