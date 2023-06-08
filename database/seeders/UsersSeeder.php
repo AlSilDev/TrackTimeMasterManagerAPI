@@ -56,7 +56,7 @@ class UsersSeeder extends Seeder
                     $this->updateFoto($userInfo);
                 }
             }
-            $userTypeId = DB::table('user_categories')->where('sigla', $userType)->pluck('id')->toArray();
+            $userTypeId = DB::table('user_categories')->where('abv', $userType)->pluck('id')->toArray();
             $this->softdeletes($userTypeId, $totalSoftDeletes);
             $this->command->info("Soft deleted $totalSoftDeletes users of type '$userType'");
         }
@@ -117,7 +117,7 @@ class UsersSeeder extends Seeder
             static::randomName($faker, $gender, $fullname, $email);
         }
 
-        $type_id = UserCategory::where('sigla', $tipo)->first()['id'];
+        $type_id = UserCategory::where('abv', $tipo)->first()['id'];
 
         $createdAt = $faker->dateTimeBetween('-10 years', '-3 months');
         $email_verified_at = $faker->dateTimeBetween($createdAt, '-2 months');
