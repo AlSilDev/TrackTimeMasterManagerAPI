@@ -2,8 +2,10 @@
 
 namespace App\Observers;
 
+use App\Models\Enrollment;
 use App\Models\Vehicle;
 use App\Models\VehicleHistory;
+use Carbon\Carbon;
 
 class VehicleObserver
 {
@@ -12,7 +14,15 @@ class VehicleObserver
      */
     public function created(Vehicle $vehicle): void
     {
-        //
+        $vehicle_history = new VehicleHistory;
+        $vehicle_history->vehicle_id = $vehicle->id;
+        $vehicle_history->model = $vehicle->model;
+        $vehicle_history->class_id = $vehicle->class_id;
+        $vehicle_history->license_plate = $vehicle->license_plate;
+        $vehicle_history->year = $vehicle->year;
+        $vehicle_history->engine_capacity = $vehicle->engine_capacity;
+
+        $vehicle_history->save();
     }
 
     /**
