@@ -24,7 +24,7 @@ class StoreUpdateDriverRequest extends FormRequest
         return [
             'name' => 'required|string|max:50',
             'email' => 'email',
-            'country' => 'string|max:20',
+            'country' => 'string|max:50',
             'license_num' => 'integer|min:0',
             'license_expiry' => 'date',
             'phone_num' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:9',
