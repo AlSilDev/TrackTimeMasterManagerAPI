@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Driver;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Date;
@@ -43,10 +44,15 @@ class DriversSeeder extends Seeder
             $driver['updated_at'] = $driver['created_at'];
 
             array_push($drivers, $driver);
-            $this->command->info('Created driver ' . $i);
         }
 
-        DB::table('drivers')->insert($drivers);
+        //DB::table('drivers')->insert($drivers);
+        foreach($drivers as $driver)
+        {
+            Driver::create($driver);
+            $this->command->info('Created driver ' . $driver['name']);
+        }
+
         $this->command->info('Inserted drivers in DB');
         $this->command->info("Drivers seeder - End");
 
