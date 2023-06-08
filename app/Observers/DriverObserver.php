@@ -1,0 +1,92 @@
+<?php
+
+namespace App\Observers;
+
+use App\Models\Driver;
+use App\Models\DriverHistory;
+use App\Models\Enrollment;
+use Carbon\Carbon;
+
+class DriverObserver
+{
+    /**
+     * Handle the Driver "created" event.
+     */
+    public function created(Driver $driver): void
+    {
+        $driver_history = new DriverHistory();
+        $driver_history->driver_id = $driver->id;
+        $driver_history->name = $driver->name;
+        $driver_history->email = $driver->email;
+        $driver_history->country = $driver->country;
+        $driver_history->license_num = $driver->license_num;
+        $driver_history->license_expiry = $driver->license_expiry;
+        $driver_history->phone_num = $driver->phone_num;
+        $driver_history->affiliate_num = $driver->affiliate_num;
+
+        $driver_history->save();
+    }
+
+    /**
+     * Handle the Driver "updated" event.
+     */
+    public function updated(Driver $driver): void
+    {
+        if($driver->isDirty()){
+            $old_driver_history_id = DriverHistory::where('driver_id', '=', $driver->id)->orderBy('created_at', 'desc')->get()[0]->id;
+            $driver_history = new DriverHistory();
+            $driver_history->driver_id = $driver->id;
+            $driver_history->name = $driver->name;
+            $driver_history->email = $driver->email;
+            $driver_history->country = $driver->country;
+            $driver_history->license_num = $driver->license_num;
+            $driver_history->license_expiry = $driver->license_expiry;
+            $driver_history->phone_num = $driver->phone_num;
+            $driver_history->affiliate_num = $driver->affiliate_num;
+
+            $driver_history->save();
+
+            $new_driver_history_id = DriverHistory::where('driver_id', '=', $driver->id)->orderBy('created_at', 'desc')->get()[0]->id;
+
+            /* Update every open enrollment */
+            $open_enrollments = Enrollment::join('events', 'enrollments.event_id', '=', 'events.id')->where('events.date_end_enrollments', '>=', Carbon::now())->where('enrollments.first_driver_id', '=', $old_driver_history_id)->orWhere('enrollments.second_driver_id', '=', $old_driver_history_id)->get();
+            foreach($open_enrollments as $enrollment)
+            {
+                if ($enrollment->first_driver_id == $old_driver_history_id)
+                {
+                    $enrollment->first_driver_id = $new_driver_history_id;
+                }
+                elseif($enrollment->second_driver_id == $old_driver_history_id)
+                {
+                    $enrollment->second_driver_id = $new_driver_history_id;
+                }
+
+                $enrollment->save();
+            }
+        }
+    }
+
+    /**
+     * Handle the Driver "deleted" event.
+     */
+    public function deleted(Driver $driver): void
+    {
+        //
+    }
+
+    /**
+     * Handle the Driver "restored" event.
+     */
+    public function restored(Driver $driver): void
+    {
+        //
+    }
+
+    /**
+     * Handle the Driver "force deleted" event.
+     */
+    public function forceDeleted(Driver $driver): void
+    {
+        //
+    }
+}
