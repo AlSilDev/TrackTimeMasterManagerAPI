@@ -22,7 +22,7 @@ use App\Http\Controllers\api\TimesRunController;
 use App\Http\Controllers\api\UserCategoryController;
 use App\Http\Controllers\api\VehicleHistoryController;
 use App\Http\Controllers\api\VideoController;
-use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\api\ParticipantController;
 
 /*
 |--------------------------------------------------------------------------
