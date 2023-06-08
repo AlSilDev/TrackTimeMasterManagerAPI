@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEnrollmentRequest;
 use App\Http\Resources\EnrollmentResource;
 use App\Models\Enrollment;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +41,9 @@ class EnrollmentController extends Controller
 
     public function destroy(Enrollment $enrollment)
     {
-        $enrollment->delete();
+        if (Carbon::now() <= $enrollment->event->date_end_enrollments)
+            $enrollment->delete();
+
         return new EnrollmentResource($enrollment);
     }
 
