@@ -16,11 +16,11 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('email')->unique()->nullable();
+            $table->string('email')->nullable();
             $table->string('country');
-            $table->integer('license_num')->unique()->nullable();
+            $table->integer('license_num')->nullable();
             $table->date('license_expiry');
-            $table->string('phone_num')->unique();
+            $table->string('phone_num');
             $table->integer('affiliate_num')->nullable();
             $table->foreignIdFor(Driver::class);
         });
