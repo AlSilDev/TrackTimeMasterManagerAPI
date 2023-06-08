@@ -23,7 +23,7 @@ class StoreEnrollmentRequest extends FormRequest
     {
         return [
             'event_id' => 'required|integer|min:0',
-            'enroll_order' => 'required|integer|min:0',
+            'enroll_order' => 'integer|min:0',
             'run_order' => 'integer|min:0',
             'first_driver_id' => 'required|integer|min:0',
             'second_driver_id' => 'required|integer|min:0',
