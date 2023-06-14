@@ -4,8 +4,10 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEnrollmentRequest;
+use App\Http\Requests\UpdateEnrollmentRunOrderRequest;
 use App\Http\Resources\EnrollmentResource;
 use App\Models\Enrollment;
+use App\Models\Event;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -56,5 +58,17 @@ class EnrollmentController extends Controller
                                 ->join('vehicle_history AS v', 'e.vehicle_id', '=', 'v.id')
                                 ->where('e.event_id', $eventId)
                                 ->get());
+    }
+
+    public function updateRunOrder(Event $event, UpdateEnrollmentRunOrderRequest $request)
+    {
+        //dd(count($request->request));
+        foreach($request->request as $enrollment)
+        {
+            //dd($enrollment);
+            Enrollment::where('id', '=', $enrollment['id'])->update(['run_order' => $enrollment['run_order']]);
+        }
+
+        return response()->json(Enrollment::where('event_id', '=', $event['id'])->get());
     }
 }
