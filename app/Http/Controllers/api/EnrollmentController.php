@@ -57,6 +57,7 @@ class EnrollmentController extends Controller
                                 ->join('driver_history AS sd', 'e.second_driver_id', '=', 'sd.id')
                                 ->join('vehicle_history AS v', 'e.vehicle_id', '=', 'v.id')
                                 ->where('e.event_id', $eventId)
+                                ->orderBy('e.run_order')
                                 ->get());
     }
 
