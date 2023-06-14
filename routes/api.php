@@ -166,6 +166,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('enrollments', [EnrollmentController::class, 'store']);
     Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
     Route::get('event/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
+    Route::put('enrollments/{event}/run_order', [EnrollmentController::class, 'updateRunOrder']);
     /********************** Enrollments **********************/
 
     /********************** Participants **********************/
