@@ -26,7 +26,7 @@ class EnrollmentController extends Controller
 
     public function store(StoreEnrollmentRequest $request)
     {
-        $newEnrollment = Enrollment::create($request->validated());
+        //$newEnrollment = Enrollment::create($request->validated());
         //dd($request->event_id);
         $enrollments_count = DB::table('enrollments AS e')
             ->select(DB::raw('COUNT(e.id) AS count'))
