@@ -6,6 +6,7 @@ use App\Models\Driver;
 use App\Models\DriverHistory;
 use App\Models\Enrollment;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DriverObserver
 {
@@ -34,7 +35,7 @@ class DriverObserver
     {
         if($driver->isDirty()){
             $old_driver_history_id = DriverHistory::where('driver_id', '=', $driver->id)->orderBy('created_at', 'desc')->get()[0]->id;
-            $driver_history = new DriverHistory();
+            $driver_history = new DriverHistory;
             $driver_history->driver_id = $driver->id;
             $driver_history->name = $driver->name;
             $driver_history->email = $driver->email;
@@ -49,7 +50,11 @@ class DriverObserver
             $new_driver_history_id = DriverHistory::where('driver_id', '=', $driver->id)->orderBy('created_at', 'desc')->get()[0]->id;
 
             /* Update every open enrollment */
-            $open_enrollments = Enrollment::join('events', 'enrollments.event_id', '=', 'events.id')->where('events.date_end_enrollments', '>=', Carbon::now())->where('enrollments.first_driver_id', '=', $old_driver_history_id)->orWhere('enrollments.second_driver_id', '=', $old_driver_history_id)->get();
+            //$open_enrollments = Enrollment::join('events', 'enrollments.event_id', '=', 'events.id')->where('events.date_end_enrollments', '>=', Carbon::now())->where('enrollments.first_driver_id', '=', $old_driver_history_id)->orWhere('enrollments.second_driver_id', '=', $old_driver_history_id)->get();
+
+            $ids = DB::table('enrollments AS e')->select('e.id')->join('events AS ev', 'ev.id', '=', 'e.event_id')->where('ev.date_end_enrollments', '>=', Carbon::now())->where('e.first_driver_id', '=', $old_driver_history_id)->orWhere('e.second_driver_id', '=', $old_driver_history_id)->pluck('e.id');
+            //dd($ids);
+            $open_enrollments = Enrollment::whereIn('id', $ids)->get();
             foreach($open_enrollments as $enrollment)
             {
                 if ($enrollment->first_driver_id == $old_driver_history_id)
