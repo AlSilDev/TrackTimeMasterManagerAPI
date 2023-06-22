@@ -16,7 +16,7 @@ class AdminVerificationController extends Controller
     {
         return response()->json(DB::table('admin_verifications AS av')
                                 ->select('av.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'av.verified', 'av.notes', 'u.name')
-                                ->join('participants AS p', 'p.id', 'av.participant_id')
+                                ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.id', 'av.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.id', 'av.second_driver_id')
                                 ->join('users as u', 'u.id', 'av.verified_by')
@@ -33,8 +33,11 @@ class AdminVerificationController extends Controller
         $validated_data = $request->validated();
 
         $newAdminVerification = new AdminVerification;
-        $newAdminVerification->participant_id = $validated_data['participant_id'];
+        $newAdminVerification->enrollment_id = $validated_data['enrollment_id'];
+        $newAdminVerification->enrollment_order = $validated_data['enrollment_order'];
+        $newAdminVerification->event_id = $validated_data['event_id'];
         $newAdminVerification->notes = $validated_data['notes'];
+        $newAdminVerification->verified = $validated_data['verified'];
         $newAdminVerification->verified_by = $validated_data['verified_by'];
 
         $newAdminVerification->save();
@@ -63,15 +66,16 @@ class AdminVerificationController extends Controller
         return new AdminVerificationResource($adminVerification);
     }
 
-    public function getParticipantAdminVerification(int $participantId)
+    public function getEnrollmentAdminVerification(int $enrollmentId)
     {
         return response()->json(DB::table('admin_verifications AS av')
                                 ->select('av.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'av.verified', 'av.notes', 'u.name')
-                                ->join('participants AS p', 'p.id', 'av.participant_id')
+                                ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.id', 'av.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.id', 'av.second_driver_id')
                                 ->join('users as u', 'u.id', 'av.verified_by')
-                                ->where('sr.stage_id', $participantId)
+                                ->where('sr.stage_id', $enrollmentId)
                                 ->get());
     }
+
 }
