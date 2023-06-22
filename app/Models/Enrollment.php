@@ -49,6 +49,11 @@ class Enrollment extends Model
         return $this->hasOne(VehicleHistory::class);
     }
 
+    public function adminVerification(): HasOne
+    {
+        return $this->hasOne(AdminVerification::class);
+    }
+
     public function enrolled_by(): BelongsTo
     {
         return $this->belongsTo(User::class);
