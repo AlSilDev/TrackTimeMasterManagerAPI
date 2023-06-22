@@ -35,9 +35,6 @@ use App\Http\Controllers\api\ParticipantController;
 |
 */
 
-Route::get('event/{eventId}/enrollmentsToAdminVerifications', [EnrollmentController::class, 'getEventEnrollmentsForAdminVerifications']);
-Route::get('event/{eventId}/enrollmentsToTechnicalVerifications', [EnrollmentController::class, 'getEventEnrollmentsForTechnicalVerifications']);
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -169,7 +166,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('enrollments', [EnrollmentController::class, 'store']);
     Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
     Route::get('event/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
-    //TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::put('enrollments/{event}/run_order', [EnrollmentController::class, 'updateRunOrder']);
     /********************** Enrollments **********************/
 

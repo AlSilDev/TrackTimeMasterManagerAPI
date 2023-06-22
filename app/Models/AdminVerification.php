@@ -12,22 +12,15 @@ class AdminVerification extends Model
     use HasFactory, HasTimestamps;
 
     protected $fillable = [
-        'event_id',
-        'enrollment_order',
-        'enrollment_id',
+        'participant_id',
         'verified',
         'notes',
         'verified_by'
     ];
 
-    public function event(): BelongsTo
+    public function participant(): BelongsTo
     {
-        return $this->belongsTo(Event::class);
-    }
-
-    public function enrollment(): BelongsTo
-    {
-        return $this->belongsTo(Enrollment::class);
+        return $this->belongsTo(Participant::class);
     }
 
     public function user(): BelongsTo
