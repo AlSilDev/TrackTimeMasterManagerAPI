@@ -6,6 +6,7 @@ use App\Models\Enrollment;
 use App\Models\Vehicle;
 use App\Models\VehicleHistory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class VehicleObserver
 {
@@ -45,7 +46,12 @@ class VehicleObserver
             $new_vehicle_history_id = VehicleHistory::where('vehicle_id', '=', $vehicle->id)->orderBy('created_at', 'desc')->get()[0]->id;
 
             /* Update every open enrollment */
-            $open_enrollments = Enrollment::join('events', 'enrollments.event_id', '=', 'events.id')->where('events.date_end_enrollments', '>=', Carbon::now())->where('enrollments.vehicle_id', '=', $old_vehicle_history_id)->get();
+            //$open_enrollments = Enrollment::join('events', 'enrollments.event_id', '=', 'events.id')->where('events.date_end_enrollments', '>=', Carbon::now())->where('enrollments.vehicle_id', '=', $old_vehicle_history_id)->get();
+            //$open_enrollments = Enrollment::join('events', 'enrollments.event_id', '=', 'events.id')->where('events.date_end_enrollments', '>=', Carbon::now())->get();
+            $ids = DB::table('enrollments AS e')->select('e.id')->join('events AS ev', 'ev.id', '=', 'e.event_id')->where('ev.date_end_enrollments', '>=', Carbon::now())->where('e.vehicle_id', '=', $old_vehicle_history_id)->pluck('e.id');
+            //dd($ids);
+            $open_enrollments = Enrollment::whereIn('id', $ids)->get();
+            //dump($old_vehicle_history_id);
             //dd($open_enrollments);
             foreach($open_enrollments as $enrollment)
             {
