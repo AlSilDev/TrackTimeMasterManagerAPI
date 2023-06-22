@@ -35,6 +35,9 @@ use App\Http\Controllers\api\ParticipantController;
 |
 */
 
+Route::get('drivers/canDrive/byName/{eventId}/{name}', [DriverController::class, 'searchByName']);
+Route::get('vehicles/canRun/byLicensePlate/{eventId}/{licensePlate}', [VehicleController::class, 'searchByLicensePlate']);
+
 Route::get('event/{eventId}/enrollmentsToAdminVerifications', [EnrollmentController::class, 'getEventEnrollmentsForAdminVerifications']);
 Route::get('event/{eventId}/enrollmentsToTechnicalVerifications', [EnrollmentController::class, 'getEventEnrollmentsForTechnicalVerifications']);
 
@@ -81,7 +84,7 @@ Route::middleware('auth:api')->group(function () {
     /********************** Vehicles **********************/
     Route::get('vehicles', [VehicleController::class, 'index']);
     Route::post('vehicles', [VehicleController::class, 'store']);
-    Route::get('vehicles/byLicensePlate/{licensePlate}', [VehicleController::class, 'searchByLicensePlate']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::get('vehicles/{vehicle}', [VehicleController::class, 'show']);
     Route::put('vehicles/{vehicle}', [VehicleController::class, 'update']);
     Route::delete('vehicles/{vehicle}', [VehicleController::class, 'destroy']);
@@ -125,7 +128,7 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Drivers **********************/
     Route::get('drivers', [DriverController::class, 'index']);
-    Route::get('drivers/byName/{name}', [DriverController::class, 'searchByName']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::post('drivers', [DriverController::class, 'store']);
     Route::get('drivers/{driver}', [DriverController::class, 'show']);
     Route::put('drivers/{driver}', [DriverController::class, 'update']);
