@@ -50,10 +50,17 @@ class VehicleController extends Controller
     }
 
     public function searchByLicensePlate(Request $request){
+        $eventId = $request->eventId;
+
+        $vehiclesNotEnrroledInEvent = DB::table('enrollments AS e')
+                                                ->where('e.event_id', $eventId)
+                                                ->pluck('vehicle_id');
+
         return response()->json(DB::table('vehicles AS v')->select('v.id', 'v.model', 'v.engine_capacity', 'v.year', 'v.license_plate', 'vcl.name AS class', 'vct.name AS category')
                                                     ->join('vehicle_classes AS vcl', 'v.class_id', '=', 'vcl.id')
                                                     ->join('vehicle_categories AS vct', 'vcl.category_id', '=', 'vct.id')
                                                     ->whereRaw("LOWER(license_plate) LIKE LOWER('%" . $request->licensePlate . "%')")
+                                                    ->whereNotIn('v.id', $vehiclesNotEnrroledInEvent)
                                                     ->get());
     }
 
