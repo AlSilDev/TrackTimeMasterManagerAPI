@@ -7,6 +7,7 @@ use App\Models\Driver;
 use App\Http\Resources\DriverResource;
 use App\Http\Requests\StoreUpdateDriverRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DriverController extends Controller
 {
@@ -18,8 +19,24 @@ class DriverController extends Controller
         return response()->json(Driver::orderBy($request->column, $request->order)->paginate(15));
     }
 
-    public function searchByName(Request $request){
-        return response()->json(Driver::whereRaw("LOWER(name) LIKE LOWER('" . $request->name . "%')")->get());
+    public function searchByName(Request $request)
+    {
+
+        $eventId = $request->eventId;
+
+        $driversNotEnrroledInEventFirstDriver = DB::table('enrollments AS e')
+                                                ->where('e.event_id', $eventId)
+                                                ->pluck('first_driver_id');
+
+        $driversNotEnrroledInEventSecondDriver = DB::table('enrollments AS e')
+                                                ->where('e.event_id', $eventId)
+                                                ->pluck('second_driver_id');
+
+
+        return response()->json(Driver::whereRaw("LOWER(name) LIKE LOWER('" . $request->name . "%')")
+                            ->whereNotIn('id', $driversNotEnrroledInEventFirstDriver)
+                            ->whereNotIn('id', $driversNotEnrroledInEventSecondDriver)
+                            ->get());
     }
 
     public function store(StoreUpdateDriverRequest $request)
