@@ -32,6 +32,11 @@ class Event extends Model
         return $this->hasMany(AdminVerification::class);
     }
 
+    public function technical_verifications(): HasMany
+    {
+        return $this->hasMany(TechnicalVerification::class);
+    }
+
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
