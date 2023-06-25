@@ -72,7 +72,7 @@ class EnrollmentController extends Controller
         $enrollmentsIdAdminVerified = DB::table('admin_verifications')->pluck('id');
 
         return response()->json(DB::table('enrollments AS e')
-                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
+                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'fd.driver_id AS first_driver_id', 'sd.name AS second_driver_name', 'fd.driver_id AS second_driver_id', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate', 'v.vehicle_id AS vehicle_id')
                                 ->join('driver_history AS fd', 'e.first_driver_id', '=', 'fd.id')
                                 ->join('driver_history AS sd', 'e.second_driver_id', '=', 'sd.id')
                                 ->join('vehicle_history AS v', 'e.vehicle_id', '=', 'v.id')
@@ -84,17 +84,19 @@ class EnrollmentController extends Controller
 
     public function getEventEnrollmentsForTechnicalVerifications(int $eventId)
     {
-        //$enrollmentsIdAdminVerified = DB::table('admin_verifications')->pluck('id');
+        $enrollmentsIdHaveAlreadyTechnicalVerified = DB::table('participants')->pluck('enrollment_id');
+
         $approved = 1;
 
         return response()->json(DB::table('enrollments AS e')
-                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
+                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'fd.driver_id AS first_driver_id', 'sd.name AS second_driver_name', 'sd.driver_id AS second_driver_id', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate', 'v.vehicle_id AS vehicle_id')
                                 ->join('driver_history AS fd', 'e.first_driver_id', '=', 'fd.id')
                                 ->join('driver_history AS sd', 'e.second_driver_id', '=', 'sd.id')
                                 ->join('vehicle_history AS v', 'e.vehicle_id', '=', 'v.id')
                                 ->join('admin_verifications AS av', 'av.enrollment_id', '=', 'e.id')
                                 ->where('e.event_id', $eventId)
                                 ->where('av.verified', $approved)
+                                ->whereNotIn('e.id', $enrollmentsIdHaveAlreadyTechnicalVerified)
                                 //->whereIn('e.id', $enrollmentsIdAdminVerified)
                                 ->orderBy('e.run_order')
                                 ->get());

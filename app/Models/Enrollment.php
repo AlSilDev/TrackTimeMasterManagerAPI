@@ -54,6 +54,11 @@ class Enrollment extends Model
         return $this->hasOne(AdminVerification::class);
     }
 
+    public function technicalVerifications(): HasOne
+    {
+        return $this->hasOne(TechnicalVerification::class);
+    }
+
     public function enrolled_by(): BelongsTo
     {
         return $this->belongsTo(User::class);

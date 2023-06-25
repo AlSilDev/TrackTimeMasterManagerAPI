@@ -14,7 +14,7 @@ class ParticipantController extends Controller
     public function index()
     {
         return response()->json(DB::table('participants AS p')
-                                ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
+                                ->select('p.id', 'e.id', 'e.run_order', 'e.enroll_order', 'e.event_id','fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
                                 ->join('enrollments AS e', 'e.id', 'p.enrollment_id')
                                 ->join('drivers AS fd', 'e.first_driver_id', '=', 'fd.id')
                                 ->join('drivers AS sd', 'e.second_driver_id', '=', 'sd.id')
@@ -37,7 +37,7 @@ class ParticipantController extends Controller
     public function getEventParticipants(int $eventId)
     {
         return response()->json(DB::table('participants AS p')
-                                ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
+                                ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'e.enroll_order AS enroll_order', 'e.run_order AS run_order','sd.name AS second_driver_name', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate')
                                 ->join('enrollments AS e', 'e.id', 'p.enrollment_id')
                                 ->join('drivers AS fd', 'e.first_driver_id', '=', 'fd.id')
                                 ->join('drivers AS sd', 'e.second_driver_id', '=', 'sd.id')

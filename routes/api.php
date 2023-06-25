@@ -17,12 +17,12 @@ use App\Http\Controllers\api\PressController;
 use App\Http\Controllers\api\RegulationController;
 use App\Http\Controllers\api\StageController;
 use App\Http\Controllers\api\StageRunController;
-use App\Http\Controllers\api\TechnicalVerficationController;
 use App\Http\Controllers\api\TimesRunController;
 use App\Http\Controllers\api\UserCategoryController;
 use App\Http\Controllers\api\VehicleHistoryController;
 use App\Http\Controllers\api\VideoController;
 use App\Http\Controllers\api\ParticipantController;
+use App\Http\Controllers\api\TechnicalVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -199,16 +199,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('stages/{stageId}/stageRuns', [StageRunController::class, 'getStageRunFromStage']);
     /********************** Stage Runs **********************/
 
-    /********************** Technical Verifications **********************/
-    Route::get('technicalVerifications', [TechnicalVerficationController::class, 'index']);
-    Route::get('technicalVerifications/{technicalVerification}', [TechnicalVerficationController::class, 'show']);
-    Route::post('technicalVerifications', [TechnicalVerficationController::class, 'store']);
-    Route::put('technicalVerifications/{technicalVerification}', [TechnicalVerficationController::class, 'update']);
-    Route::put('technicalVerifications/{technicalVerification}/changeVerified', [TechnicalVerficationController::class, 'update_verified_value']);
-    Route::delete('technicalVerifications/{stage}', [TechnicalVerficationController::class, 'destroy']);
-    Route::get('participant/{participantId}/technicalVerification', [TechnicalVerficationController::class, 'getParticipantTechnicalVerification']);
-    /********************** Technical Verifications **********************/
-
     /********************** Admin Verifications **********************/
     Route::get('adminVerifications', [AdminVerificationController::class, 'index']);
     Route::get('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'show']);
@@ -218,6 +208,16 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('adminVerifications/{stage}', [AdminVerificationController::class, 'destroy']);
     Route::get('participant/{participantId}/adminVerification', [AdminVerificationController::class, 'getParticipantAdminVerification']);
     /********************** Admin Verifications **********************/
+
+    /********************** Technical Verifications **********************/
+    Route::get('technicalVerifications', [TechnicalVerificationController::class, 'index']);
+    Route::get('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'show']);
+    Route::post('technicalVerifications', [TechnicalVerificationController::class, 'store']);
+    Route::put('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'update']);
+    Route::put('technicalVerifications/{technicalVerification}/changeVerified', [TechnicalVerificationController::class, 'update_verified_value']);
+    Route::delete('technicalVerifications/{stage}', [TechnicalVerificationController::class, 'destroy']);
+    Route::get('participant/{participantId}/technicalVerification', [TechnicalVerificationController::class, 'getParticipantTechnicalVerification']);
+    /********************** Technical Verifications **********************/
 
     /********************** Time Runs **********************/
     Route::get('timesRuns', [TimesRunController::class, 'index']);

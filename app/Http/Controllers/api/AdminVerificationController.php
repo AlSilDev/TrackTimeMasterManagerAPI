@@ -15,7 +15,7 @@ class AdminVerificationController extends Controller
     public function index(Request $request)
     {
         return response()->json(DB::table('admin_verifications AS av')
-                                ->select('av.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'av.verified', 'av.notes', 'u.name')
+                                ->select('av.id', 'dhf.name AS first_driver', 'dhf.driver_id AS first_driver_id', 'dhs.name AS second_driver', 'dhs.driver_id AS second_driver_id', 'av.verified', 'av.notes', 'u.name')
                                 ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.id', 'av.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.id', 'av.second_driver_id')
