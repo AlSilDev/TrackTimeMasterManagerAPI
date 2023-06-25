@@ -18,7 +18,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreignIdFor(Event::class);
             $table->string('name');
-            $table->date('date_start');
+            $table->dateTime('date_start');
             $table->integer('num_runs');
             $table->integer('time_until_next_run_mins');
         });
