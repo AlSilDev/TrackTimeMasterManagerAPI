@@ -20,7 +20,7 @@ class StageResource extends JsonResource
             'name' => $this->name,
             'date_start' => $this->date_start,
             'num_runs' => $this->num_runs,
-            'time_until_next_stage_mins' => $this->time_until_next_stage_mins
+            'time_until_next_run_mins' => $this->time_until_next_run_mins
         ];
     }
 }
