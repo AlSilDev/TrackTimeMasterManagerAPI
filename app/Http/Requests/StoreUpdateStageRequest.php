@@ -24,8 +24,8 @@ class StoreUpdateStageRequest extends FormRequest
         return [
             'name' => 'required|string|max:75',
             'date_start' => 'required|date',
-            'num_runs' => 'required|integer',
-            'time_until_next_run_mins' => 'integer',
+            //'num_runs' => 'required|integer',
+            //'time_until_next_run_mins' => 'integer',
         ];
     }
 }
