@@ -196,7 +196,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('stageRuns', [StageRunController::class, 'index']);
     Route::post('stageRuns', [StageRunController::class, 'store']);
     Route::delete('stageRuns/{stageRun}', [StageRunController::class, 'destroy']);
-    Route::get('stages/{stageId}/stageRuns', [StageRunController::class, 'getStageRunFromStage']);
+    Route::get('stages/{stageId}/runs', [StageRunController::class, 'getStageRunFromStage']);
     /********************** Stage Runs **********************/
 
     /********************** Admin Verifications **********************/
