@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateStageRequest;
 use App\Http\Resources\StageResource;
 use App\Models\Event;
 use App\Models\Stage;
+use App\Models\StageRun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -30,6 +31,14 @@ class StageController extends Controller
         $validated_data = $request->validated();
         $validated_data['event_id'] = $event->id;
         $newStage = Stage::create($validated_data);
+
+        $firstRun = new StageRun;
+        $firstRun->stage_id = $newStage->id;
+        $firstRun->run_num = 1;
+        $firstRun->practice = false;
+        $firstRun->date_start = $newStage->date_start;
+        $firstRun->save();
+
         return new StageResource($newStage);
     }
 
