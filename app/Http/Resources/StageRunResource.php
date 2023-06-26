@@ -18,7 +18,8 @@ class StageRunResource extends JsonResource
             'id' => $this->id,
             'stage_id' => $this->stage_id,
             'run_num' => $this->run_num,
-            'practice' => $this->practice
+            'practice' => $this->practice,
+            'date_start' => $this->date_start
         ];
     }
 }

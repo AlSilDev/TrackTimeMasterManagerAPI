@@ -15,7 +15,8 @@ class StageRun extends Model
     protected $fillable = [
         'stage_id',
         'run_num',
-        'practice'
+        'practice',
+        'date_start'
     ];
 
     public function stage(): BelongsTo
