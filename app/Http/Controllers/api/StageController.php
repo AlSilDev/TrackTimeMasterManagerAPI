@@ -15,7 +15,7 @@ class StageController extends Controller
     public function index()
     {
         return response()->json(DB::table('stages AS s')
-                                ->select('s.id', 's.name', 's.date_start', 's.num_runs', 's.time_until_next_run_mins')
+                                ->select('s.id', 's.name', 's.date_start')
                                 ->join('events AS e', 'e.id', '=', 's.event_id')
                                 ->get());
     }
@@ -43,8 +43,8 @@ class StageController extends Controller
         }
 
         $stage->name = $validated_data['name'];
-        $stage->num_runs = $validated_data['num_runs'];
-        $stage->time_until_next_run_mins = $validated_data['time_until_next_run_mins'];
+        //$stage->num_runs = $validated_data['num_runs'];
+        //$stage->time_until_next_run_mins = $validated_data['time_until_next_run_mins'];
         $stage->date_start = $validated_data['date_start'];
 
         $stage->save();
@@ -61,7 +61,7 @@ class StageController extends Controller
     public function getEventStages(Event $event)
     {
         return response()->json(DB::table('stages AS s')
-                                ->select('s.id', 's.name', 's.date_start', 's.num_runs', 's.time_until_next_run_mins')
+                                ->select('s.id', 's.name', 's.date_start')
                                 ->join('events AS e', 'e.id', '=', 's.event_id')
                                 ->where('e.id', '=', $event->id)
                                 ->get());
