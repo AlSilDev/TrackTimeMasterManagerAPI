@@ -27,8 +27,7 @@ class StageRunController extends Controller
     public function getStageRunFromStage(int $stageId)
     {
         return response()->json(DB::table('stage_runs AS sr')
-                                ->select('sr.id', 's.name AS stage_name', 'sr.run_num', 'sr.practice')
-                                ->join('stage AS s', 's.id', 'sr.stage_id')
+                                ->select('sr.id', 'sr.run_num', 'sr.practice', 'sr.date_start')
                                 ->where('sr.stage_id', $stageId)
                                 ->get());
     }
