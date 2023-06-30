@@ -4,7 +4,9 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateAdminVerificationRequest;
-use App\Http\Requests\UpdateAdminVerificationVerifiedValueRequest;
+use App\Http\Requests\UpdateAdminVerificationNotesRequest;
+use App\Http\Requests\UpdateAdminVerificationVerifiedAndNotes;
+use App\Http\Requests\UpdateAdminVerificationVerifiedValueAndByRequest;
 use App\Http\Resources\AdminVerificationResource;
 use App\Models\AdminVerification;
 use Illuminate\Http\Request;
@@ -15,7 +17,7 @@ class AdminVerificationController extends Controller
     public function index(Request $request)
     {
         return response()->json(DB::table('admin_verifications AS av')
-                                ->select('av.id', 'dhf.name AS first_driver', 'dhf.driver_id AS first_driver_id', 'dhs.name AS second_driver', 'dhs.driver_id AS second_driver_id', 'av.verified', 'av.notes', 'u.name')
+                                ->select('av.id','e.event_id', 'e.enroll_order', 'e.run_order', 'dhf.name AS first_driver', 'dhf.driver_id AS first_driver_id', 'dhs.name AS second_driver', 'dhs.driver_id AS second_driver_id', 'av.verified', 'av.notes', 'u.name')
                                 ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.id', 'av.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.id', 'av.second_driver_id')
@@ -34,11 +36,18 @@ class AdminVerificationController extends Controller
 
         $newAdminVerification = new AdminVerification;
         $newAdminVerification->enrollment_id = $validated_data['enrollment_id'];
-        $newAdminVerification->enrollment_order = $validated_data['enrollment_order'];
-        $newAdminVerification->event_id = $validated_data['event_id'];
-        $newAdminVerification->notes = $validated_data['notes'];
         $newAdminVerification->verified = $validated_data['verified'];
+        $newAdminVerification->notes = $validated_data['notes'];
         $newAdminVerification->verified_by = $validated_data['verified_by'];
+        /*if($validated_data['notes'] != null)
+        {
+            $newAdminVerification->notes = $validated_data['notes'];
+            if($validated_data['verified_by'] != null)
+            {
+                $newAdminVerification->verified_by = $validated_data['verified_by'];
+            }
+
+        }*/
 
         $newAdminVerification->save();
         return new AdminVerificationResource($newAdminVerification);
@@ -53,12 +62,31 @@ class AdminVerificationController extends Controller
         return new AdminVerificationResource($adminVerification);
     }
 
-    public function update_verified_value(UpdateAdminVerificationVerifiedValueRequest $request, AdminVerification $adminVerification)
+    public function update_verified_value_and_by(UpdateAdminVerificationVerifiedValueAndByRequest $request, AdminVerification $adminVerification)
     {
         $adminVerification->verified = $request->validated()['verified'];
+        $adminVerification->verified_by = $request->validated()['verified_by'];
         $adminVerification->save();
         return new AdminVerificationResource($adminVerification);
     }
+
+    public function update_verified_value_and_by_and_notes(UpdateAdminVerificationVerifiedAndNotes $request, AdminVerification $adminVerification)
+    {
+        $adminVerification->verified = $request->validated()['verified'];
+        $adminVerification->verified_by = $request->validated()['verified_by'];
+        $adminVerification->notes = $request->validated()['notes'];
+        $adminVerification->save();
+        return new AdminVerificationResource($adminVerification);
+    }
+
+    public function update_notes(UpdateAdminVerificationNotesRequest $request, int $adminVerificationId)
+    {
+        $adminVerification = AdminVerification::find($adminVerificationId);
+        $adminVerification->notes = $request->validated()['notes'];
+        $adminVerification->save();
+        return new AdminVerificationResource($adminVerification);
+    }
+
 
     public function destroy(AdminVerification $adminVerification)
     {
@@ -74,7 +102,38 @@ class AdminVerificationController extends Controller
                                 ->join('driver_history AS dhf', 'dhf.id', 'av.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.id', 'av.second_driver_id')
                                 ->join('users as u', 'u.id', 'av.verified_by')
-                                ->where('sr.stage_id', $enrollmentId)
+                                ->where('av.enrollment_id', $enrollmentId)
+                                ->get());
+    }
+
+    public function getAllEventAdminVerifications(int $eventId)
+    {
+        return response()->json(DB::table('admin_verifications AS av')
+                                //->select('av.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'av.verified', 'av.notes', 'u.name')
+                                ->select('av.id', 'av.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhs.name AS second_driver_name', 'av.verified', 'av.verified_by', 'av.notes')
+                                ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
+                                ->join('driver_history AS dhf', 'dhf.driver_id', 'e.first_driver_id')
+                                ->join('driver_history AS dhs', 'dhs.driver_id', 'e.second_driver_id')
+                                ->join('vehicle_history AS vh', 'vh.vehicle_id', 'e.vehicle_id')
+                                //->join('users as u', 'u.id', 'av.verified_by')
+                                ->where('e.event_id', $eventId)
+                                ->get());
+    }
+
+    public function getEventAdminVerificationsForVerify(int $eventId)
+    {
+        return response()->json(DB::table('admin_verifications AS av')
+                                //->select('av.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'av.verified', 'av.notes', 'u.name')
+                                ->select('av.id', 'av.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhs.name AS second_driver_name', 'av.verified', 'av.verified_by', 'av.notes')
+                                ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
+                                ->join('driver_history AS dhf', 'dhf.driver_id', 'e.first_driver_id')
+                                ->join('driver_history AS dhs', 'dhs.driver_id', 'e.second_driver_id')
+                                ->join('vehicle_history AS vh', 'vh.vehicle_id', 'e.vehicle_id')
+                                //->join('users as u', 'u.id', 'av.verified_by')
+                                ->where('e.event_id', $eventId)
+                                ->where('av.verified', 0)
+                                ->where('av.verified_by', null)
+                                ->orderBy('e.run_order', 'desc')
                                 ->get());
     }
 
