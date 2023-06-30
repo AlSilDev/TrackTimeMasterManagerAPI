@@ -23,6 +23,7 @@ use App\Http\Controllers\api\VehicleHistoryController;
 use App\Http\Controllers\api\VideoController;
 use App\Http\Controllers\api\ParticipantController;
 use App\Http\Controllers\api\TechnicalVerificationController;
+use App\Models\TechnicalVerification;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,8 +39,17 @@ use App\Http\Controllers\api\TechnicalVerificationController;
 Route::get('drivers/canDrive/byName/{eventId}/{name}', [DriverController::class, 'searchByName']);
 Route::get('vehicles/canRun/byLicensePlate/{eventId}/{licensePlate}', [VehicleController::class, 'searchByLicensePlate']);
 
-Route::get('event/{eventId}/enrollmentsToAdminVerifications', [EnrollmentController::class, 'getEventEnrollmentsForAdminVerifications']);
-Route::get('event/{eventId}/enrollmentsToTechnicalVerifications', [EnrollmentController::class, 'getEventEnrollmentsForTechnicalVerifications']);
+Route::get('events/{eventId}/enrollmentsNotAlreadyVerified', [EnrollmentController::class, 'getEnrollmentsNotAlreadyVerified']);
+
+Route::get('events/{eventId}/adminVerifications/all', [AdminVerificationController::class, 'getAllEventAdminVerifications']);
+Route::get('events/{eventId}/technicalVerifications/all', [TechnicalVerificationController::class, 'getAllEventTechnicalVerifications']);
+Route::get('events/{eventId}/participants/all', [ParticipantController::class, 'getAllEventParticipants']);
+
+//Route::put('events/{eventId}/participants/changeCanCompete', [ParticipantController::class, 'update_can_compete']);
+
+Route::get('events/{eventId}/adminVerifications/canBeVerified', [AdminVerificationController::class, 'getEventAdminVerificationsForVerify']);
+Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerifications']);
+Route::get('events/{eventId}/participants/canCompete', [ParticipantController::class, 'getEventParticipantsCanCompete']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -171,8 +181,10 @@ Route::middleware('auth:api')->group(function () {
     Route::get('enrollments', [EnrollmentController::class, 'index']);
     Route::post('enrollments', [EnrollmentController::class, 'store']);
     Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
-    Route::get('event/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
-    //TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    Route::get('events/{eventId}/enrollments', [EnrollmentController::class, 'getEventEnrollments']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    //Route::get('event/{eventId}/enrollmentsToAdminVerifications', [EnrollmentController::class, 'getEventEnrollmentsForAdminVerifications']);
+    //Route::get('event/{eventId}/enrollmentsToTechnicalVerifications', [EnrollmentController::class, 'getEventEnrollmentsForTechnicalVerifications']);
     Route::put('enrollments/{event}/run_order', [EnrollmentController::class, 'updateRunOrder']);
     /********************** Enrollments **********************/
 
@@ -180,7 +192,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('participants', [ParticipantController::class, 'index']);
     Route::post('participants', [ParticipantController::class, 'store']);
     Route::delete('participants/{participant}', [ParticipantController::class, 'destroy']);
-    Route::get('event/{eventId}/participants', [ParticipantController::class, 'getEventParticipants']);
+
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     /********************** Participants **********************/
 
     /********************** Stages **********************/
@@ -200,21 +213,29 @@ Route::middleware('auth:api')->group(function () {
     /********************** Admin Verifications **********************/
     Route::get('adminVerifications', [AdminVerificationController::class, 'index']);
     Route::get('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'show']);
+    Route::get('adminVerifications/{enrollmentId}', [AdminVerificationController::class, 'getEnrollmentAdminVerification']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::post('adminVerifications', [AdminVerificationController::class, 'store']);
     Route::put('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'update']);
-    Route::put('adminVerifications/{adminVerification}/changeVerified', [AdminVerificationController::class, 'update_verified_value']);
-    Route::delete('adminVerifications/{stage}', [AdminVerificationController::class, 'destroy']);
-    Route::get('participant/{participantId}/adminVerification', [AdminVerificationController::class, 'getParticipantAdminVerification']);
+    Route::put('adminVerifications/{adminVerification}/changeVerified', [AdminVerificationController::class, 'update_verified_value_and_by']);
+    Route::put('adminVerifications/{adminVerification}/changeVerifiedAndNotes', [AdminVerificationController::class, 'update_verified_value_and_by_and_notes']);
+    Route::put('adminVerifications/{adminVerification}/changeNotes', [AdminVerificationController::class, 'update_notes']);
+    Route::delete('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'destroy']);
+    //Route::get('participant/{participantId}/adminVerification', [AdminVerificationController::class, 'getParticipantAdminVerification']);
     /********************** Admin Verifications **********************/
 
     /********************** Technical Verifications **********************/
     Route::get('technicalVerifications', [TechnicalVerificationController::class, 'index']);
     Route::get('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'show']);
+    Route::get('technicalVerifications/{enrollmentId}', [TechnicalVerificationController::class, 'getEnrollmentTechnicalVerification']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::post('technicalVerifications', [TechnicalVerificationController::class, 'store']);
     Route::put('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'update']);
-    Route::put('technicalVerifications/{technicalVerification}/changeVerified', [TechnicalVerificationController::class, 'update_verified_value']);
-    Route::delete('technicalVerifications/{stage}', [TechnicalVerificationController::class, 'destroy']);
-    Route::get('participant/{participantId}/technicalVerification', [TechnicalVerificationController::class, 'getParticipantTechnicalVerification']);
+    Route::put('technicalVerifications/{technicalVerification}/changeVerified', [TechnicalVerificationController::class, 'update_verified_value_and_by']);
+    Route::put('technicalVerifications/{technicalVerification}/changeVerifiedAndNotes', [TechnicalVerificationController::class, 'update_verified_value_and_by_and_notes']);
+    Route::put('technicalVerifications/{technicalVerification}/changeNotes', [TechnicalVerificationController::class, 'update_notes']);
+    Route::delete('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'destroy']);
+    //Route::get('participant/{participantId}/technicalVerification', [TechnicalVerificationController::class, 'getParticipantTechnicalVerification']);
     /********************** Technical Verifications **********************/
 
     /********************** Time Runs **********************/
