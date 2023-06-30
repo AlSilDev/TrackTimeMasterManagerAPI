@@ -201,8 +201,10 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Stages **********************/
     Route::get('stages', [StageController::class, 'index']);
-    Route::get('event/{eventId}/stages', [StageController::class, 'getEventStages']);
-    Route::post('stages', [StageController::class, 'store']);
+    Route::get('stages/{stage}', [StageController::class, 'show']);
+    Route::get('events/{event}/stages', [StageController::class, 'getEventStages']);
+    Route::post('events/{event}/stages', [StageController::class, 'store']);
+    Route::put('events/{event}/stages/{stage}', [StageController::class, 'update']);
     Route::delete('stages/{stage}', [StageController::class, 'destroy']);
     /********************** Stages **********************/
 

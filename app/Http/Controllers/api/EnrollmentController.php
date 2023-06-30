@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateEnrollmentRunOrderRequest;
 use App\Http\Resources\EnrollmentResource;
 use App\Models\Enrollment;
 use App\Models\Event;
+use App\Models\VehicleHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,6 +35,9 @@ class EnrollmentController extends Controller
             ->get()[0]->count;
         //dd($enrollments_count);
         $validated_data = $request->validated();
+        $vehicle_history_id = VehicleHistory::where('vehicle_id', '=', $validated_data['vehicle_id'])->orderBy('created_at', 'desc')->get()[0]['id'];
+        //dd($vehicle_history_id);
+        $validated_data['vehicle_id'] = $vehicle_history_id;
         $validated_data['enroll_order'] = ++$enrollments_count;
         $validated_data['run_order'] = $validated_data['enroll_order'];
         //dd($validated_data);

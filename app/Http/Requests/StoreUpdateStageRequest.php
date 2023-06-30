@@ -22,11 +22,10 @@ class StoreUpdateStageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'event_id' => 'required|integer|min:0',
             'name' => 'required|string|max:75',
             'date_start' => 'required|date',
-            'num_runs' => 'integer',
-            'time_until_next_stage_mins' => 'integer',
+            //'num_runs' => 'required|integer',
+            //'time_until_next_run_mins' => 'integer',
         ];
     }
 }

@@ -22,7 +22,7 @@ class EventController extends Controller
             return response()->json(DB::table('events')
                                     ->select('events.id', 'events.name', 'events.date_start_enrollments', 'events.date_end_enrollments', 'events.date_start_event', 'events.date_end_event','events.year', 'events.course_url', 'events.image_url', 'event_categories.name AS category_name', 'event_categories.description AS category_description', 'events.base_penalty', 'events.point_calc_reason')
                                     ->join('event_categories', 'events.category_id', '=', 'event_categories.id')
-                                    ->whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")
+                                    ->whereRaw("UPPER(events.{$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")
                                     ->orderBy($request->column, $request->order)
                                     ->paginate(15));
         }

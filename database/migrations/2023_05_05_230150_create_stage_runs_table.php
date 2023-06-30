@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Stage::class);
             $table->integer('run_num');
             $table->boolean('practice');
+            $table->dateTime('date_start');
             $table->timestamps();
         });
     }

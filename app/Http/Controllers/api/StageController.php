@@ -5,7 +5,9 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateStageRequest;
 use App\Http\Resources\StageResource;
+use App\Models\Event;
 use App\Models\Stage;
+use App\Models\StageRun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,15 +16,49 @@ class StageController extends Controller
     public function index()
     {
         return response()->json(DB::table('stages AS s')
-                                ->select('s.id', 'e.name AS evento_name', 's.name', 's_date_start', 's.num_runs', 's.time_until_next_stage_mins')
-                                ->join('events AS e', 'e.id', 's.event_id')
+                                ->select('s.id', 's.name', 's.date_start')
+                                ->join('events AS e', 'e.id', '=', 's.event_id')
                                 ->get());
     }
 
-    public function store(StoreUpdateStageRequest $request)
+    public function show(Stage $stage)
     {
-        $newStage = Stage::create($request->validated());
+        return new StageResource($stage);
+    }
+
+    public function store(StoreUpdateStageRequest $request, Event $event)
+    {
+        $validated_data = $request->validated();
+        $validated_data['event_id'] = $event->id;
+        $newStage = Stage::create($validated_data);
+
+        $firstRun = new StageRun;
+        $firstRun->stage_id = $newStage->id;
+        $firstRun->run_num = 1;
+        $firstRun->practice = false;
+        $firstRun->date_start = $newStage->date_start;
+        $firstRun->save();
+
         return new StageResource($newStage);
+    }
+
+    public function update(StoreUpdateStageRequest $request, Event $event, Stage $stage)
+    {
+        $validated_data = $request->validated();
+
+        if($stage->event_id != $event->id)
+        {
+            return response('Invalid request: a stage cannot be transferred to another event', 403);
+        }
+
+        $stage->name = $validated_data['name'];
+        //$stage->num_runs = $validated_data['num_runs'];
+        //$stage->time_until_next_run_mins = $validated_data['time_until_next_run_mins'];
+        $stage->date_start = $validated_data['date_start'];
+
+        $stage->save();
+
+        return new StageResource($stage);
     }
 
     public function destroy(Stage $stage)
@@ -31,12 +67,12 @@ class StageController extends Controller
         return new StageResource($stage);
     }
 
-    public function getEventStages(int $eventId)
+    public function getEventStages(Event $event)
     {
         return response()->json(DB::table('stages AS s')
-                                ->select('s.id', 'e.name AS evento_name', 's.name', 's_date_start', 's.num_runs', 's.time_until_next_stage_mins')
-                                ->join('events AS e', 'e.id', 's.event_id')
-                                ->where('e.event_id', $eventId)
+                                ->select('s.id', 's.name', 's.date_start')
+                                ->join('events AS e', 'e.id', '=', 's.event_id')
+                                ->where('e.id', '=', $event->id)
                                 ->get());
     }
 }
