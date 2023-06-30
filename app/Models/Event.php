@@ -27,11 +27,6 @@ class Event extends Model
         'point_calc_reason'
     ];
 
-    public function admin_verifications(): HasMany
-    {
-        return $this->hasMany(AdminVerification::class);
-    }
-
     public function technical_verifications(): HasMany
     {
         return $this->hasMany(TechnicalVerification::class);
