@@ -15,19 +15,12 @@ class Participant extends Model
 
     protected $fillable = [
         'enrollment_id',
-        'first_driver_id',
-        'second_driver_id',
-        'vehicle_id'
+        'can_compete',
     ];
 
     public function classifications_stages(): BelongsToMany
     {
         return $this->belongsToMany(ClassificationStage::class, 'id');
-    }
-
-    public function technical_verification(): HasOne
-    {
-        return $this->hasOne(TechnicalVerfication::class, 'id');
     }
 
     public function times_run(): BelongsToMany
@@ -38,20 +31,5 @@ class Participant extends Model
     public function enrollment(): HasOne
     {
         return $this->hasOne(Enrollment::class);
-    }
-
-    public function first_driver(): BelongsTo
-    {
-        return $this->belongsTo(DriverHistory::class, 'first_driver_id');
-    }
-
-    public function second_driver(): BelongsTo
-    {
-        return $this->belongsTo(DriverHistory::class, 'second_driver_id');
-    }
-
-    public function vehicle(): BelongsTo
-    {
-        return $this->belongsTo(VehicleHistory::class, 'vehicle_id');
     }
 }
