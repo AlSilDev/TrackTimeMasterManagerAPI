@@ -23,9 +23,7 @@ class StoreUpdateParticipantRequest extends FormRequest
     {
         return [
             'enrollment_id' => 'required|integer|min:0',
-            'first_driver_id' => 'required|integer|min:0',
-            'second_driver_id' => 'required|integer|min:0',
-            'vehicle_id' => 'required|integer|min:0'
+            'can_compete' => 'boolean',
         ];
     }
 }
