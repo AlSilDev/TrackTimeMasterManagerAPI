@@ -25,7 +25,17 @@ class StageRunController extends Controller
 
     public function store(StoreUpdateStageRunRequest $request)
     {
-        $newStageRun = StageRun::create($request->validated());
+        $validated_data = $request->validated();
+
+        //dd(StageRun::where('stage_id', '=', $validated_data['stage_id'])->orderBy('run_num', 'desc')->first()->run_num + 1);
+        $largest_run_num = StageRun::where('stage_id', '=', $validated_data['stage_id'])->orderBy('run_num', 'desc')->first()->run_num;
+        if (!$largest_run_num)
+            $largest_run_num = 0;
+
+        $validated_data['run_num'] = $largest_run_num + 1;
+
+        $newStageRun = StageRun::create($validated_data);
+
         return new StageRunResource($newStageRun);
     }
 
