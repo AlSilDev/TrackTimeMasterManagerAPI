@@ -28,8 +28,8 @@ class Participant extends Model
         return $this->belongsToMany(TimeRun::class, 'id');
     }
 
-    public function enrollment(): HasOne
+    public function enrollment(): BelongsTo
     {
-        return $this->hasOne(Enrollment::class);
+        return $this->belongsTo(Enrollment::class);
     }
 }

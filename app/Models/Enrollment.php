@@ -23,9 +23,9 @@ class Enrollment extends Model
         'enrolled_by_id'
     ];
 
-    public function participant(): BelongsTo
+    public function participant(): HasOne
     {
-        return $this->belongsTo(Participant::class);
+        return $this->hasOne(Participant::class);
     }
 
     public function event(): BelongsTo
