@@ -64,7 +64,7 @@ class TimesRunController extends Controller
                                 ->join('participants AS p', 'p.id', 'tr.participant_id')
                                 ->join('driver_history AS dh', 'dh.id', 'p.first_driver_id')
                                 ->join('users AS u', 'u.id', 'tr.penalty_updated_by')
-                                ->where('sr.stage_id', $stageId)
+                                ->where('sr.stage_id', '=', $stageId)
                                 ->get());
     }
 }
