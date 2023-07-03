@@ -18,6 +18,11 @@ class StageRunController extends Controller
                                 ->get());
     }
 
+    public function show(StageRun $stageRun)
+    {
+        return new StageRunResource($stageRun);
+    }
+
     public function store(StoreUpdateStageRunRequest $request)
     {
         $newStageRun = StageRun::create($request->validated());
