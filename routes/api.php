@@ -257,6 +257,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('timesRuns', [TimesRunController::class, 'store']);
     Route::delete('timesRuns/{timeRun}', [TimesRunController::class, 'destroy']);
     Route::get('stageRuns/{runId}/times', [TimesRunController::class, 'getStageRunTimeRuns']);
+    Route::put('stageRuns/{run}/times/{time}/start', [TimesRunController::class, 'updateStartTime']);
+    Route::put('stageRuns/{run}/times/{time}/end', [TimesRunController::class, 'updateEndTime']);
     Route::get('stages/{stageId}/times', [TimesRunController::class, 'getStageTimeRuns']);
     /********************** Time Runs **********************/
 
