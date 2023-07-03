@@ -21,8 +21,10 @@ class DriverController extends Controller
 
     public function searchByName(Request $request)
     {
-
         $eventId = $request->eventId;
+
+        /*dd($name);
+        dd($eventId);*/
 
         $driversNotEnrroledInEventFirstDriver = DB::table('enrollments AS e')
                                                 ->where('e.event_id', $eventId)
