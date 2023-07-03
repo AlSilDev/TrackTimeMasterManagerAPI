@@ -36,13 +36,23 @@ class TimesRunController extends Controller
 
     public function getStageRunTimeRuns(int $runId)
     {
+        /*$query = DB::table('times_run AS tr')
+                ->select('tr.id', 'tr.run_id', 'e.run_order', 'dh.name as driver', 'tr.arrival_date', 'tr.departure_date', 'tr.start_date', 'tr.end_date', 'tr.time_mils', 'tr.time_secs', 'tr.started', 'tr.arrived', 'tr.penalty', 'u.name as user_penalty_updated', 'tr.penalty_notes', 'tr.time_points', 'tr.run_points')
+                ->join('participants AS p', 'p.id', '=', 'tr.participant_id')
+                ->join('enrollments AS e', 'e.id', '=', 'p.enrollment_id')
+                ->join('driver_history AS dh', 'dh.id', '=', 'p.first_driver_id')
+                ->join('users AS u', 'u.id', '=', 'tr.penalty_updated_by')
+                ->where('tr.run_id', '=', $runId)
+                ->get();
+        dd($query);*/
         return response()->json(DB::table('times_run AS tr')
-                                ->select('tr.id', 'tr.run_id', 'dh.name as driver', 'tr.arrival_date', 'tr.departure_date', 'tr.start_date', 'tr.end_date', 'tr.time_mils', 'tr.time_secs', 'tr.started', 'tr.arrived', 'tr.penalty', 'u.name as user_penalty_updated', 'tr.penalty_notes', 'tr.time_points', 'tr.run_points')
-                                ->join('stage_runs AS sr', 'sr.id', 'tr.run_id')
-                                ->join('participants AS p', 'p.id', 'tr.participant_id')
-                                ->join('driver_history AS dh', 'dh.id', 'p.first_driver_id')
-                                ->join('users AS u', 'u.id', 'tr.penalty_updated_by')
-                                ->where('tr.run_id', $runId)
+                                ->select('tr.id', 'tr.run_id', 'e.run_order', 'p.id AS participant_id', 'dh.name as driver', 'tr.arrival_date', 'tr.departure_date', 'tr.start_date', 'tr.end_date', 'tr.time_mils', 'tr.time_secs', 'tr.started', 'tr.arrived', 'tr.penalty', 'tr.penalty_notes', 'tr.time_points', 'tr.run_points')
+                                ->join('stage_runs AS sr', 'sr.id', '=', 'tr.run_id')
+                                ->join('participants AS p', 'p.id', '=', 'tr.participant_id')
+                                ->join('enrollments AS e', 'e.id', '=', 'p.enrollment_id')
+                                ->join('driver_history AS dh', 'dh.id', '=', 'p.first_driver_id')
+                                ->where('tr.run_id', '=', $runId)
+                                ->orderBy('e.run_order')
                                 ->get());
     }
 
