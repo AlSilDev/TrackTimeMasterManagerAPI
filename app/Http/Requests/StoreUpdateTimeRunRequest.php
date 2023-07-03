@@ -24,19 +24,19 @@ class StoreUpdateTimeRunRequest extends FormRequest
         return [
             'run_id' => 'required|integer|min:0',
             'participant_id' => 'required|integer|min:0',
-            'arrival_date' => 'date',
-            'departure_date' => 'date',
+            'arrival_date' => 'date|nullable',
+            'departure_date' => 'date|nullable',
             'start_date' => 'date',
-            'end_date' => 'date',
-            'time_mils' => 'integer|min:0',
-            'time_secs' => 'integer|min:0',
+            'end_date' => 'date|nullable',
+            'time_mils' => 'integer|min:0|nullable',
+            'time_secs' => 'integer|min:0|nullable',
             'started' => 'boolean',
             'arrived' => 'boolean',
-            'penalty' => 'boolean',
-            'penalty_updated_by' => 'integer|min:0',
-            'penalty_notes' => 'boolean|string|max:255',
-            'time_points' => 'integer|min:0',
-            'run_points' => 'integer|min:0'
+            'penalty' => 'integer|min:0|nullable',
+            'penalty_updated_by' => 'integer|min:0|nullable',
+            'penalty_notes' => 'boolean|string|max:255|nullable',
+            'time_points' => 'decimal:0,10|min:0|nullable',
+            'run_points' => 'decimal:0,10|min:0|nullable'
         ];
     }
 }
