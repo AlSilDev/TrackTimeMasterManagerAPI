@@ -67,6 +67,23 @@ class EnrollmentController extends Controller
                                 ->get());
     }
 
+    public function getEnrollmentsNotAlreadyVerified(int $eventId)
+    {
+        $enrollmentsIdAdminVerified = DB::table('admin_verifications')->pluck('id');
+        $enrollmentsIdTechnicalVerified = DB::table('technical_verifications')->pluck('id');
+
+        return response()->json(DB::table('enrollments AS e')
+                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'fd.driver_id AS first_driver_id', 'sd.name AS second_driver_name', 'fd.driver_id AS second_driver_id', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate', 'v.vehicle_id AS vehicle_id')
+                                ->join('driver_history AS fd', 'e.first_driver_id', '=', 'fd.id')
+                                ->join('driver_history AS sd', 'e.second_driver_id', '=', 'sd.id')
+                                ->join('vehicle_history AS v', 'e.vehicle_id', '=', 'v.id')
+                                ->where('e.event_id', $eventId)
+                                ->whereNotIn('e.id', $enrollmentsIdAdminVerified)
+                                ->whereNotIn('e.id', $enrollmentsIdTechnicalVerified)
+                                ->orderBy('e.run_order')
+                                ->get());
+    }
+
     public function getEventEnrollmentsForAdminVerifications(int $eventId)
     {
         $enrollmentsIdAdminVerified = DB::table('admin_verifications')->pluck('id');

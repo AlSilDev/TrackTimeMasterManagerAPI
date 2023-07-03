@@ -36,9 +36,4 @@ class VehicleHistory extends Model
     {
         return $this->belongsTo(Enrollment::class, 'id');
     }
-
-    public function participants(): BelongsTo
-    {
-        return $this->belongsTo(Participant::class, 'id');
-    }
 }

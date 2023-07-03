@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateTechnicalVerificationRequest extends FormRequest
+class UpdateAdminVerificationVerifiedValueAndByRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,8 @@ class StoreUpdateTechnicalVerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'enrollment_id' => 'required|integer|min:0',
-            'verified' => 'boolean',
-            'notes' => 'nullable|string|max:255',
-            'verified_by' => 'nullable|integer|min:0'
+            'verified' => 'required|boolean',
+            'verified_by' => 'required|integer|min:0'
         ];
     }
 }

@@ -16,8 +16,6 @@ class TechnicalVerificationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'event_id' => $this->event_id,
-            'enrollment_order' => $this->enrollment_order,
             'enrollment_id' => $this->enrollment_id,
             'verified' => $this->verified,
             'notes' => $this->notes,

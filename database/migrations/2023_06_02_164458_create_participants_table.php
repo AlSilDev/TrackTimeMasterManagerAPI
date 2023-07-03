@@ -17,9 +17,7 @@ return new class extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Enrollment::class);
-            $table->foreignIdFor(Driver::class, 'first_driver_id');
-            $table->foreignIdFor(Driver::class, 'second_driver_id');
-            $table->foreignIdFor(Vehicle::class);
+            $table->boolean('can_compete')->nullable();
             $table->timestamps();
         });
     }

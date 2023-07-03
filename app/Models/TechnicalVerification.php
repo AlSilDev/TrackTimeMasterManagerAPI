@@ -20,11 +20,6 @@ class TechnicalVerification extends Model
         'verified_by'
     ];
 
-    public function event(): BelongsTo
-    {
-        return $this->belongsTo(Event::class);
-    }
-
     public function enrollment(): BelongsTo
     {
         return $this->belongsTo(Enrollment::class);
