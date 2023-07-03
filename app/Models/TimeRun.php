@@ -38,7 +38,7 @@ class TimeRun extends Model
 
     public function stage_run(): BelongsTo
     {
-        return $this->belongsTo(StageRun::class);
+        return $this->belongsTo(StageRun::class, 'run_id');
     }
 
     public function penalty_updated_by(): BelongsTo
