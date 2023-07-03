@@ -5,7 +5,10 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateTimeRunRequest;
 use App\Http\Resources\TimeRunResource;
+use App\Models\StageRun;
 use App\Models\TimeRun;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -66,5 +69,24 @@ class TimesRunController extends Controller
                                 ->join('users AS u', 'u.id', 'tr.penalty_updated_by')
                                 ->where('sr.stage_id', '=', $stageId)
                                 ->get());
+    }
+
+    public function updateStartTime(StoreUpdateTimeRunRequest $request, StageRun $run, TimeRun $time)
+    {
+        $validated_data = $request->validated();
+
+        if ($validated_data['run_id'] != $run->id)
+            return response('Invalid request: a time cannot be set to a different run', 403);
+
+        if ($validated_data['participant_id'] != $time->participant_id)
+            return response('Invalid request: a time cannot be set to a different participant', 403);
+
+        $time->started = 1;
+
+        $dateAux = new DateTime($validated_data['start_date'], new DateTimeZone('UTC'));
+        $time->start_date = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+        //dd($time->start_date);
+        $time->save();
+        return new TimeRunResource($time);
     }
 }
