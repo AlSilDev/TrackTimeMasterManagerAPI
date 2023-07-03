@@ -89,4 +89,54 @@ class TimesRunController extends Controller
         $time->save();
         return new TimeRunResource($time);
     }
+
+    public function updateEndTime(StoreUpdateTimeRunRequest $request, StageRun $run, TimeRun $time)
+    {
+        $validated_data = $request->validated();
+
+        if ($validated_data['run_id'] != $run->id)
+            return response('Invalid request: a time cannot be set to a different run', 403);
+
+        if ($validated_data['participant_id'] != $time->participant_id)
+            return response('Invalid request: a time cannot be set to a different participant', 403);
+
+        if (!$time->started)
+            return response('Invalid request: time control cannot be posted if run start not confirmed', 403);
+
+        $dateAux = new DateTime($validated_data['end_date'], new DateTimeZone('UTC'));
+        $time->end_date = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+        $time->time_mils = $validated_data['time_mils'];
+        $time->time_secs = intval($time->end_date->format('U')) - strtotime($time->start_date);
+
+        if ($time->time_secs <= 0)
+            return response('Invalid request: run duration must be above 0s', 403);
+
+        $time->end_date = $time->end_date->format('Y-m-d H:i:s');
+
+        $time->time_points = round($time->time_secs * $run->stage->event->point_calc_reason, 2);
+        $time->penalty = 0;
+        $time->run_points = $time->time_points + $time->penalty;
+
+        $time->arrived = 1;
+        $time->save();
+
+        //dd($time->stage_run);
+
+        if (!$time->stage_run->practice) {
+            $totalPts = DB::table('times_run AS tr')
+                        ->select('tr.run_points')
+                        ->join('stage_runs AS sr', 'sr.id', 'tr.run_id')
+                        ->join('participants AS p', 'p.id', 'tr.participant_id')
+                        ->where('sr.practice', '=', '0')
+                        ->where('p.id', '=', $time->participant_id)
+                        ->first()->run_points;
+            //dd($totalPts);
+            //dd($time->stage_run->stage->classifications_stage);
+            DB::update('UPDATE classifications_stage SET stage_points = ? WHERE stage_id = ? AND participant_id = ?', [$totalPts, $time->stage_run->stage_id, $time->participant_id]);
+        }
+
+
+        //$time->stage_run->stage->classifications_stage->
+        return new TimeRunResource($time);
+    }
 }
