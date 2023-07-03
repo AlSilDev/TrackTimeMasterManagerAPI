@@ -39,6 +39,22 @@ class StageRunController extends Controller
         return new StageRunResource($newStageRun);
     }
 
+    public function update(StoreUpdateStageRunRequest $request, StageRun $stageRun)
+    {
+        $validated_data = $request->validated();
+
+        if ($validated_data['stage_id'] != $stageRun->stage_id)
+        {
+            return response('Invalid request: a stage run cannot be transferred to another stage', 403);
+        }
+
+        $stageRun->practice = $validated_data['practice'];
+        $stageRun->date_start = $validated_data['date_start'];
+        $stageRun->save();
+
+        return new StageRunResource($stageRun);
+    }
+
     public function getStageRunFromStage(int $stageId)
     {
         return response()->json(DB::table('stage_runs AS sr')
