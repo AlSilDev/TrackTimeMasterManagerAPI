@@ -104,6 +104,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('events', [EventController::class, 'index']);
     Route::get('events/{event}', [EventController::class, 'show']);
     Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
+    Route::get('events/{event}/classifications', [EventController::class, 'getClassifications']);
     Route::post('events', [EventController::class, 'store']);
     Route::put('events/{event}', [EventController::class, 'update']);
     Route::delete('events/{event}', [EventController::class, 'destroy']);
