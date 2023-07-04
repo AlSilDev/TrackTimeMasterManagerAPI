@@ -203,6 +203,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('stages', [StageController::class, 'index']);
     Route::get('stages/{stage}', [StageController::class, 'show']);
     Route::get('events/{event}/stages', [StageController::class, 'getEventStages']);
+    Route::get('stages/{stage}/classifications', [StageController::class, 'getClassifications']);
     Route::post('events/{event}/stages', [StageController::class, 'store']);
     Route::put('events/{event}/stages/{stage}', [StageController::class, 'update']);
     Route::delete('stages/{stage}', [StageController::class, 'destroy']);
