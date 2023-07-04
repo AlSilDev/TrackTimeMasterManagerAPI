@@ -85,6 +85,7 @@ class TimesRunController extends Controller
 
         $dateAux = new DateTime($validated_data['start_date'], new DateTimeZone('UTC'));
         $time->start_date = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+        $time->start_date = $time->start_date->format('Y-m-d H:i:s');
         //dd($time->start_date);
         $time->save();
         return new TimeRunResource($time);
