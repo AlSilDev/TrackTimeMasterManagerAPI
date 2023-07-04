@@ -212,6 +212,7 @@ Route::middleware('auth:api')->group(function () {
     /********************** Stage Runs **********************/
     Route::get('stageRuns', [StageRunController::class, 'index']);
     Route::get('stageRuns/{stageRun}', [StageRunController::class, 'show']);
+    Route::get('stageRuns/{stageRun}/classifications', [StageRunController::class, 'getClassifications']);
     Route::post('stageRuns', [StageRunController::class, 'store']);
     Route::put('stageRuns/{stageRun}', [StageRunController::class, 'update']);
     Route::delete('stageRuns/{stageRun}', [StageRunController::class, 'destroy']);
