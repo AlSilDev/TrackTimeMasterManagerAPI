@@ -15,6 +15,9 @@ class Participant extends Model
 
     protected $fillable = [
         'enrollment_id',
+        'first_driver_id',
+        'second_driver_id',
+        'vehicle_id',
         'can_compete',
     ];
 
@@ -28,8 +31,23 @@ class Participant extends Model
         return $this->belongsToMany(TimeRun::class, 'id');
     }
 
-    public function enrollment(): HasOne
+    public function enrollment(): BelongsTo
     {
-        return $this->hasOne(Enrollment::class);
+        return $this->belongsTo(Enrollment::class);
+    }
+
+    public function first_driver(): HasOne
+    {
+        return $this->hasOne(DriverHistory::class, 'first_driver_id');
+    }
+
+    public function second_driver(): HasOne
+    {
+        return $this->hasOne(DriverHistory::class, 'second_driver_id');
+    }
+
+    public function vehicle(): HasOne
+    {
+        return $this->hasOne(VehicleHistory::class);
     }
 }
