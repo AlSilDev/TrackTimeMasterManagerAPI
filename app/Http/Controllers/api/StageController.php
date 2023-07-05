@@ -130,4 +130,49 @@ class StageController extends Controller
                                 ->where('e.id', '=', $event->id)
                                 ->get());
     }
+
+    public function test_feature(Participant $participant)
+    {
+        //dd($participant->enrollment->event->stages);
+        foreach($participant->enrollment->event->stages as $stage){
+            $stage_pts = 0;
+            foreach($stage->stage_runs as $run)
+            {
+                /* Registar time_runs iniciais para aparecer nas páginas de partida */
+                $newRun = new TimeRun;
+                $newRun->run_id = $run->id;
+                $newRun->participant_id = $participant->id;
+
+                $start_date = new DateTime($run->date_start);
+                //dd($run);
+                $start_date = $start_date->add(DateInterval::createFromDateString(($participant->enrollment->run_order - 1) . ' minutes'));
+                $newRun->start_date = $start_date;
+                //dd($newRun);
+                $newRun->end_date = $start_date;
+
+                $newRun->time_mils = 0;
+                $newRun->time_secs = 0;
+                $newRun->started = false;
+                $newRun->arrived = false;
+                $newRun->penalty = $run->stage->event->base_penalty;
+                $newRun->run_points = $newRun->penalty;
+                $newRun->time_points = 0;
+
+                if (!$run->practice)
+                    $stage_pts += $newRun->run_points;
+
+                $newRun->save();
+                /* ********************* */
+            }
+
+            /* Registar classifications stage iniciais */
+            $newClassification = new ClassificationStage;
+            $newClassification->stage_id = $stage->id;
+            $newClassification->participant_id = $participant->id;
+            $newClassification->stage_points = $stage_pts;
+
+            $newClassification->save();
+            /* ********************* */
+        }
+    }
 }
