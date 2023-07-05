@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUpdateParticipantRequest extends FormRequest
+class UpdateParticipantDuringEventRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,11 +22,7 @@ class StoreUpdateParticipantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'enrollment_id' => 'required|integer|min:0',
-            'first_driver_id' => 'required|integer|min:0',
-            'second_driver_id' => 'required|integer|min:0',
-            'vehicle_id' => 'required|integer|min:0',
-            'can_compete' => 'boolean',
+            //
         ];
     }
 }
