@@ -36,6 +36,9 @@ use App\Models\TechnicalVerification;
 |
 */
 
+Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerifications']);
+Route::get('events/{eventId}/adminVerifications/canBeVerified', [AdminVerificationController::class, 'getEventAdminVerificationsForVerify']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -222,7 +225,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'show']);
     Route::get('adminVerifications/{enrollmentId}', [AdminVerificationController::class, 'getEnrollmentAdminVerification']);
     Route::get('events/{eventId}/adminVerifications/all', [AdminVerificationController::class, 'getAllEventAdminVerifications']);
-    Route::get('events/{eventId}/adminVerifications/canBeVerified', [AdminVerificationController::class, 'getEventAdminVerificationsForVerify']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::post('adminVerifications', [AdminVerificationController::class, 'store']);
     Route::put('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'update']);
     Route::put('adminVerifications/{adminVerification}/changeVerified', [AdminVerificationController::class, 'update_verified_value_and_by']);
@@ -238,7 +241,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'show']);
     Route::get('technicalVerifications/{enrollmentId}', [TechnicalVerificationController::class, 'getEnrollmentTechnicalVerification']);
     Route::get('events/{eventId}/technicalVerifications/all', [TechnicalVerificationController::class, 'getAllEventTechnicalVerifications']);
-    Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerifications']);
+    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
     Route::post('technicalVerifications', [TechnicalVerificationController::class, 'store']);
     Route::put('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'update']);
     Route::put('technicalVerifications/{technicalVerification}/changeVerified', [TechnicalVerificationController::class, 'update_verified_value_and_by']);
