@@ -127,18 +127,20 @@ class TechnicalVerificationController extends Controller
     {
         return response()->json(DB::table('technical_verifications AS tv')
                                 //->select('tv.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'tv.verified', 'tv.notes', 'u.name')
-                                ->select('tv.id', 'tv.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhs.name AS second_driver_name', 'tv.verified', 'tv.verified_by', 'tv.notes')
+                                ->select('tv.id', 'tv.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.vehicle_id AS vehicle_id', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhf.license_num AS first_driver_license_num', 'dhs.name AS second_driver_name', 'dhs.license_num AS second_driver_license_num', 'tv.verified', 'tv.verified_by', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'tv.notes')
                                 ->join('enrollments AS e', 'e.id', 'tv.enrollment_id')
                                 ->join('admin_verifications AS av', 'tv.enrollment_id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.driver_id', 'e.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.driver_id', 'e.second_driver_id')
                                 ->join('vehicle_history AS vh', 'vh.vehicle_id', 'e.vehicle_id')
+                                ->join('vehicle_classes AS vc', 'vh.class_id', '=', 'vc.id')
+                                ->join('vehicle_categories AS vcc', 'vc.category_id', '=', 'vcc.id')
                                 //->join('users as u', 'u.id', 'tv.verified_by')
                                 ->where('e.event_id', $eventId)
                                 ->where('av.verified', 1)
                                 ->where('tv.verified', 0)
                                 ->where('tv.verified_by', null)
-                                ->orderBy('e.run_order', 'asc')
+                                //->orderBy('e.enrollment_id', 'asc')
                                 ->get());
     }
 }
