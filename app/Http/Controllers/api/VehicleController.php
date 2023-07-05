@@ -53,8 +53,9 @@ class VehicleController extends Controller
         $eventId = $request->eventId;
 
         $vehiclesNotEnrroledInEvent = DB::table('enrollments AS e')
+                                                ->join('vehicle_history AS vh', 'vh.id', '=', 'e.vehicle_id')
                                                 ->where('e.event_id', $eventId)
-                                                ->pluck('vehicle_id');
+                                                ->pluck('vh.vehicle_id');
 
         return response()->json(DB::table('vehicles AS v')->select('v.id', 'v.model', 'v.engine_capacity', 'v.year', 'v.license_plate', 'vcl.name AS class', 'vct.name AS category')
                                                     ->join('vehicle_classes AS vcl', 'v.class_id', '=', 'vcl.id')

@@ -25,12 +25,14 @@ class DriverController extends Controller
         $eventId = $request->eventId;
 
         $driversNotEnrroledInEventFirstDriver = DB::table('enrollments AS e')
+                                                ->join('driver_history AS dhf', 'dhf.id', '=', 'e.first_driver_id')
                                                 ->where('e.event_id', $eventId)
-                                                ->pluck('first_driver_id');
+                                                ->pluck('dhf.driver_id');
 
         $driversNotEnrroledInEventSecondDriver = DB::table('enrollments AS e')
+                                                ->join('driver_history AS dhs', 'dhs.id', '=', 'e.second_driver_id')
                                                 ->where('e.event_id', $eventId)
-                                                ->pluck('second_driver_id');
+                                                ->pluck('dhs.driver_id');
 
 
         return response()->json(Driver::whereRaw("LOWER(name) LIKE LOWER('" . $request->name . "%')")
