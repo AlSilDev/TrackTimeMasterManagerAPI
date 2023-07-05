@@ -15,10 +15,10 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->date('date_start_enrollments');
-            $table->date('date_end_enrollments');
-            $table->date('date_start_event');
-            $table->date('date_end_event');
+            $table->dateTime('date_start_enrollments');
+            $table->dateTime('date_end_enrollments');
+            $table->dateTime('date_start_event');
+            $table->dateTime('date_end_event');
             $table->year('year');
             $table->string('course_url')->nullable();
             $table->string('image_url')->nullable();

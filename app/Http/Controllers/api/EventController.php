@@ -8,8 +8,10 @@ use Illuminate\Http\Request;
 use App\Http\Resources\EventResource;
 use App\Http\Requests\StoreUpdateEventRequest;
 use App\Models\EventCategory;
+use App\Models\Stage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use stdClass;
 
 class EventController extends Controller
 {
@@ -56,6 +58,75 @@ class EventController extends Controller
     public function show(Event $event)
     {
         return new EventResource($event);
+    }
+
+    public function getClassifications(Event $event)
+    {
+        $categories_in_event = DB::table('participants AS p')
+                                ->select('vcc.name')
+                                ->join('enrollments AS e', 'e.id', '=', 'p.enrollment_id')
+                                ->join('vehicle_history AS v', 'v.id', '=', 'p.vehicle_id')
+                                ->join('vehicle_classes AS vc', 'vc.id', '=', 'v.class_id')
+                                ->join('vehicle_categories AS vcc', 'vcc.id', '=', 'vc.category_id')
+                                ->where('e.event_id', '=', $event->id)
+                                ->groupBy('vcc.name')
+                                ->get()->toArray();
+        //dd($categories_in_event);
+
+        $order = DB::table('classifications_stage AS cs')
+        ->selectRaw('cs.participant_id')
+        ->whereIn('cs.stage_id', array_column($event->stages->toArray(), 'id'))
+        ->groupBy('cs.participant_id')
+        ->orderByRaw('SUM(cs.stage_points)')
+        ->get()->toArray();
+
+        $object = new stdClass();
+
+        for($i = 0; $i < count($categories_in_event); $i++)
+        {
+            $object->classifications[$i] = DB::table('classifications_stage AS cs')
+                                            ->selectRaw('cs.participant_id, SUM(cs.stage_points) AS points, e.run_order, fd.country AS first_driver_country, fd.name AS first_driver_name, sd.name AS second_driver_name, sd.country AS second_driver_country, v.model AS vehicle_model, vc.name AS vehicle_class, vcc.name AS vehicle_category')
+                                            ->join('participants AS p', 'p.id', '=', 'cs.participant_id')
+                                            ->join('enrollments AS e', 'e.id', '=', 'p.enrollment_id')
+                                            ->join('driver_history AS fd', 'fd.id', '=', 'p.first_driver_id')
+                                            ->join('driver_history AS sd', 'sd.id', '=', 'p.second_driver_id')
+                                            ->join('vehicle_history AS v', 'v.id', '=', 'p.vehicle_id')
+                                            ->join('vehicle_classes AS vc', 'vc.id', '=', 'v.class_id')
+                                            ->join('vehicle_categories AS vcc', 'vcc.id', '=', 'vc.category_id')
+                                            ->whereIn('cs.stage_id', array_column($event->stages->toArray(), 'id'))
+                                            ->where('vcc.name', '=', $categories_in_event[$i]->name)
+                                            ->groupBy('cs.participant_id')
+                                            ->orderBy('points')
+                                            ->get()->toArray();
+
+            for($j = 0; $j < count($object->classifications[$i]); $j++)
+            {
+                //dd(array_column($order, 'participant_id'));
+                //dd($object->classifications[$i][$j]->participant_id);
+                //dd(array_search(1, array_column($order, 'participant_id')));
+                $object->classifications[$i][$j]->general_pos = array_search($object->classifications[$i][$j]->participant_id, array_column($order, 'participant_id')) + 1;
+                //dd($classifications[$i]->participant_id);
+                $stage_classifications = DB::table('classifications_stage AS cs')
+                                        ->select('cs.id', 'cs.stage_points', 's.name')
+                                        ->join('stages AS s', 's.id', '=', 'cs.stage_id')
+                                        ->whereIn('cs.stage_id', array_column($event->stages->toArray(), 'id'))
+                                        ->where('cs.participant_id', '=', $object->classifications[$i][$j]->participant_id)
+                                        ->orderBy('s.date_start')
+                                        ->get()->toArray();
+                $object->classifications[$i][$j]->stages = $stage_classifications;
+
+            }
+        }
+
+        //dd($classifications);
+        //dd(count($classifications));
+
+        $object->num_stages = Stage::where('event_id', '=', $event->id)->count();
+        //dd($object);
+
+        //dd($classifications);
+
+        return $object;
     }
 
     public function update(StoreUpdateEventRequest $request, Event $event)

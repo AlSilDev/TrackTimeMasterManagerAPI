@@ -107,6 +107,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('events', [EventController::class, 'index']);
     Route::get('events/{event}', [EventController::class, 'show']);
     Route::get('events/withEventCategory/{eventCategoryId}', [EventController::class, 'getEventsWithCategory']);
+    Route::get('events/{event}/classifications', [EventController::class, 'getClassifications']);
     Route::post('events', [EventController::class, 'store']);
     Route::put('events/{event}', [EventController::class, 'update']);
     Route::delete('events/{event}', [EventController::class, 'destroy']);
@@ -206,6 +207,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('stages', [StageController::class, 'index']);
     Route::get('stages/{stage}', [StageController::class, 'show']);
     Route::get('events/{event}/stages', [StageController::class, 'getEventStages']);
+    Route::get('stages/{stage}/classifications', [StageController::class, 'getClassifications']);
     Route::post('events/{event}/stages', [StageController::class, 'store']);
     Route::put('events/{event}/stages/{stage}', [StageController::class, 'update']);
     Route::delete('stages/{stage}', [StageController::class, 'destroy']);
@@ -214,9 +216,13 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Stage Runs **********************/
     Route::get('stageRuns', [StageRunController::class, 'index']);
-    Route::get('stages/{stageId}/stageRuns', [StageRunController::class, 'getStageRunFromStage']);
+    Route::get('stageRuns/{stageRun}', [StageRunController::class, 'show']);
+    Route::get('stageRuns/{stageRun}/classifications', [StageRunController::class, 'getClassifications']);
     Route::post('stageRuns', [StageRunController::class, 'store']);
+    Route::put('stageRuns/{stageRun}', [StageRunController::class, 'update']);
     Route::delete('stageRuns/{stageRun}', [StageRunController::class, 'destroy']);
+    Route::get('stages/{stageId}/runs', [StageRunController::class, 'getStageRunFromStage']);
+
     /********************** Stage Runs **********************/
 
 
@@ -254,10 +260,12 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Time Runs **********************/
     Route::get('timesRuns', [TimesRunController::class, 'index']);
-    Route::get('stageRuns/{runId}/timesRun', [TimesRunController::class, 'getStageRunTimeRuns']);
-    Route::get('stages/{stageId}/timesRun', [TimesRunController::class, 'getStageTimeRuns']);
     Route::post('timesRuns', [TimesRunController::class, 'store']);
     Route::delete('timesRuns/{timeRun}', [TimesRunController::class, 'destroy']);
+    Route::get('stageRuns/{runId}/times', [TimesRunController::class, 'getStageRunTimeRuns']);
+    Route::put('stageRuns/{run}/times/{time}/start', [TimesRunController::class, 'updateStartTime']);
+    Route::put('stageRuns/{run}/times/{time}/end', [TimesRunController::class, 'updateEndTime']);
+    Route::get('stages/{stageId}/times', [TimesRunController::class, 'getStageTimeRuns']);
     /********************** Time Runs **********************/
 
 

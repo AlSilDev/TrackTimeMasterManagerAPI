@@ -21,8 +21,10 @@ class DriverController extends Controller
 
     public function searchByName(Request $request)
     {
-
         $eventId = $request->eventId;
+
+        /*dd($name);
+        dd($eventId);*/
 
         $driversNotEnrroledInEventFirstDriver = DB::table('enrollments AS e')
                                                 ->join('driver_history AS dhf', 'dhf.id', '=', 'e.first_driver_id')

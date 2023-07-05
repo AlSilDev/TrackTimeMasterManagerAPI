@@ -26,6 +26,6 @@ class StageRun extends Model
 
     public function times_run(): HasMany
     {
-        return $this->hasMany(TimeRun::class);
+        return $this->hasMany(TimeRun::class, 'run_id');
     }
 }

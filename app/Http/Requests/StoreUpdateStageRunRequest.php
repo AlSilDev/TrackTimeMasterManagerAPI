@@ -23,7 +23,6 @@ class StoreUpdateStageRunRequest extends FormRequest
     {
         return [
             'stage_id' => 'required|integer|min:0',
-            'run_num' => 'required|integer|min:1',
             'practice' => 'required|boolean',
             'date_start' => 'required|date'
         ];

@@ -56,4 +56,9 @@ class Event extends Model
     {
         return $this->belongsTo(EventCategory::class, 'category_id');
     }
+
+    public function stages(): HasMany
+    {
+        return $this->hasMany(Stage::class);
+    }
 }

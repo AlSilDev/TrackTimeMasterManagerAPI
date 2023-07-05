@@ -3,8 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Stage;
-use App\Models\Enrollment;
+use App\Models\Participant;
+use App\Models\StageRun;
 use App\Models\User;
 
 return new class extends Migration
@@ -16,19 +16,19 @@ return new class extends Migration
     {
         Schema::create('times_run', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Stage::class);
-            $table->foreignIdFor(Enrollment::class);
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->date('arrival_date');
-            $table->date('departure_date');
-            $table->integer('time_secs');
-            $table->integer('time_mils');
+            $table->foreignIdFor(StageRun::class, 'run_id');
+            $table->foreignIdFor(Participant::class);
+            $table->dateTime('start_date');
+            $table->dateTime('end_date')->nullable();
+            $table->dateTime('arrival_date')->nullable();
+            $table->dateTime('departure_date')->nullable();
+            $table->integer('time_secs')->nullable()->default(0);
+            $table->integer('time_mils')->nullable()->default(0);
             $table->boolean('started');
             $table->boolean('arrived');
             $table->integer('penalty');
-            $table->foreignIdFor(User::class, 'penalty_updated_by');
-            $table->string('penalty_notes');
+            $table->foreignIdFor(User::class, 'penalty_updated_by')->nullable();
+            $table->string('penalty_notes')->nullable();
             $table->decimal('time_points');
             $table->decimal('run_points');
             $table->timestamps();

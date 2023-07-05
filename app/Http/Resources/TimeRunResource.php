@@ -15,7 +15,9 @@ class TimeRunResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'run_id' => $this->run_id,
+            'run_order' => $this->participant->enrollment->run_order,
             'participant_id' => $this->participant_id,
             'arrival_date' => $this->arrival_date,
             'departure_date' => $this->departure_date,
