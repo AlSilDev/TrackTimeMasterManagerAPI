@@ -17,6 +17,9 @@ class ParticipantResource extends JsonResource
         return [
             'id' => $this->id,
             'enrollment_id' => $this->enrollment_id,
+            'first_driver_id' => $this->first_driver_id,
+            'second_driver_id' => $this->second_driver_id,
+            'vehicle_id' => $this->vehicle_id,
             'can_compete' => $this->can_compete
         ];
     }
