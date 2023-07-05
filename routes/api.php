@@ -273,5 +273,8 @@ Route::middleware('auth:api')->group(function () {
         'drivers' => DriverController::class,
         'vehicles' => VehicleController::class,
     ]);*/
+
+    /* TEST FEATURES */
+    Route::get('test/{participant}', [StageController::class, 'test_feature']);
 });
 
