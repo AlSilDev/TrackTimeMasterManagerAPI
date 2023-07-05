@@ -123,7 +123,7 @@ class TechnicalVerificationController extends Controller
                                 ->get());
     }
 
-    public function getEventTechnicalVerifications(int $eventId)
+    public function getEventTechnicalVerificationsForVerify(int $eventId)
     {
         return response()->json(DB::table('technical_verifications AS tv')
                                 //->select('tv.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'tv.verified', 'tv.notes', 'u.name')
@@ -140,6 +140,7 @@ class TechnicalVerificationController extends Controller
                                 ->where('av.verified', 1)
                                 ->where('tv.verified', 0)
                                 ->where('tv.verified_by', null)
+                                ->orderBy('e.run_order', 'asc')
                                 //->orderBy('e.enrollment_id', 'asc')
                                 ->get());
     }

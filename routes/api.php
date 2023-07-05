@@ -36,7 +36,7 @@ use App\Models\TechnicalVerification;
 |
 */
 
-Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerifications']);
+Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerificationsForVerify']);
 Route::get('events/{eventId}/adminVerifications/canBeVerified', [AdminVerificationController::class, 'getEventAdminVerificationsForVerify']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
