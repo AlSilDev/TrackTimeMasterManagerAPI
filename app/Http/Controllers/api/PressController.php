@@ -28,7 +28,7 @@ class PressController extends Controller
     {
         $press = $request->validated();
         if ($request->hasFile('press_file')) {
-            $path = Storage::putFile('public/imprensa', $request->file('press_file'));
+            $path = Storage::putFile('imprensa', $request->file('press_file'));
             $press['file_url'] = basename($path);
         }
         $press['event_id'] = $event->id;
