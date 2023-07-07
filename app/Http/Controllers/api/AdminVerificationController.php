@@ -115,7 +115,7 @@ class AdminVerificationController extends Controller
     {
         return response()->json(DB::table('admin_verifications AS av')
                                 //->select('av.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'av.verified', 'av.notes', 'u.name')
-                                ->select('av.id', 'av.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhf.id AS first_driver_id', 'dhf.license_num AS first_driver_license_num', 'dhs.name AS second_driver_name', 'dhs.id AS second_driver_id', 'dhs.license_num AS second_driver_license_num', 'av.verified', 'av.verified_by', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'av.notes')
+                                ->select('av.id', 'av.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhf.id AS first_driver_id', 'dhf.license_num AS first_driver_license_num', 'dhf.country AS first_driver_country', 'dhs.name AS second_driver_name', 'dhs.id AS second_driver_id', 'dhs.license_num AS second_driver_license_num', 'dhs.country AS second_driver_country', 'av.verified', 'av.verified_by', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'av.notes')
                                 ->join('enrollments AS e', 'e.id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.driver_id', 'e.first_driver_id')
                                 ->join('driver_history AS dhs', 'dhs.driver_id', 'e.second_driver_id')
