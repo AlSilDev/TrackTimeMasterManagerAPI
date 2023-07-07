@@ -36,6 +36,6 @@ class DriverHistory extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->belongsToMany(Enrollment::class, 'id');
+        return $this->belongsToMany(Participant::class, 'id');
     }
 }
