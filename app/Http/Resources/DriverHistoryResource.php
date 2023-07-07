@@ -23,6 +23,7 @@ class DriverHistoryResource extends JsonResource
             'license_expiry' => $this->license_expiry,
             'phone_num' => $this->phone_num,
             'affiliate_num' => $this->affiliate_num,
+            'driver_id' => $this->driver_id
         ];
     }
 }
