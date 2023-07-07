@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Enrollment;
+use App\Models\Participant;
 use App\Models\Vehicle;
 use App\Models\VehicleHistory;
 use Carbon\Carbon;
@@ -57,6 +58,15 @@ class VehicleObserver
             {
                 $enrollment->vehicle_id = $new_vehicle_history_id;
                 $enrollment->save();
+            }
+
+            $ids_enrollments_open_events = DB::table('enrollments AS e')->select('e.id')->join('participants AS part', 'e.id', '=', 'part.enrollment_id')->join('events AS ev', 'ev.id', '=', 'e.event_id')->where('ev.date_end_event', '>=', Carbon::now())->where('part.vehicle_id', '=', $old_vehicle_history_id)->pluck('e.id');
+            $enrollments_open_events = Participant::whereIn('enrollment_id', $ids_enrollments_open_events)->get();
+
+            //dd($enrollments_open_events);
+            foreach ($enrollments_open_events as $enrollment_open_event) {
+                $enrollment_open_event->vehicle_id = $$new_vehicle_history_id;
+                $enrollment_open_event->save();
             }
         }
     }
