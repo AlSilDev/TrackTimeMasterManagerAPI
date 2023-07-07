@@ -27,7 +27,6 @@ class StoreUpdateEventRequest extends FormRequest
             'date_end_enrollments' => 'date',
             'date_start_event' => 'date',
             'date_end_event' => 'date',
-            'year' => 'required|integer',
             'image_file' => 'nullable|file|image',
             'course_file' => 'nullable|file',
             'category_id' => 'required',
