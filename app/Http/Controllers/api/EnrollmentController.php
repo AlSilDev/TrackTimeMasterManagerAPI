@@ -33,6 +33,22 @@ class EnrollmentController extends Controller
         //$newEnrollment = Enrollment::create($request->validated());
         //dd($request->event_id);
 
+        $conflict = DB::table('enrollments AS e')
+        ->select(DB::raw('COUNT(e.enroll_order) as count'))
+        ->where('event_id', '=', $request->event_id)
+        ->where(function ($query) use ($request) {
+            $query->whereIn('e.first_driver_id', [$request->first_driver_id, $request->second_driver_id])
+                  ->orWhereIn('e.second_driver_id', [$request->first_driver_id, $request->second_driver_id])
+                  ->orWhere('e.vehicle_id', $request->vehicle_id);
+        })
+        ->orderBy('e.enroll_order', 'desc')
+        ->get()[0]->count;
+
+        if($conflict > 0)
+        {
+            return response('Conflito detetado', 403);
+        }
+
         $enrollments_count = DB::table('enrollments AS e')
             ->select(DB::raw('COUNT(e.enroll_order) as count'))
             ->where('event_id', '=', $request->event_id)
