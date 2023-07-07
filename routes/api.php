@@ -36,9 +36,6 @@ use App\Models\TechnicalVerification;
 |
 */
 
-Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerificationsForVerify']);
-Route::get('events/{eventId}/adminVerifications/canBeVerified', [AdminVerificationController::class, 'getEventAdminVerificationsForVerify']);
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -96,7 +93,7 @@ Route::middleware('auth:api')->group(function () {
     /********************** Vehicles History **********************/
     Route::get('vehiclesHistory', [VehicleHistoryController::class, 'index']);
     Route::get('vehiclesHistory/byLicensePlate/{licensePlate}', [VehicleHistoryController::class, 'searchByLicensePlate']);
-    Route::get('vehiclesHistory/{vehicle}', [VehicleHistoryController::class, 'show']);
+    Route::get('vehiclesHistory/{vehicleHistory}', [VehicleHistoryController::class, 'show']);
     Route::post('vehiclesHistory', [VehicleHistoryController::class, 'store']);
     Route::put('vehiclesHistory/{vehicleHistory}', [VehicleHistoryController::class, 'update']);
     Route::delete('vehiclesHistory/{vehicleHistory}', [VehicleHistoryController::class, 'destroy']);
@@ -148,9 +145,9 @@ Route::middleware('auth:api')->group(function () {
 
     /********************** Drivers History **********************/
     Route::get('driversHistory', [DriverHistoryController::class, 'index']);
-    Route::get('driversHistory/{driversHistoryId}', [DriverHistoryController::class, 'show']);
+    Route::get('driversHistory/{driverHistory}', [DriverHistoryController::class, 'show']);
     Route::post('driversHistory', [DriverHistoryController::class, 'store']);
-    Route::put('driversHistory/{driversHistoryId}', [DriverHistoryController::class, 'update']);
+    Route::put('driversHistory/{driverHistory}', [DriverHistoryController::class, 'update']);
     Route::delete('driversHistory/{driversHistoryId}', [DriverHistoryController::class, 'destroy']);
     /********************** Drivers History **********************/
 
@@ -231,7 +228,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'show']);
     Route::get('adminVerifications/{enrollmentId}', [AdminVerificationController::class, 'getEnrollmentAdminVerification']);
     Route::get('events/{eventId}/adminVerifications/all', [AdminVerificationController::class, 'getAllEventAdminVerifications']);
-    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    Route::get('events/{eventId}/adminVerifications/canBeVerified', [AdminVerificationController::class, 'getEventAdminVerificationsForVerify']);
     Route::post('adminVerifications', [AdminVerificationController::class, 'store']);
     Route::put('adminVerifications/{adminVerification}', [AdminVerificationController::class, 'update']);
     Route::put('adminVerifications/{adminVerification}/changeVerified', [AdminVerificationController::class, 'update_verified_value_and_by']);
@@ -247,7 +244,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'show']);
     Route::get('technicalVerifications/{enrollmentId}', [TechnicalVerificationController::class, 'getEnrollmentTechnicalVerification']);
     Route::get('events/{eventId}/technicalVerifications/all', [TechnicalVerificationController::class, 'getAllEventTechnicalVerifications']);
-    //TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+    Route::get('events/{eventId}/technicalVerifications/canBeVerified', [TechnicalVerificationController::class, 'getEventTechnicalVerificationsForVerify']);
     Route::post('technicalVerifications', [TechnicalVerificationController::class, 'store']);
     Route::put('technicalVerifications/{technicalVerification}', [TechnicalVerificationController::class, 'update']);
     Route::put('technicalVerifications/{technicalVerification}/changeVerified', [TechnicalVerificationController::class, 'update_verified_value_and_by']);
