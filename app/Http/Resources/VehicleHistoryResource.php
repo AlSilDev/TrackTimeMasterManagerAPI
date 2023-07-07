@@ -16,13 +16,13 @@ class VehicleHistoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'vehicle_id' => $this->vehicle_id,
-            'model' => $this->model,
-            'category' => $this->category,
             'class' => $this->class,
+            'category' => $this->class->category,
+            'model' => $this->model,
             'license_plate' => $this->license_plate,
             'year' => $this->year,
             'engine_capacity' => $this->engine_capacity,
+            'vehicle_id' => $this->vehicle_id,
         ];
     }
 }
