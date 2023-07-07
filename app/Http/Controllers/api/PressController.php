@@ -18,7 +18,7 @@ class PressController extends Controller
         //return Press::where('event_id', '=', $event->id)->get();
 
         return response()->json(DB::table('press AS p')
-                                ->select('p.id', 'p.name', 'p.name', 'p.file_url')
+                                ->select('p.id', 'p.name', 'p.name', 'p.file_url', 'p.created_at', 'p.updated_at')
                                 ->join('events AS e', 'e.id', 'p.event_id')
                                 ->where('event_id', '=', $event->id)
                                 ->get());
