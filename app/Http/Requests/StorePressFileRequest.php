@@ -22,7 +22,6 @@ class StorePressFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'event_id' => 'required|integer|min:0',
             'name' => 'required|string|max:255|min:1',
             'press_file' => 'required|file'
         ];

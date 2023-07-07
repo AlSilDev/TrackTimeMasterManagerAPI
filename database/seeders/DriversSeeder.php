@@ -38,7 +38,7 @@ class DriversSeeder extends Seeder
 
             $driver['phone_num'] = str_replace(' ', '', $faker->phoneNumber);
 
-            $driver['country'] = ($r_val = rand(0,2)) == 0 ? 'portugal' : strtolower($faker_en->country());
+            $driver['country'] = ($r_val = rand(0,2)) == 0 ? 'prt' : strtolower($faker_en->countryISOAlpha3());
 
             $driver['created_at'] = $faker->dateTimeBetween('-3 years', 'now');
             $driver['updated_at'] = $driver['created_at'];
