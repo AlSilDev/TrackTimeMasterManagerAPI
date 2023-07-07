@@ -33,7 +33,7 @@ class ParticipantController extends Controller
         $newParticipant->first_driver_id = $validated_data['first_driver_id'];
         $newParticipant->second_driver_id = $validated_data['second_driver_id'];
         $newParticipant->vehicle_id = $validated_data['vehicle_id'];
-        $newParticipant->can_compete = $validated_data['can_compete'];
+        $newParticipant->can_compete = 0;
 
         $newParticipant->save();
         return new ParticipantResource($newParticipant);
