@@ -45,6 +45,7 @@ class TechnicalVerificationController extends Controller
         $newTechnicalVerification->verified_by = $validated_data['verified_by'];
 
         $newTechnicalVerification->save();
+
         return new TechnicalVerificationResource($newTechnicalVerification);
     }
 
@@ -127,7 +128,7 @@ class TechnicalVerificationController extends Controller
     {
         return response()->json(DB::table('technical_verifications AS tv')
                                 //->select('tv.id', 'dhf.name AS first_driver', 'dhs.name AS second_driver', 'tv.verified', 'tv.notes', 'u.name')
-                                ->select('tv.id', 'tv.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.vehicle_id AS vehicle_id', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhf.license_num AS first_driver_license_num', 'dhs.name AS second_driver_name', 'dhs.license_num AS second_driver_license_num', 'tv.verified', 'tv.verified_by', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'tv.notes')
+                                ->select('tv.id', 'tv.enrollment_id', 'e.enroll_order', 'e.run_order', 'vh.model AS vehicle_model', 'vh.vehicle_id AS vehicle_id', 'vh.license_plate AS vehicle_license_plate', 'dhf.name AS first_driver_name', 'dhf.license_num AS first_driver_license_num', 'dhf.country AS first_driver_country', 'dhs.name AS second_driver_name', 'dhs.license_num AS second_driver_license_num', 'dhs.country AS second_driver_country', 'tv.verified', 'tv.verified_by', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'tv.notes')
                                 ->join('enrollments AS e', 'e.id', 'tv.enrollment_id')
                                 ->join('admin_verifications AS av', 'tv.enrollment_id', 'av.enrollment_id')
                                 ->join('driver_history AS dhf', 'dhf.driver_id', 'e.first_driver_id')
