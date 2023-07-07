@@ -18,7 +18,7 @@ class RegulationController extends Controller
         //return Regulation::where('event_id', '=', $event->id)->get();
 
         return response()->json(DB::table('regulations AS r')
-                                ->select('r.id', 'e.name', 'r.name', 'r.file_url')
+                                ->select('r.id', 'e.name', 'r.name', 'r.file_url', 'r.created_at', 'r.updated_at')
                                 ->join('events AS e', 'e.id', 'r.event_id')
                                 ->where('event_id', '=', $event->id)
                                 ->get());
