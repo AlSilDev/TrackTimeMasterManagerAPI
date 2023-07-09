@@ -102,7 +102,7 @@ class EnrollmentController extends Controller
     public function getEventEnrollments(int $eventId)
     {
         return response()->json(DB::table('enrollments AS e')
-                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'fd.id AS first_driver_id', 'fd.country AS first_driver_country', 'fd.license_num AS first_driver_license', 'sd.name AS second_driver_name', 'sd.id AS second_driver_id', 'sd.country AS second_driver_country', 'sd.license_num AS second_driver_license', 'v.model AS vehicle_model', 'v.vehicle_id AS vehicle_id', 'v.license_plate AS vehicle_license_plate', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category')
+                                ->select('e.id', 'e.event_id', 'e.enroll_order', 'e.run_order', 'fd.name AS first_driver_name', 'fd.id AS first_driver_id', 'fd.country AS first_driver_country', 'fd.license_num AS first_driver_license', 'fd.phone_num AS first_driver_phone_num', 'sd.name AS second_driver_name', 'sd.id AS second_driver_id', 'sd.country AS second_driver_country', 'sd.license_num AS second_driver_license', 'sd.phone_num AS second_driver_phone_num', 'v.model AS vehicle_model', 'v.vehicle_id AS vehicle_id', 'v.license_plate AS vehicle_license_plate', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category')
                                 ->join('driver_history AS fd', 'e.first_driver_id', '=', 'fd.id')
                                 ->join('driver_history AS sd', 'e.second_driver_id', '=', 'sd.id')
                                 ->join('vehicle_history AS v', 'e.vehicle_id', '=', 'v.id')

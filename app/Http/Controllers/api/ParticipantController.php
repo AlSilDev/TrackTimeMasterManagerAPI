@@ -76,7 +76,7 @@ class ParticipantController extends Controller
     public function getEventParticipantsCanCompete(int $eventId)
     {
         return response()->json(DB::table('participants AS p')
-                                ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'fd.license_num AS first_driver_license_num', 'fd.country AS first_driver_country', 'e.enroll_order AS enroll_order', 'e.run_order AS run_order', 'sd.name AS second_driver_name', 'sd.license_num AS second_driver_license_num', 'sd.country AS second_driver_country', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'p.can_compete')
+                                ->select('p.id', 'e.id', 'fd.name AS first_driver_name', 'fd.license_num AS first_driver_license_num', 'fd.country AS first_driver_country', 'fd.phone_num AS first_driver_phone_num', 'e.enroll_order AS enroll_order', 'e.run_order AS run_order', 'sd.name AS second_driver_name', 'sd.license_num AS second_driver_license_num', 'sd.country AS second_driver_country', 'sd.phone_num AS second_driver_phone_num', 'v.model AS vehicle_model', 'v.license_plate AS vehicle_license_plate', 'vc.name AS vehicle_class', 'vcc.name AS vehicle_category', 'p.can_compete')
                                 ->join('enrollments AS e', 'e.id', 'p.enrollment_id')
                                 ->join('driver_history AS fd', 'e.first_driver_id', '=', 'fd.id')
                                 ->join('driver_history AS sd', 'e.second_driver_id', '=', 'sd.id')
