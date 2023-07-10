@@ -11,6 +11,7 @@ use App\Models\EventCategory;
 use App\Models\Stage;
 use DateTime;
 use DateTimeImmutable;
+use DateTimeInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use stdClass;
@@ -53,7 +54,7 @@ class EventController extends Controller
         }
 
         //dd($event['date_start_event']);
-        $event['year'] = DateTimeImmutable::createFromFormat('Y-m-d\TH:i', $event['date_start_event']);
+        $event['year'] = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $event['date_start_event']);
         //dd($event['year']);
         $event['year'] = $event['year']->format('Y');
         //dd($event['year']);
@@ -158,11 +159,11 @@ class EventController extends Controller
         $event->date_start_event = $validated_data['date_start_event'];
         $event->date_end_event = $validated_data['date_end_event'];
 
-        //dd($event['date_start_event']);
-        $event->year = DateTimeImmutable::createFromFormat('Y-m-d\TH:i', $event->date_start_event);
-        //dd($event['year']);
+        //dd($event->date_start_event);
+        $event->year = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $event->date_start_event);
+        //dd($event->year);
         $event->year = $event->year->format('Y');
-        //dd($event['year']);
+        //dd($event->year);
 
         $event->category_id = $validated_data['category_id'];
         $event->base_penalty = $validated_data['base_penalty'];
