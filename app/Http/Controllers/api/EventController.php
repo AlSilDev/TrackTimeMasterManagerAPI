@@ -198,6 +198,26 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        foreach($event->stages as $stage)
+        {
+            foreach($stage->classifications_stage as $cs)
+            {
+                return response('Não é possível cancelar um evento que já tem registos de classificações', 401);
+            }
+
+            foreach($stage->stage_runs as $run)
+            {
+                foreach($run->times_run as $tr)
+                {
+                    return response('Não é possível cancelar um evento que já tem registos de tempos', 401);
+                }
+
+                $run->delete();
+            }
+
+            $stage->delete();
+        }
+
         $event->delete();
         return new EventResource($event);
     }
