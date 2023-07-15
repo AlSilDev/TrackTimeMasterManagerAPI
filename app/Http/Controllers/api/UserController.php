@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Requests\UpdateUserPasswordAdminRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserBlockRequest;
 use Illuminate\Support\Facades\Storage;
@@ -65,6 +66,13 @@ class UserController extends Controller
     }
 
     public function update_password(UpdateUserPasswordRequest $request, User $user)
+    {
+        $user->password = bcrypt($request->validated()['password']);
+        $user->save();
+        return new UserResource($user);
+    }
+
+    public function update_password_admin(UpdateUserPasswordAdminRequest $request, User $user)
     {
         $user->password = bcrypt($request->validated()['password']);
         $user->save();

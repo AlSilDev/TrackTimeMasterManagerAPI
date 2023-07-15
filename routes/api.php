@@ -57,6 +57,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('users/withUserCategory/{userCategoryId}', [UserController::class, 'getUsersWithCategory']);
     Route::put('users/{user}', [UserController::class, 'update']);
     Route::patch('users/{user}/password', [UserController::class, 'update_password']);
+    Route::patch('users/{user}/password/asAdmin', [UserController::class, 'update_password_admin']);
     Route::patch('users/{user}/blocked', [UserController::class, 'update_blocked']);
     Route::post('users', [UserController::class, 'store']);
     Route::delete('users/{user}/delete', [UserController::class, 'destroy']);
