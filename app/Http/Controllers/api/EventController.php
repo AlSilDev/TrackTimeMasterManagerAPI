@@ -12,6 +12,7 @@ use App\Models\Stage;
 use DateTime;
 use DateTimeImmutable;
 use DateTimeInterface;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use stdClass;
@@ -53,10 +54,23 @@ class EventController extends Controller
             $event['course_url'] = basename($path);
         }
 
+        $dateAux = new DateTime($event['date_start_enrollments'], new DateTimeZone('UTC'));
+        $event['date_start_enrollments'] = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
+        $dateAux = new DateTime($event['date_end_enrollments'], new DateTimeZone('UTC'));
+        $event['date_end_enrollments'] = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
+        $dateAux = new DateTime($event['date_start_event'], new DateTimeZone('UTC'));
+        $event['date_start_event'] = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
+        $dateAux = new DateTime($event['date_end_event'], new DateTimeZone('UTC'));
+        $event['date_end_event'] = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
         //dd($event['date_start_event']);
-        $event['year'] = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $event['date_start_event']);
+        //$event['year'] = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $event['date_start_event']);
+        $event['year'] = $event['date_start_event']->format('Y');
         //dd($event['year']);
-        $event['year'] = $event['year']->format('Y');
+        //$event['year'] = $event['year']->format('Y');
         //dd($event['year']);
 
         $newEvent = Event::create($event);
@@ -154,13 +168,21 @@ class EventController extends Controller
         }
 
         $event->name = $validated_data['name'];
-        $event->date_start_enrollments = $validated_data['date_start_enrollments'];
-        $event->date_end_enrollments = $validated_data['date_end_enrollments'];
-        $event->date_start_event = $validated_data['date_start_event'];
-        $event->date_end_event = $validated_data['date_end_event'];
+        //dd($validated_data);
+        $dateAux = new DateTime($validated_data['date_start_enrollments'], new DateTimeZone('UTC'));
+        $event->date_start_enrollments = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
+        $dateAux = new DateTime($validated_data['date_end_enrollments'], new DateTimeZone('UTC'));
+        $event->date_end_enrollments = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
+        $dateAux = new DateTime($validated_data['date_start_event'], new DateTimeZone('UTC'));
+        $event->date_start_event = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
+
+        $dateAux = new DateTime($validated_data['date_end_event'], new DateTimeZone('UTC'));
+        $event->date_end_event = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
 
         //dd($event->date_start_event);
-        $event->year = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $event->date_start_event);
+        $event->year = DateTimeImmutable::createFromFormat(DateTimeInterface::ISO8601, $validated_data['date_start_event']);
         //dd($event->year);
         $event->year = $event->year->format('Y');
         //dd($event->year);
