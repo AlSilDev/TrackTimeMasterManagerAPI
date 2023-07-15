@@ -87,11 +87,12 @@ class TimesRunController extends Controller
             return response('Não é possível atualizar o tempo de outro participante', 403);
 
         $time->started = 1;
-
+        //dd($validated_data['start_date']);
         $dateAux = new DateTime($validated_data['start_date'], new DateTimeZone('UTC'));
         $time->start_date = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
         $time->start_date = $time->start_date->format('Y-m-d H:i:s');
         //dd($time->start_date);
+        $time->penalty = $run->stage->event->base_penalty;
         $time->save();
         return new TimeRunResource($time);
     }
@@ -117,8 +118,17 @@ class TimesRunController extends Controller
         $dateAux = new DateTime($validated_data['end_date'], new DateTimeZone('UTC'));
         $time->end_date = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
         $time->time_mils = $validated_data['time_mils'];
-        $time->time_secs = intval($time->end_date->format('U')) - strtotime($time->start_date);
+        /*
+        $time->time_secs = intval($dateAux2->format('U')) - intval($dateAux->format('U'));
+        dd($dateAux->format('U'));*/
 
+        //dd($time->start_date);
+        $time->time_secs = $validated_data['time_secs'];
+        //dd(strtotime($aux[0]));
+        //dd($aux[0]);
+        //dd($time->start_date);
+
+        //$time->time_secs = 60;
         if ($time->time_secs <= 0)
             return response('A prova tem de demorar mais de 0s', 403);
 
