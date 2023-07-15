@@ -8,6 +8,8 @@ use App\Http\Resources\StageRunResource;
 use App\Models\StageRun;
 use App\Models\Stage;
 use App\Models\TimeRun;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 
 class StageRunController extends Controller
@@ -64,6 +66,17 @@ class StageRunController extends Controller
         if (!$largest_run_num)
             $largest_run_num = 0;
 
+        $dateAux = new DateTime($validated_data['date_start'], new DateTimeZone('UTC'));
+        $timezone = new DateTimeZone('Europe/Lisbon');
+        $dateAux->setTimezone($timezone);
+        $date_start_stage = new DateTime($stage->date_start, $timezone);
+        $date_end_event = new DateTime($stage->event->date_end_event, $timezone);
+        if ($dateAux < $date_start_stage || $dateAux > $date_end_event)
+        {
+            //dd($validated_data['date_start']);
+            return response('A data de início da partida tem de coincidir com a data da etapa', 401);
+        }
+
         $validated_data['run_num'] = $largest_run_num + 1;
 
         $newStageRun = StageRun::create($validated_data);
@@ -77,7 +90,18 @@ class StageRunController extends Controller
 
         if ($validated_data['stage_id'] != $stageRun->stage_id)
         {
-            return response('Invalid request: a stage run cannot be transferred to another stage', 403);
+            return response('Uma partida não pode ser transferida para outra etapa', 403);
+        }
+
+        $dateAux = new DateTime($validated_data['date_start'], new DateTimeZone('UTC'));
+        $timezone = new DateTimeZone('Europe/Lisbon');
+        $dateAux->setTimezone($timezone);
+        $date_start_stage = new DateTime($stageRun->stage->date_start, $timezone);
+        $date_end_event = new DateTime($stageRun->stage->event->date_end_event, $timezone);
+        if ($dateAux < $date_start_stage || $dateAux > $date_end_event)
+        {
+            //dd($validated_data['date_start']);
+            return response('A data de início da partida tem de coincidir com a data da etapa', 401);
         }
 
         $stageRun->practice = $validated_data['practice'];
