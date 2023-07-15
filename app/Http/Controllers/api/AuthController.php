@@ -13,12 +13,12 @@ const CLIENT_SECRET = 'iovynh8n9XevlUN6Nx9o6P1leJkFo6dflWyoXIga';
 
 class AuthController extends Controller
 {
-    private function passportAuthenticationData($username, $password) {
+    private function passportAuthenticationData($email, $password) {
         return [
             'grant_type' => 'password',
             'client_id' => CLIENT_ID,
             'client_secret' => CLIENT_SECRET,
-            'username' => $username,
+            'username' => $email,
             'password' => $password,
             'scope' => ''
         ];
@@ -26,11 +26,15 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $user = User::where('email', '=', $request->username)->first();
+        $user = User::where('email', '=', $request->email)->first();
+        if (!$user)
+        {
+            return response()->json('Utilizador não encontrado', 401);
+        }
         if ($user->blocked != 1)
         {
             try {
-                request()->request->add($this->passportAuthenticationData($request->username, $request->password));
+                request()->request->add($this->passportAuthenticationData($request->email, $request->password));
                 $request = Request::create(PASSPORT_SERVER_URL . '/oauth/token', 'POST');
                 $response = Route::dispatch($request);
                 $errorCode = $response->getStatusCode();
