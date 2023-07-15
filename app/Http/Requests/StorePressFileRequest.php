@@ -23,7 +23,7 @@ class StorePressFileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|min:1',
-            'press_file' => 'required|file'
+            'press_file' => 'required|file|max:30720'
         ];
     }
 }

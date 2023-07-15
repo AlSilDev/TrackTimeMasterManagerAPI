@@ -23,7 +23,7 @@ class StoreRegulationFileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255|min:1',
-            'regulation_file' => 'required|file'
+            'regulation_file' => 'required|file|max:30720'
         ];
     }
 }
