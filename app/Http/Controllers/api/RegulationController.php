@@ -30,7 +30,7 @@ class RegulationController extends Controller
         $regulation['event_id'] = $event->id;
 
         if ($request->hasFile('regulation_file')) {
-            $path = Storage::putFile('public/regulamentos', $request->file('regulation_file'));
+            $path = Storage::putFile('regulamentos', $request->file('regulation_file'));
             $regulation['file_url'] = basename($path);
         }
 
@@ -41,6 +41,7 @@ class RegulationController extends Controller
 
     public function destroy(Regulation $regulation)
     {
+        Storage::delete("regulamentos/{$regulation->file_url}");
         $regulation->delete();
         return new RegulationResource($regulation);
     }

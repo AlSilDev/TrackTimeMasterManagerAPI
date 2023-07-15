@@ -40,6 +40,7 @@ class PressController extends Controller
 
     public function destroy(Press $press)
     {
+        Storage::delete("imprensa/{$press->file_url}");
         $press->delete();
         return new PressResource($press);
     }
