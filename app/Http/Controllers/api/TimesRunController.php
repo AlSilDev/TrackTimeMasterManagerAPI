@@ -73,6 +73,11 @@ class TimesRunController extends Controller
 
     public function updateStartTime(StoreUpdateTimeRunRequest $request, StageRun $run, TimeRun $time)
     {
+        if ($run->ended)
+        {
+            return response('Não é possível alterar tempos de uma partida terminada', 403);
+        }
+
         $validated_data = $request->validated();
 
         if ($validated_data['run_id'] != $run->id)
@@ -93,6 +98,11 @@ class TimesRunController extends Controller
 
     public function updateEndTime(StoreUpdateTimeRunRequest $request, StageRun $run, TimeRun $time)
     {
+        if ($run->ended)
+        {
+            return response('Não é possível alterar tempos de uma partida terminada', 403);
+        }
+
         $validated_data = $request->validated();
 
         if ($validated_data['run_id'] != $run->id)

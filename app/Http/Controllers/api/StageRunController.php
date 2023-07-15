@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateStageRunRequest;
 use App\Http\Resources\StageRunResource;
 use App\Models\StageRun;
+use App\Models\Stage;
 use App\Models\TimeRun;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class StageRunController extends Controller
     public function index()
     {
         return response()->json(DB::table('stage_runs AS sr')
-                                ->select('sr.id', 's.name AS stage_name', 'sr.run_num', 'sr.practice')
+                                ->select('sr.id', 's.name AS stage_name', 'sr.run_num', 'sr.practice', 'sr.ended')
                                 ->join('stage AS s', 's.id', 'sr.stage_id')
                                 ->get());
     }
@@ -54,7 +55,7 @@ class StageRunController extends Controller
         return $result;
     }
 
-    public function store(StoreUpdateStageRunRequest $request)
+    public function store(StoreUpdateStageRunRequest $request, Stage $stage)
     {
         $validated_data = $request->validated();
 
@@ -86,10 +87,24 @@ class StageRunController extends Controller
         return new StageRunResource($stageRun);
     }
 
+    public function end(StageRun $stageRun)
+    {
+        $stageRun->ended = true;
+        $stageRun->save();
+
+        if (StageRun::where('stage_id', '=', $stageRun->stage->id)->orderByDesc('created_at')->pluck('id')->first() == $stageRun->id)
+        {
+            $stageRun->stage->ended = true;
+            $stageRun->stage->save();
+        }
+
+        return new StageRunResource($stageRun);
+    }
+
     public function getStageRunFromStage(int $stageId)
     {
         return response()->json(DB::table('stage_runs AS sr')
-                                ->select('sr.id', 'sr.run_num', 'sr.practice', 'sr.date_start')
+                                ->select('sr.id', 'sr.run_num', 'sr.practice', 'sr.date_start', 'sr.ended')
                                 ->where('sr.stage_id', $stageId)
                                 ->get());
     }

@@ -16,6 +16,7 @@ class StageRun extends Model
         'stage_id',
         'run_num',
         'practice',
+        'ended',
         'date_start'
     ];
 

@@ -19,6 +19,7 @@ class StageResource extends JsonResource
             'event_id' => $this->event_id,
             'name' => $this->name,
             'date_start' => $this->date_start,
+            'ended' => $this->ended
             //'num_runs' => $this->num_runs,
             //'time_until_next_run_mins' => $this->time_until_next_run_mins
         ];

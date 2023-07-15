@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('run_num');
             $table->boolean('practice');
             $table->dateTime('date_start');
+            $table->boolean('ended')->default(false);
             $table->timestamps();
         });
     }

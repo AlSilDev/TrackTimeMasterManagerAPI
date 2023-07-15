@@ -16,6 +16,7 @@ class Stage extends Model
         'event_id',
         'name',
         'date_start',
+        'ended'
         //'num_runs',
         //'time_until_next_run_mins'
     ];

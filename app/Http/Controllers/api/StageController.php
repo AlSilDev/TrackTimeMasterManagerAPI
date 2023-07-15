@@ -21,7 +21,7 @@ class StageController extends Controller
     public function index()
     {
         return response()->json(DB::table('stages AS s')
-                                ->select('s.id', 's.name', 's.date_start')
+                                ->select('s.id', 's.name', 's.date_start', 's.ended')
                                 ->join('events AS e', 'e.id', '=', 's.event_id')
                                 ->get());
     }
@@ -116,6 +116,20 @@ class StageController extends Controller
         return new StageResource($stage);
     }
 
+    public function end(Stage $stage)
+    {
+        foreach($stage->stage_runs as $stageRun)
+        {
+            $stageRun->ended = true;
+            $stageRun->save();
+        }
+
+        $stage->ended = true;
+        $stage->save();
+
+        return new StageResource($stageRun);
+    }
+
     public function destroy(Stage $stage)
     {
         $stage->delete();
@@ -125,7 +139,7 @@ class StageController extends Controller
     public function getEventStages(Event $event)
     {
         return response()->json(DB::table('stages AS s')
-                                ->select('s.id', 's.name', 's.date_start')
+                                ->select('s.id', 's.name', 's.date_start', 's.ended')
                                 ->join('events AS e', 'e.id', '=', 's.event_id')
                                 ->where('e.id', '=', $event->id)
                                 ->get());
