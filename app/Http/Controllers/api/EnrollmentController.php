@@ -12,6 +12,7 @@ use App\Models\Event;
 use App\Models\Participant;
 use App\Models\TechnicalVerification;
 use App\Models\VehicleHistory;
+use App\Models\DriverHistory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,14 +33,19 @@ class EnrollmentController extends Controller
     {
         //$newEnrollment = Enrollment::create($request->validated());
         //dd($request->event_id);
+        $validated_data = $request->validated();
+        $first_driver_history_id = DriverHistory::where('driver_id', '=', $validated_data['first_driver_id'])->orderBy('created_at', 'desc')->first()['id'];
+        //dd($first_driver_history_id);
+        $second_driver_history_id = DriverHistory::where('driver_id', '=', $validated_data['second_driver_id'])->orderBy('created_at', 'desc')->first()['id'];
+        $vehicle_history_id = VehicleHistory::where('vehicle_id', '=', $validated_data['vehicle_id'])->orderBy('created_at', 'desc')->get()[0]['id'];
 
         $conflict = DB::table('enrollments AS e')
         ->select(DB::raw('COUNT(e.enroll_order) as count'))
-        ->where('event_id', '=', $request->event_id)
-        ->where(function ($query) use ($request) {
-            $query->whereIn('e.first_driver_id', [$request->first_driver_id, $request->second_driver_id])
-                  ->orWhereIn('e.second_driver_id', [$request->first_driver_id, $request->second_driver_id])
-                  ->orWhere('e.vehicle_id', $request->vehicle_id);
+        ->where('event_id', '=', $validated_data['event_id'])
+        ->where(function ($query) use ($first_driver_history_id, $second_driver_history_id, $vehicle_history_id) {
+            $query->whereIn('e.first_driver_id', [$first_driver_history_id, $second_driver_history_id])
+                  ->orWhereIn('e.second_driver_id', [$first_driver_history_id, $second_driver_history_id])
+                  ->orWhere('e.vehicle_id', $vehicle_history_id);
         })
         ->orderBy('e.enroll_order', 'desc')
         ->get()[0]->count;
@@ -69,10 +75,12 @@ class EnrollmentController extends Controller
         //dd(++$enrollments_count);
         //$lastmore1 = ++$enrollments_count;
         //dd(++$enrollments_count->count);
-        $validated_data = $request->validated();
-        $vehicle_history_id = VehicleHistory::where('vehicle_id', '=', $validated_data['vehicle_id'])->orderBy('created_at', 'desc')->get()[0]['id'];
+        
+        
         //dd($vehicle_history_id);
         $validated_data['vehicle_id'] = $vehicle_history_id;
+        $validated_data['first_driver_id'] = $first_driver_history_id;
+        $validated_data['second_driver_id'] = $second_driver_history_id;
         $validated_data['enroll_order'] = ++$enrollments_count;
         $validated_data['run_order'] = $validated_data['enroll_order'];
         //dd($validated_data);
