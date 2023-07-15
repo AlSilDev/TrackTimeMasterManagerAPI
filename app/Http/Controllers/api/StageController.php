@@ -13,6 +13,7 @@ use App\Models\StageRun;
 use App\Models\TimeRun;
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use stdClass;
 
@@ -85,6 +86,18 @@ class StageController extends Controller
     {
         $validated_data = $request->validated();
         $validated_data['event_id'] = $event->id;
+
+        $dateAux = new DateTime($validated_data['date_start'], new DateTimeZone('UTC'));
+        $timezone = new DateTimeZone('Europe/Lisbon');
+        $dateAux->setTimezone($timezone);
+        $date_start_event = new DateTime($event->date_start_event, $timezone);
+        $date_end_event = new DateTime($event->date_end_event, $timezone);
+        if ($dateAux < $date_start_event || $dateAux > $date_end_event)
+        {
+            //dd($validated_data['date_start']);
+            return response('A data de início da etapa tem de coincidir com a data da prova', 401);
+        }
+            
         $newStage = Stage::create($validated_data);
 
         $firstRun = new StageRun;
