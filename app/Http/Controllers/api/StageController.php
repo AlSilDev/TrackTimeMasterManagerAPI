@@ -145,6 +145,21 @@ class StageController extends Controller
 
     public function destroy(Stage $stage)
     {
+        foreach($stage->stage_runs as $run)
+        {
+            foreach($run->times_run as $tr)
+            {
+                return response('Não é possível cancelar uma etapa que já tem registos de tempos', 401);
+            }
+
+            $run->delete();
+        }
+
+        foreach($stage->classifications_stage as $cs)
+        {
+            $cs->delete();
+        }
+
         $stage->delete();
         return new StageResource($stage);
     }
