@@ -81,10 +81,10 @@ class TimesRunController extends Controller
         $validated_data = $request->validated();
 
         if ($validated_data['run_id'] != $run->id)
-            return response('Invalid request: a time cannot be set to a different run', 403);
+            return response('Não é possível atualizar o tempo de uma partida diferente', 403);
 
         if ($validated_data['participant_id'] != $time->participant_id)
-            return response('Invalid request: a time cannot be set to a different participant', 403);
+            return response('Não é possível atualizar o tempo de outro participante', 403);
 
         $time->started = 1;
 
@@ -106,13 +106,13 @@ class TimesRunController extends Controller
         $validated_data = $request->validated();
 
         if ($validated_data['run_id'] != $run->id)
-            return response('Invalid request: a time cannot be set to a different run', 403);
+            return response('Não é possível atualizar o tempo de uma partida diferente', 403);
 
         if ($validated_data['participant_id'] != $time->participant_id)
-            return response('Invalid request: a time cannot be set to a different participant', 403);
+            return response('Não é possível atualizar o tempo de outro participante', 403);
 
         if (!$time->started)
-            return response('Invalid request: time control cannot be posted if run start not confirmed', 403);
+            return response('Não é possível atribuir tempo final se a partida não começou', 403);
 
         $dateAux = new DateTime($validated_data['end_date'], new DateTimeZone('UTC'));
         $time->end_date = $dateAux->setTimezone(new DateTimeZone('Europe/Lisbon'));
@@ -120,7 +120,7 @@ class TimesRunController extends Controller
         $time->time_secs = intval($time->end_date->format('U')) - strtotime($time->start_date);
 
         if ($time->time_secs <= 0)
-            return response('Invalid request: run duration must be above 0s', 403);
+            return response('A prova tem de demorar mais de 0s', 403);
 
         $time->end_date = $time->end_date->format('Y-m-d H:i:s');
 
