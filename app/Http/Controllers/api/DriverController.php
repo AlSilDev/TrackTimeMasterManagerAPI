@@ -7,67 +7,58 @@ use App\Models\Driver;
 use App\Http\Resources\DriverResource;
 use App\Http\Requests\StoreUpdateDriverRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DriverController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        //return response()->json(Driver::all());
-        //return DriverResource::collection(Driver::all());
         if ($request->attribute && $request->search){
             return response()->json(Driver::whereRaw("UPPER({$request->attribute}) LIKE CONCAT('%', UPPER('{$request->search}'), '%')")->orderBy($request->column, $request->order)->paginate(15));
         }
         return response()->json(Driver::orderBy($request->column, $request->order)->paginate(15));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function searchByName(Request $request)
     {
-        //
+        $eventId = $request->eventId;
+
+        /*dd($name);
+        dd($eventId);*/
+
+        $driversNotEnrroledInEventFirstDriver = DB::table('enrollments AS e')
+                                                ->join('driver_history AS dhf', 'dhf.id', '=', 'e.first_driver_id')
+                                                ->where('e.event_id', $eventId)
+                                                ->pluck('dhf.driver_id');
+
+        $driversNotEnrroledInEventSecondDriver = DB::table('enrollments AS e')
+                                                ->join('driver_history AS dhs', 'dhs.id', '=', 'e.second_driver_id')
+                                                ->where('e.event_id', $eventId)
+                                                ->pluck('dhs.driver_id');
+
+
+        return response()->json(Driver::whereRaw("LOWER(name) LIKE LOWER('" . $request->name . "%')")
+                            ->whereNotIn('id', $driversNotEnrroledInEventFirstDriver)
+                            ->whereNotIn('id', $driversNotEnrroledInEventSecondDriver)
+                            ->get());
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreUpdateDriverRequest $request)
     {
         $newDriver = Driver::create($request->validated());
         return new DriverResource($newDriver);
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Driver $driver)
     {
         return new DriverResource($driver);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Driver $driver)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(StoreUpdateDriverRequest $request, Driver $driver)
     {
         $driver->update($request->validated());
         return new DriverResource($driver);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Driver $driver)
     {
         $driver->delete();

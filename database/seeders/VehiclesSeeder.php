@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Faker\Provider\Fakecar;
 use Illuminate\Support\Facades\DB;
 use App\Models\Vehicle;
+use App\Models\VehicleClass;
 
 class VehiclesSeeder extends Seeder
 {
@@ -29,21 +30,23 @@ class VehiclesSeeder extends Seeder
 
         for($i = 0; $i < $num_vehicles; $i++) {
             $vehicle['model'] = $faker->vehicle;
-            $vehicle['category'] = $faker->randomElement($this->categoryTypes);
-            switch ($vehicle['category']) {
+            $category = $faker->randomElement($this->categoryTypes);
+            switch ($category) {
                 case 'DP':
-                    $vehicle['class'] = $faker->randomElement($this->classDPTypes);
+                    $class = $faker->randomElement($this->classDPTypes);
                     break;
                 case 'CL':
-                    $vehicle['class'] = $faker->randomElement($this->classCLTypes);
+                    $class = $faker->randomElement($this->classCLTypes);
                     break;
                 case 'PR':
-                    $vehicle['class'] = '';
+                    $class = 'PR';
                     break;
                 default:
-                    $vehicle['class'] = '';
+                    $class = 'PR';
                     break;
             };
+            $vehicle['class_id'] = VehicleClass::where('name', $class)->first()['id'];
+
             $vehicle['license_plate'] = $faker->regexify('[0-9]{2}-[A-Z]{2}-[0-9]{2}');
             $vehicle['year'] = $faker->year();
             $vehicle['engine_capacity'] = $faker->numberBetween(1398,2998);
@@ -55,7 +58,12 @@ class VehiclesSeeder extends Seeder
             $this->command->info('Created vehicle ' . $i);
         }
 
-        DB::table('vehicles')->insert($vehicles);
+        //DB::table('vehicles')->insert($vehicles);
+
+        foreach($vehicles as $vehicle)
+        {
+            Vehicle::create($vehicle);
+        }
 
         $this->command->info('Inserted vehicles in DB');
         $this->command->info("Vehicles seeder - End");

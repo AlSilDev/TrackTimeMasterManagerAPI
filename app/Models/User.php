@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -20,7 +22,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password'
+        'password',
+        'type_id',
+        'blocked',
+        'photo_url'
     ];
 
     /**
@@ -52,4 +57,25 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }*/
+
+    public function enrollments_by(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(UserCategory::class, 'type_id');
+    }
+
+    public function admin_verifications_verified_by(): HasMany
+    {
+        return $this->hasMany(AdminVerification::class);
+    }
+
+    public function technical_verifications_verified_by(): HasMany
+    {
+        return $this->hasMany(TechnicalVerfication::class);
+    }
+
 }

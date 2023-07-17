@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Driver;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Date;
@@ -17,6 +18,7 @@ class DriversSeeder extends Seeder
         $this->command->info("Drivers seeder - Start");
 
         $faker = \Faker\Factory::create('pt_PT');
+        $faker_en = \Faker\Factory::create('en_US');
 
         $num_drivers = 50;
         $drivers = [];
@@ -36,14 +38,21 @@ class DriversSeeder extends Seeder
 
             $driver['phone_num'] = str_replace(' ', '', $faker->phoneNumber);
 
+            $driver['country'] = ($r_val = rand(0,2)) == 0 ? 'prt' : strtolower($faker_en->countryISOAlpha3());
+
             $driver['created_at'] = $faker->dateTimeBetween('-3 years', 'now');
             $driver['updated_at'] = $driver['created_at'];
 
             array_push($drivers, $driver);
-            $this->command->info('Created driver ' . $i);
         }
 
-        DB::table('drivers')->insert($drivers);
+        //DB::table('drivers')->insert($drivers);
+        foreach($drivers as $driver)
+        {
+            Driver::create($driver);
+            $this->command->info('Created driver ' . $driver['name']);
+        }
+
         $this->command->info('Inserted drivers in DB');
         $this->command->info("Drivers seeder - End");
 

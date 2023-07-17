@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Vehicle;
+use App\Models\VehicleClass;
 
 return new class extends Migration
 {
@@ -16,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('model');
-            $table->string('category');
-            $table->string('class');
+            $table->foreignIdFor(VehicleClass::class, "class_id");
             $table->string('license_plate');
             $table->year('year');
             $table->integer('engine_capacity');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('vehicle_history');
     }
 };

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Http\Resources\UserResource;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Requests\UpdateUserPasswordRequest;
+use App\Http\Requests\UpdateUserPasswordAdminRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserBlockRequest;
 use Illuminate\Support\Facades\Storage;
@@ -44,7 +45,7 @@ class UserController extends Controller
         $validated_data = $request->validated();
         $emailToVerified = $validated_data['email'];
         $user->name = $validated_data['name'];
-        $user->type = $validated_data['type'];
+        $user->type_id = $validated_data['type_id'];
         if(strcmp($user->email, $emailToVerified) != 0){
             $email = DB::table('users')->where('email', $emailToVerified)->value('email');
             if($email == null){
@@ -56,7 +57,7 @@ class UserController extends Controller
             }
         }
         if ($request->hasFile('photo_file')) {
-            $path = Storage::putFile('public/fotos', $request->file('photo_file'));
+            $path = Storage::putFile('fotos', $request->file('photo_file'));
             $user->photo_url = basename($path);
         }
 
@@ -65,6 +66,13 @@ class UserController extends Controller
     }
 
     public function update_password(UpdateUserPasswordRequest $request, User $user)
+    {
+        $user->password = bcrypt($request->validated()['password']);
+        $user->save();
+        return new UserResource($user);
+    }
+
+    public function update_password_admin(UpdateUserPasswordAdminRequest $request, User $user)
     {
         $user->password = bcrypt($request->validated()['password']);
         $user->save();
@@ -86,16 +94,16 @@ class UserController extends Controller
 
         $newUser = new User;
         $newUser->name = $validated_data['name'];
-        $newUser->type = $validated_data['type'];
+        $newUser->type_id = $validated_data['type_id'];
         $newUser->email = $validated_data['email'];
         //$newUser->password = Hash::make($validated_data['password']);
         $newUser->password = bcrypt($validated_data['password']);
 
         if ($request->hasFile('photo_file')) {
-            $path = Storage::putFile('public/fotos', $request->file('photo_file'));
+            $path = Storage::putFile('fotos', $request->file('photo_file'));
             $newUser->photo_url = basename($path);
         }
-        
+
         $newUser->save();
         return new UserResource($newUser);
     }
@@ -104,5 +112,10 @@ class UserController extends Controller
     {
         $user->delete();
         return new UserResource($user);
+    }
+
+    public function getUsersWithCategory(int $userTypeId)
+    {
+        return response()->json(DB::table('users')->where('type_id', $userTypeId)->get());
     }
 }

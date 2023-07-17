@@ -23,8 +23,7 @@ class StoreUpdateVehicleRequest extends FormRequest
     {
         return [
             'model' => 'required|string|max:50',
-            'category' => 'required|string|max:10',
-            'class' => 'required|string|max:10',
+            'class_id' => 'required|integer|min:0',
             'license_plate' => 'required|string',
             'year' => 'required|integer|digits:4',
             'engine_capacity' => 'required|integer|min:0',

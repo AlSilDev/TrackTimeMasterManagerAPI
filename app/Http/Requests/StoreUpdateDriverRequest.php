@@ -23,11 +23,12 @@ class StoreUpdateDriverRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'email' => 'required|email',
-            'license_num' => 'required|integer|min:0',
-            'license_expiry' => 'required|date',
-            'phone_num' => 'required||regex:/^([0-9\s\-\+\(\)]*)$/|min:9|max:9',
-            'affiliate_num' => 'required|integer|min:0',
+            'email' => 'email',
+            'country' => 'string|max:5',
+            'license_num' => 'integer|min:0',
+            'license_expiry' => 'date',
+            'phone_num' => 'string|min:9|max:20',
+            'affiliate_num' => 'integer|min:0',
         ];
     }
 }
