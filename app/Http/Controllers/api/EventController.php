@@ -46,11 +46,11 @@ class EventController extends Controller
         $event = $request->validated();
         //dd($request->hasFile('image_file'));
         if ($request->hasFile('image_file')) {
-            $path = Storage::putFile('eventos', $request->file('image_file'));
+            $path = Storage::putFile('public/eventos', $request->file('image_file'));
             $event['image_url'] = basename($path);
         }
         if ($request->hasFile('course_file')) {
-            $path = Storage::putFile('circuitos', $request->file('course_file'));
+            $path = Storage::putFile('public/circuitos', $request->file('course_file'));
             $event['course_url'] = basename($path);
         }
 
@@ -158,12 +158,12 @@ class EventController extends Controller
         $validated_data = $request->validated();
         //dd($request->validated());
         if ($request->hasFile('image_file')) {
-            $path = Storage::putFile('eventos', $request->file('image_file'));
+            $path = Storage::putFile('public/eventos', $request->file('image_file'));
             $event->image_url = basename($path);
         }
 
         if ($request->hasFile('course_file')) {
-            $path = Storage::putFile('circuitos', $request->file('course_file'));
+            $path = Storage::putFile('public/circuitos', $request->file('course_file'));
             $event->course_url = basename($path);
         }
 
