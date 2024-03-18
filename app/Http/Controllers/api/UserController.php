@@ -57,7 +57,7 @@ class UserController extends Controller
             }
         }
         if ($request->hasFile('photo_file')) {
-            $path = Storage::putFile('fotos', $request->file('photo_file'));
+            $path = Storage::putFile('public/fotos', $request->file('photo_file'));
             $user->photo_url = basename($path);
         }
 
@@ -100,7 +100,7 @@ class UserController extends Controller
         $newUser->password = bcrypt($validated_data['password']);
 
         if ($request->hasFile('photo_file')) {
-            $path = Storage::putFile('fotos', $request->file('photo_file'));
+            $path = Storage::putFile('public/fotos', $request->file('photo_file'));
             $newUser->photo_url = basename($path);
         }
 
