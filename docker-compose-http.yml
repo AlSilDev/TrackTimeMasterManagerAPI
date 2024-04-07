@@ -44,8 +44,8 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
-      - ./docker-compose/nginx:/etc/nginx/conf.d/
+      - ./:/var/www/ttmm
+      - ./docker-compose/nginx/ttmm-http.conf:/etc/nginx/conf.d/ttmm.conf
     networks:
       - ttmm_nw
 
