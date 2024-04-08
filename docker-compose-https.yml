@@ -1,4 +1,3 @@
-version: "1.0"
 services:
   ttmm_api:
     build:
@@ -18,36 +17,16 @@ services:
     networks:
       - ttmm_nw
 
-  db:
-    image: mysql:latest
-    command: --default-authentication-plugin=caching_sha2_password
-    container_name: ttmm_db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
-    volumes:
-      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
-    ports:
-     - 3306:3306
-    networks:
-      - ttmm_nw
-
   nginx:
     image: nginx:stable-alpine
     container_name: ttmm_api-nginx
     restart: unless-stopped
     ports:
-      - 8000:80
+      - 8000:443
     volumes:
       - ./:/var/www/ttmm
       - ./docker-compose/nginx/ttmm-https.conf:/etc/nginx/conf.d/ttmm.conf
-      - ./nginx/snippets/:/etc/nginx/snippets/
-      - ../certbot/www/:/var/www/certbot/:ro
+      - ./docker-compose/nginx/snippets/:/etc/nginx/snippets/
       - ../certbot/conf/archive/${DOMAIN}/:/etc/nginx/ssl/${DOMAIN}/
     networks:
       - ttmm_nw
