@@ -11,7 +11,12 @@ Start by cloning this repository into a directory of your choice.
 First, you'll need to install the `composer` dependencies. Run the following command:
 
 ```
-docker run --rm -v $(pwd):/app composer/composer install
+docker run --rm -v $(pwd):/app composer/composer update --ignore-platform-reqs
+```
+Before you build and run the containers, you'll need to create a network:
+
+```
+docker network create ttmm_network
 ```
 
 To build the container images and deploy a multi-group container comprising all of the components **for the first time**, run the following command in the root of the cloned repository:
