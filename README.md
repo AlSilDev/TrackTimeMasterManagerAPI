@@ -13,7 +13,7 @@ First, you'll need to install the `composer` dependencies. Run the following com
 ```
 docker run --rm -v $(pwd):/app composer/composer update --ignore-platform-reqs
 ```
-Before you build and run the containers, you'll need to create a network:
+Before you build and run the containers, and if you haven't already, you'll need to create a network:
 
 ```
 docker network create ttmm_network
@@ -53,6 +53,9 @@ If you want the database to be populated with test data, run the following comma
 docker compose exec ttmm_api php artisan db:seed
 ```
 
-**Congrats!** Your API should now be running!
+**Congrats!** Your API should now be running! Requests can be made to http://localhost:8000!
 
 If you haven't already, check out the [Track Time Master Manager](https://github.com/AlSilDev/TrackTimeMasterManager) project, where you'll find everything to get the front-end and web sockets services running!
+
+## Current status of development
+This project is currently **not** in development. Some features are still lacking and bugs need fixing. If you're interested in contributing to this project, feel free to fork it or get in touch with us!
