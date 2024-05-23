@@ -58,4 +58,4 @@ docker compose exec ttmm_api php artisan db:seed
 If you haven't already, check out the [Track Time Master Manager](https://github.com/AlSilDev/TrackTimeMasterManager) project, where you'll find everything to get the front-end and web sockets services running!
 
 ## Current status of development
-This project is currently **not** in development. Some features are still lacking and bugs need fixing. If you're interested in contributing to this project, feel free to fork it or get in touch with us!
+This project is currently in development. Some features are still lacking and bugs need fixing. If you're interested in contributing to this project, feel free to fork it or get in touch with us!
